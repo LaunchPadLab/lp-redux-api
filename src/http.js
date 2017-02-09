@@ -1,4 +1,4 @@
-import { camelizeKeys, decamelizeKeys } from 'utils'
+import { camelizeKeys, decamelizeKeys } from './utils'
 import HttpError from './http-error'
 
 const CSRF_METHODS = ['PATCH', 'POST', 'PUT']
