@@ -7,14 +7,14 @@ const OPTIONS = {
 }
 
 export function get (url, authenticated) {
-  return http.call(url, {
+  return http(url, {
     ...OPTIONS,
     authenticated,
   })
 }
 
 export function patch (url, body, authenticated) {
-  return http.call(url, {
+  return http(url, {
     ...OPTIONS,
     authenticated,
     body,
@@ -23,7 +23,7 @@ export function patch (url, body, authenticated) {
 }
 
 export function post (url, body, authenticated) {
-  return http.call(url, {
+  return http(url, {
     ...OPTIONS,
     authenticated,
     body,
@@ -32,7 +32,7 @@ export function post (url, body, authenticated) {
 }
 
 export function put (url, body, authenticated) {
-  return http.call(url, {
+  return http(url, {
     ...OPTIONS,
     authenticated,
     body,
@@ -41,7 +41,7 @@ export function put (url, body, authenticated) {
 }
 
 export function call (url, method, body, authenticated) {
-  return http.call(url, {
+  return http(url, {
     ...OPTIONS,
     authenticated,
     body,

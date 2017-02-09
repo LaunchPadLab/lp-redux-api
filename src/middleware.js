@@ -36,7 +36,7 @@ export default function ({
       endpoint,
       method,
       body,
-      authenticated: requestAuthenticated,
+      requestAuthenticated = authenticated,
       ...rest,
     } = lpApi
 
@@ -50,14 +50,14 @@ export default function ({
     const url = (root ? root : '') + endpoint
 
     const requestOptions = {
-      authenticated: (typeof requestAuthenticated === 'undefined') ? authenticated : requestAuthenticated,
+      authenticated: requestAuthenticated,
       body,
       csrf,
       method,
       tokenName,
     }
 
-    return http.call(url, requestOptions)
+    return http(url, requestOptions)
       .then(response =>
         next({
           type: successType,
