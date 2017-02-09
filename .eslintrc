@@ -1,0 +1,13 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["babel"],
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "ecmaFeatures": {
+    "experimentalObjectRestSpread": true,
+    "modules": true
+  },
+  "extends": "eslint:recommended"
+}
