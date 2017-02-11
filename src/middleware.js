@@ -36,11 +36,16 @@ export default function ({
       endpoint,
       method,
       body,
-      requestAuthenticated = authenticated,
       ...rest,
     } = lpApi
 
     const [ requestType, successType, errorType ] = types
+
+    const requestAuthenticated = typeof rest.authenticated === 'undefined'
+      ? authenticated
+      : rest.authenticated
+
+    delete rest.authenticated
 
     next({
       type: requestType,
