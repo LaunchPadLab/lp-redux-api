@@ -67,7 +67,7 @@ export default function (
   return fetch(url, config)
     .then(response => response.json()
       .then(json => {
-        const camelized = camelizeKeys(json.data)
+        const camelized = camelizeKeys(json.data || json)
         if (response.ok) return camelized
         else throw new HttpError(response.status, response.statusText, camelized)
       })
