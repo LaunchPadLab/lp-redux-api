@@ -63,12 +63,16 @@ export default function ({
     }
 
     return http(url, requestOptions)
-      .then(response =>
-        next({
-          type: successType,
-          payload: { ...rest, response },
-        })
-      )
+      .then(response => {
+        try {
+          return next({
+            type: successType,
+            payload: { ...rest, response },
+          })
+        } catch (e) {
+          console.log(e)
+        }
+      })
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
         next({
