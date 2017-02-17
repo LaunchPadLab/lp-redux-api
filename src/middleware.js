@@ -63,12 +63,18 @@ export default function ({
     }
 
     return http(url, requestOptions)
-      .then(response =>
-        next({
-          type: successType,
-          payload: { ...rest, response },
-        })
-      )
+      .then(response => {
+        try {
+          return next({
+            type: successType,
+            payload: { ...rest, response },
+          })
+        } catch (e) {
+          // Will log errors, but don't want to dispatch a 'failure' action
+          /*eslint no-console: 0*/
+          console.error(e)
+        }
+      })
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
         next({
