@@ -70,7 +70,9 @@ export default function ({
             payload: { ...rest, response },
           })
         } catch (e) {
-          console.log(e)
+          // Will log errors, but don't want to dispatch a 'failure' action
+          /*eslint no-console: 0*/
+          console.error(e)
         }
       })
       .catch(error => {
