@@ -1,28 +1,28 @@
+import { omitUndefined } from './utils'
 import LP_API from './LP_API'
 import http from './http'
 
 const DEFAULT_CONFIG_OPTIONS = {
-  onUnauthorized: null,
+  onUnauthorized: undefined,
 }
 
 const DEFAULT_REQUEST_OPTIONS = {
   credentials: 'same-origin',
   csrf:        true,
-  headers:     undefined,
   mode:        'same-origin',
 }
 
 export default function ({ onUnauthorized, ...options }) {
 
-  const defaultConfigOptions = {
+  const defaultConfigOptions = omitUndefined({
     ...DEFAULT_CONFIG_OPTIONS,
     onUnauthorized,
-  }
+  })
 
-  const defaultRequestOptions = {
+  const defaultRequestOptions = omitUndefined({
     ...DEFAULT_REQUEST_OPTIONS,
     ...options,
-  }
+  })
 
   return () => next => action => {
 
@@ -55,7 +55,7 @@ export default function ({ onUnauthorized, ...options }) {
       payload: rest,
     })
 
-    const requestOptions = {
+    const requestOptions = omitUndefined({
       ...defaultRequestOptions,
       body,
       credentials,
@@ -63,7 +63,7 @@ export default function ({ onUnauthorized, ...options }) {
       headers,
       method,
       mode,
-    }
+    })
 
     return http(url, requestOptions)
       .catch(error => {

@@ -1,4 +1,4 @@
-import { camelizeKeys, decamelizeKeys } from './utils'
+import { camelizeKeys, decamelizeKeys, omitUndefined } from './utils'
 import HttpError from './http-error'
 
 const CSRF_METHODS = ['PATCH', 'POST', 'PUT']
@@ -12,20 +12,18 @@ export const DEFAULT_HEADERS = {
 }
 
 const DEFAULT_OPTIONS = {
-  body:        null,
   credentials: 'same-origin',
   csrf:        true,
   headers:     DEFAULT_HEADERS,
-  method:      'GET',
   mode:        'same-origin',
 }
 
 export default function (url, options) {
 
-  const config = {
+  const config = omitUndefined({
     ...DEFAULT_OPTIONS,
     ...options
-  }
+  })
 
   const csrf = config.csrf
 
