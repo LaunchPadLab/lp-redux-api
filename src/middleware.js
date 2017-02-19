@@ -77,17 +77,11 @@ export default function ({ onUnauthorized, ...options }) {
           next(defaultConfigOptions.onUnauthorized())
         }
       })
-      .then(response => {
-        // try {
-          return next({
-            type: successType,
-            payload: { ...rest, response },
-          })
-        // } catch (e) {
-          // Will log errors, but don't want to dispatch a 'failure' action
-          /*eslint no-console: 0*/
-          // console.error(e)
-        // }
-      })
+      .then(response =>
+        next({
+          type: successType,
+          payload: { ...rest, response },
+        })
+      )
   }
 }
