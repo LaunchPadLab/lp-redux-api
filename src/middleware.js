@@ -1,23 +1,28 @@
 import LP_API from './LP_API'
 import http from './http'
 
-const DEFAULT_OPTIONS = {
-  // http
-  authenticated: false,
-  csrf:          true,
-  tokenName:    'token',
-  // middleware
+const DEFAULT_CONFIG_OPTIONS = {
   onUnauthorized: null,
-  root:           null,
 }
 
-export default function ({
-  authenticated  = DEFAULT_OPTIONS.authenticated,
-  csrf           = DEFAULT_OPTIONS.csrf,
-  tokenName      = DEFAULT_OPTIONS.tokenName,
-  onUnauthorized = DEFAULT_OPTIONS.onUnauthorized,
-  root           = DEFAULT_OPTIONS.root,
-}) {
+const DEFAULT_REQUEST_OPTIONS = {
+  credentials: 'same-origin',
+  csrf:        true,
+  headers:     undefined,
+  mode:        'same-origin',
+}
+
+export default function ({ onUnauthorized, ...options }) {
+
+  const defaultConfigOptions = {
+    ...DEFAULT_CONFIG_OPTIONS,
+    onUnauthorized,
+  }
+
+  const defaultRequestOptions = {
+    ...DEFAULT_REQUEST_OPTIONS,
+    ...options,
+  }
 
   return () => next => action => {
 
@@ -32,49 +37,35 @@ export default function ({
     }
 
     const {
-      types,
-      endpoint,
-      method,
       body,
+      credentials,
+      csrf,
+      headers,
+      method,
+      mode,
+      types,
+      url,
       ...rest,
     } = lpApi
 
     const [ requestType, successType, errorType ] = types
-
-    const requestAuthenticated = typeof rest.authenticated === 'undefined'
-      ? authenticated
-      : rest.authenticated
-
-    delete rest.authenticated
 
     next({
       type: requestType,
       payload: rest,
     })
 
-    const url = (root ? root : '') + endpoint
-
     const requestOptions = {
-      authenticated: requestAuthenticated,
+      ...defaultRequestOptions,
       body,
+      credentials,
       csrf,
+      headers,
       method,
-      tokenName,
+      mode,
     }
 
     return http(url, requestOptions)
-      .then(response => {
-        try {
-          return next({
-            type: successType,
-            payload: { ...rest, response },
-          })
-        } catch (e) {
-          // Will log errors, but don't want to dispatch a 'failure' action
-          /*eslint no-console: 0*/
-          console.error(e)
-        }
-      })
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
         next({
@@ -82,9 +73,21 @@ export default function ({
           payload: { ...rest, response },
           error: true,
         })
-        if (error.status === 401 && onUnauthorized) {
-          next(onUnauthorized())
+        if (error.status === 401 && defaultConfigOptions.onUnauthorized) {
+          next(defaultConfigOptions.onUnauthorized())
         }
+      })
+      .then(response => {
+        // try {
+          return next({
+            type: successType,
+            payload: { ...rest, response },
+          })
+        // } catch (e) {
+          // Will log errors, but don't want to dispatch a 'failure' action
+          /*eslint no-console: 0*/
+          // console.error(e)
+        // }
       })
   }
 }
