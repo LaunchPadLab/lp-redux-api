@@ -3,47 +3,41 @@ import http from './http'
 const OPTIONS = {
   method: 'GET',
   body: null,
-  authenticated: true,
 }
 
-export function get (url, authenticated) {
+export function get (url) {
   return http(url, {
     ...OPTIONS,
-    authenticated,
   })
 }
 
-export function patch (url, body, authenticated) {
+export function patch (url, body) {
   return http(url, {
     ...OPTIONS,
-    authenticated,
     body,
     method: 'PATCH',
   })
 }
 
-export function post (url, body, authenticated) {
+export function post (url, body) {
   return http(url, {
     ...OPTIONS,
-    authenticated,
     body,
     method: 'POST',
   })
 }
 
-export function put (url, body, authenticated) {
+export function put (url, body) {
   return http(url, {
     ...OPTIONS,
-    authenticated,
     body,
     method: 'PUT',
   })
 }
 
-export function call (url, method, body, authenticated) {
+export function call (url, method, body) {
   return http(url, {
     ...OPTIONS,
-    authenticated,
     body,
     method,
   })

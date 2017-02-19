@@ -1,5 +1,6 @@
 export * as api from './api'
 export { default as http } from './http'
 export { default as HttpError } from './http-error'
+export { default as isAuthenticated } from './is-authenticated'
 export { default as LP_API } from './LP_API'
 export { default as middleware } from './middleware'

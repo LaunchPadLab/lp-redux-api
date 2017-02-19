@@ -1,67 +1,44 @@
-import { camelizeKeys, decamelizeKeys } from './utils'
+import { camelizeKeys, decamelizeKeys, omitUndefined } from './utils'
 import HttpError from './http-error'
 
 const CSRF_METHODS = ['PATCH', 'POST', 'PUT']
 
 const DEFAULT_CSRF_SELECTOR = 'csrf-token'
 
-const DEFAULT_OPTIONS = {
-  authenticated: false,
-  tokenName: 'token',
-  body: null,
-  csrf: true,
-  method: 'GET',
+export const DEFAULT_HEADERS = {
+  'Accept':           'application/json',
+  'X-Requested-With': 'XMLHttpRequest',
+  'Content-Type':     'application/json',
 }
 
-export default function (
-  url,
-  {
-    authenticated = DEFAULT_OPTIONS.authenticated,
-    body          = DEFAULT_OPTIONS.body,
-    csrf          = DEFAULT_OPTIONS.csrf,
-    method        = DEFAULT_OPTIONS.method,
-    tokenName     = DEFAULT_OPTIONS.tokenName,
-  }
-) {
+const DEFAULT_OPTIONS = {
+  credentials: 'same-origin',
+  csrf:        true,
+  headers:     DEFAULT_HEADERS,
+  mode:        'same-origin',
+}
 
-  const config = {
-    headers: {
-      'Accept': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json',
-    },
-    method: method,
-  }
+export default function (url, options) {
 
-  let token
-  if (authenticated) {
-    token = localStorage.getItem(tokenName)
-    if (!token) {
-      return Promise.reject(new HttpError(401, 'unauthorized', {}))
-    }
-  }
+  const config = omitUndefined({
+    ...DEFAULT_OPTIONS,
+    ...options
+  })
 
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`
-  }
+  const csrf = config.csrf
 
-  if (CSRF_METHODS.includes(method)) {
+  delete config.csrf
 
-    config.mode = 'same-origin'
-    config.credentials = 'include'
+  if (config.body)
+    config.body = JSON.stringify(decamelizeKeys(config.body))
 
-    if (csrf) {
+  if (csrf && CSRF_METHODS.includes(config.method)) {
 
-      const selector = (typeof csrf === 'string')
-        ? csrf
-        : DEFAULT_CSRF_SELECTOR
+    const selector = (typeof csrf === 'string')
+      ? csrf
+      : DEFAULT_CSRF_SELECTOR
 
-      config.headers['X-CSRF-Token'] = csrfToken(selector)
-    }
-  }
-
-  if (body) {
-    config.body = JSON.stringify(decamelizeKeys(body))
+    config.headers['X-CSRF-Token'] = csrfToken(selector)
   }
 
   return fetch(url, config)

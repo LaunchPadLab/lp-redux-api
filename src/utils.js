@@ -1,4 +1,6 @@
 import humps from 'humps'
+import omitBy from 'lodash.omitby'
+import isUndefined from 'lodash.isundefined'
 
 export function camelizeKeys (obj) {
   return humps.camelizeKeys(obj, (key, convert) =>
@@ -8,4 +10,8 @@ export function camelizeKeys (obj) {
 
 export function decamelizeKeys (obj) {
   return humps.decamelizeKeys(obj)
+}
+
+export function omitUndefined (obj) {
+  return omitBy(obj, isUndefined)
 }

@@ -1,13 +1,18 @@
-{
-  "parser": "babel-eslint",
-  "plugins": ["babel"],
-  "env": {
-    "browser": true,
-    "es6": true
-  },
-  "ecmaFeatures": {
-    "experimentalObjectRestSpread": true,
-    "modules": true
-  },
-  "extends": "eslint:recommended"
-}
+---
+  env:
+    browser: true
+    node: true
+  parser: babel-eslint
+  parserOptions:
+    sourceType: module
+    ecmaFeatures:
+      experimentalObjectRestSpread: true
+      impliedStrict: true
+  globals:
+    Symbol: true
+  extends:
+    - eslint:recommended
+    - plugin:import/errors
+    - plugin:import/warnings
+  rules:
+    no-unused-vars: 0
