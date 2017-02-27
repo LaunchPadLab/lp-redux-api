@@ -74,7 +74,7 @@ export default function ({ onUnauthorized, ...options }) {
     return http(url, requestOptions)
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
-
+        
         // Send error action
         if (errorAction) {
           next(parseAction({
@@ -103,9 +103,9 @@ export default function ({ onUnauthorized, ...options }) {
 }
 
 // Create an action from an action "definition."
-const parseAction = ({ action, payload, error=false }) => {
+const parseAction = ({ action, payload={}, error=false }) => {
   // If it's an action creator, create the action
-  if (typeof action === 'function') return action()
+  if (typeof action === 'function') return action(payload.response)
   // If it's an action object return the action
   if (typeof action === 'object') return action
   // Otherwise, create a "default" action object with the given type

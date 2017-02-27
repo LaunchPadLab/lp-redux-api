@@ -73,7 +73,7 @@ Actions can be defined in the following ways:
 
 + As an action type `string` (shown above)
 + As an action `object`
-+ As an action creator `function`
++ As an action creator `function` - will get passed the success/error response
 
 If you'd rather use it, `types` is an alias for `actions`.
 
