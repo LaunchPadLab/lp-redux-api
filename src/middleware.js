@@ -104,13 +104,15 @@ export default function ({ onUnauthorized, ...options }) {
 
 // Create an action from an action "definition."
 const parseAction = ({ action, payload={}, error=false }) => {
+  switch (typeof action) {
   // If it's an action creator, create the action
-  if (typeof action === 'function') return action(payload.response)
+  case 'function': return action(payload.response)
   // If it's an action object return the action
-  if (typeof action === 'object') return action
+  case 'object': return action
   // Otherwise, create a "default" action object with the given type
-  if (typeof action === 'string') return { type: action, payload, error }
-  throw 'Invalid action definition (must be function, object or string).'
+  case 'string': return { type: action, payload, error }
+  default: throw 'Invalid action definition (must be function, object or string).'
+  }
 }
 
 
