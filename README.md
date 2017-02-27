@@ -45,6 +45,7 @@ const store = createStore(reducer, initialState, middleware)
 
 ### Action Creator
 Wherever your actions are:
+
 ```
 import { LP_API } from '@launchpadlab/lp-redux-api'
 
@@ -55,8 +56,8 @@ export const USER_FAILURE = 'USER_FAILURE'
 export function fetchUser (id) {
   return {
     [LP_API]: {
-      endpoint: `users/${id}`,
-      types: [USER_REQUEST, USER_SUCCESS, USER_FAILURE],
+      url: `users/${id}`,
+      actions: [USER_REQUEST, USER_SUCCESS, USER_FAILURE],
     },
   }
 }
@@ -67,6 +68,14 @@ When this action is dispatched to the store, the Api Middleware will take over a
 + Perform the api request
 + Dispatch a `USER_SUCCESS` action with the response payload if the api request is successful
 + Dispatch a `USER_FAILURE` action with the response payload if the api request fails
+
+Actions can be defined in the following ways:
+
++ As an action type `string` (shown above)
++ As an action `object`
++ As an action creator `function` - will get passed the success/error response
+
+If you'd rather use it, `types` is an alias for `actions`.
 
 ## Quick Start - Api
 You can use the api logic directly to make requests and handle the Promise yourself. You get the same benefits in terms of CSRF and JWT authentication, but no actions are dispatched.
@@ -112,10 +121,9 @@ The middleware can be configured when created by passing in an object with the f
   onUnauthorized: null,
 
   /*
-   * root path to be prepended to `endpoint` provided in the action.
+   * root path to be prepended to `url` provided in the action.
    */
   root:           null,
 }
 ```
 
-### Action

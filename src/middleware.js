@@ -43,17 +43,22 @@ export default function ({ onUnauthorized, ...options }) {
       headers,
       method,
       mode,
+      actions,
       types,
       url,
       ...rest,
     } = lpApi
 
-    const [ requestType, successType, errorType ] = types
+    // Alias 'actions' with 'types' for backwards compatibility
+    const [ requestAction, successAction, errorAction ] = actions || types
 
-    next({
-      type: requestType,
-      payload: rest,
-    })
+    // Send request action
+    if (requestAction) {
+      next(parseAction({
+        action: requestAction,
+        payload: rest,
+      }))
+    }
 
     const requestOptions = omitUndefined({
       ...defaultRequestOptions,
@@ -65,23 +70,49 @@ export default function ({ onUnauthorized, ...options }) {
       mode,
     })
 
+    // Make the request
     return http(url, requestOptions)
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
-        next({
-          type: errorType,
-          payload: { ...rest, response },
-          error: true,
-        })
+        
+        // Send error action
+        if (errorAction) {
+          next(parseAction({
+            action: errorAction,
+            payload: { ...rest, response },
+            error: true,
+          }))
+        }
+
         if (error.status === 401 && defaultConfigOptions.onUnauthorized) {
           next(defaultConfigOptions.onUnauthorized())
         }
       })
-      .then(response =>
-        next({
-          type: successType,
-          payload: { ...rest, response },
-        })
-      )
+      .then(response => {
+
+        // Send success action
+        if (successAction) {
+          next(parseAction({
+            action: successAction,
+            payload: { ...rest, response },
+          }))
+        }
+        
+      })
   }
 }
+
+// Create an action from an action "definition."
+const parseAction = ({ action, payload={}, error=false }) => {
+  switch (typeof action) {
+  // If it's an action creator, create the action
+  case 'function': return action(payload.response)
+  // If it's an action object return the action
+  case 'object': return action
+  // Otherwise, create a "default" action object with the given type
+  case 'string': return { type: action, payload, error }
+  default: throw 'Invalid action definition (must be function, object or string).'
+  }
+}
+
+
