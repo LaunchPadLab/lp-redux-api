@@ -56,7 +56,7 @@ export const USER_FAILURE = 'USER_FAILURE'
 export function fetchUser (id) {
   return {
     [LP_API]: {
-      endpoint: `users/${id}`,
+      url: `users/${id}`,
       actions: [USER_REQUEST, USER_SUCCESS, USER_FAILURE],
     },
   }
@@ -121,7 +121,7 @@ The middleware can be configured when created by passing in an object with the f
   onUnauthorized: null,
 
   /*
-   * root path to be prepended to `endpoint` provided in the action.
+   * root path to be prepended to `url` provided in the action.
    */
   root:           null,
 }
