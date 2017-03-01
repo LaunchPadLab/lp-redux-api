@@ -50,7 +50,7 @@ export default function ({ onUnauthorized, ...options }) {
     } = lpApi
 
     // Alias 'actions' with 'types' for backwards compatibility
-    const [ requestAction, successAction, errorAction ] = actions || types
+    const [ requestAction, successAction, errorAction ] = actions || types || []
 
     // Send request action
     if (requestAction) {
