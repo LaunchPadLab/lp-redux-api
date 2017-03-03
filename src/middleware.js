@@ -50,7 +50,13 @@ export default function ({ onUnauthorized, ...options }) {
     } = lpApi
 
     // Alias 'actions' with 'types' for backwards compatibility
-    const [ requestAction, successAction, errorAction ] = actions || types
+    const actionTypes = actions || types
+
+    // Validate options
+    if (!url || typeof url !== 'string') throw 'Must provide string \'url\' argument'
+    if (!actionTypes || !Array.isArray(actionTypes)) throw 'Must provide an array of actions. Use \'api\' module for requests with no associated actions.'
+
+    const [ requestAction, successAction, errorAction ] = actionTypes
 
     // Send request action
     if (requestAction) {
