@@ -14,5 +14,3 @@
     - eslint:recommended
     - plugin:import/errors
     - plugin:import/warnings
-  rules:
-    no-unused-vars: 0
