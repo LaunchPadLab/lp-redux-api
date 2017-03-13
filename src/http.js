@@ -1,3 +1,4 @@
+import fetch from 'isomorphic-fetch'
 import { camelizeKeys, decamelizeKeys, omitUndefined } from './utils'
 import HttpError from './http-error'
 
