@@ -1,9 +1,9 @@
 import { LP_API_ACTION } from './actions'
 
-export default function(state={}, { type, payload, status }) {
-  return type === LP_API_ACTION
-    ? { ...state, [payload]: status }
-    : state
+export default function (state={}, { type, payload }) {
+  if (type !== LP_API_ACTION) return state
+  const { key, status } = payload
+  return { ...state, [key]: status }
 }
 
 export function selectStatus (key, state) {
