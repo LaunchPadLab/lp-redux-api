@@ -1,6 +1,7 @@
 import { omitUndefined } from './utils'
 import LP_API from './LP_API'
 import http from './http'
+import { lpApiRequest, lpApiSuccess, lpApiFailure } from './actions'
 
 const DEFAULT_CONFIG_OPTIONS = {
   onUnauthorized: undefined,
@@ -54,6 +55,7 @@ export default function ({ onUnauthorized, ...options }) {
 
     // Send request action
     if (requestAction) {
+      next(lpApiRequest(requestAction))
       next(parseAction({
         action: requestAction,
         payload: rest,
@@ -77,6 +79,7 @@ export default function ({ onUnauthorized, ...options }) {
         
         // Send error action
         if (errorAction) {
+          next(lpApiFailure(requestAction))
           next(parseAction({
             action: errorAction,
             payload: { ...rest, response },
@@ -92,6 +95,7 @@ export default function ({ onUnauthorized, ...options }) {
 
         // Send success action
         if (successAction) {
+          next(lpApiSuccess(requestAction))
           next(parseAction({
             action: successAction,
             payload: { ...rest, response },

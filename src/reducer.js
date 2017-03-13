@@ -1,11 +1,12 @@
-const actions = {
-  LP_API_REQUEST: (state, key) => ({ ...state, [key]: 'loading' }),
-  LP_API_SUCCESS: (state, key) => ({ ...state, [key]: 'success' }),
-  LP_API_FAILURE: (state, key) => ({ ...state, [key]: 'failure' }),
+import { LP_API_ACTION } from './actions'
+
+export default function(state={}, { type, payload, status }) {
+  return type === LP_API_ACTION
+    ? { ...state, [payload]: status }
+    : state
 }
 
-export default function(state, { type, payload }) {
-  const reducer = actions[type]
-  if (!reducer) return state
-  return reducer(state, payload)
+export function selectStatus (key, state) {
+  if (!state.api) throw 'No `api` reducer exists'
+  return state.api[key] // TODO make the reducer name configurable
 }
