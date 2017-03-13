@@ -47,6 +47,7 @@ export default function ({ onUnauthorized, ...options }) {
       actions,
       types,
       url,
+      requestKey='REQUEST',
       ...rest,
     } = lpApi
 
@@ -56,11 +57,13 @@ export default function ({ onUnauthorized, ...options }) {
     // Make sure required options exist
     validateOptions({ url, actionTypes })
 
-    const [ requestAction, successAction, errorAction ] = actionTypes
+    const [ requestAction, successAction, failureAction ] = actionTypes
 
-    // Send request action
+    // Send request action to API reducer
+    next(lpApiRequest(requestKey))
+
+    // Send user-specified request action
     if (requestAction) {
-      next(lpApiRequest(requestAction))
       next(parseAction({
         action: requestAction,
         payload: rest,
@@ -81,12 +84,14 @@ export default function ({ onUnauthorized, ...options }) {
     return http(url, requestOptions)
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
+
+        // Send failure action to API reducer
+        next(lpApiFailure(requestKey))
         
-        // Send error action
-        if (errorAction) {
-          next(lpApiFailure(requestAction))
+        // Send user-specified failure action
+        if (failureAction) {
           next(parseAction({
-            action: errorAction,
+            action: failureAction,
             payload: { ...rest, response },
             error: true,
           }))
@@ -98,9 +103,11 @@ export default function ({ onUnauthorized, ...options }) {
       })
       .then(response => {
 
-        // Send success action
+        // Send success action to API reducer
+        next(lpApiSuccess(requestKey))
+
+        // Send user-specified success action
         if (successAction) {
-          next(lpApiSuccess(requestAction))
           next(parseAction({
             action: successAction,
             payload: { ...rest, response },
