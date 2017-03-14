@@ -2,12 +2,12 @@ export const successUrl = '/success'
 export const failureUrl = '/failure'
 
 export default jest.fn(function (url) {
-  const json = { 
+  const response = { 
+    json: () => Promise.resolve({}),
     ok: url !== failureUrl 
   }
-  const response = { json: () => Promise.resolve(json) }
   // Simulate server response
   return new Promise((resolve) => {
-    setTimeout(resolve(response), 100)
+    setTimeout(resolve(response), 10)
   })
 })
