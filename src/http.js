@@ -47,7 +47,7 @@ export default function (url, options) {
       .then(json => {
         const camelized = camelizeKeys(json.data || json)
         if (response.ok) return camelized
-        else throw new HttpError(response.status, response.statusText, camelized)
+        throw new HttpError(response.status, response.statusText, camelized)
       })
     )
 }

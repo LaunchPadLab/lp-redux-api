@@ -2,6 +2,9 @@
   env:
     browser: true
     node: true
+    jasmine: true
+    jest: true
+    es6: true
   parser: babel-eslint
   parserOptions:
     sourceType: module
@@ -14,5 +17,3 @@
     - eslint:recommended
     - plugin:import/errors
     - plugin:import/warnings
-  rules:
-    no-unused-vars: 0
