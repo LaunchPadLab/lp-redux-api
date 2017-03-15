@@ -10,7 +10,7 @@ import { REQUEST_KEY } from './fixtures'
 
 /* HELPERS */
 
-const RESPONSE_PATH = 'path.to.response'
+const RESPONSE_PATH = 'path'
 
 const reducer = (state={}, action) => {
   const handlers = {
