@@ -1,3 +1,5 @@
+[ ![Codeship Status for LaunchPadLab/lp-redux-api](https://app.codeship.com/projects/5b514ba0-ebe2-0134-f96d-2efd70753ac1/status?branch=master)](https://app.codeship.com/projects/208187)
+
 # lp-redux-api
 Api and middleware for redux applications. While configurable, the basics are:
 + Uses `isomorphic-fetch` under the hood

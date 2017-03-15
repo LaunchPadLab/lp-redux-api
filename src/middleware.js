@@ -58,7 +58,7 @@ export default function ({ onUnauthorized, ...options }) {
       requestAction=requestFallback,
       successAction=successFallback,
       failureAction=failureFallback,
-      requestKey='REQUEST',
+      requestKey='DEFAULT_REQUEST_KEY',
       ...rest,
     } = options
 
