@@ -8,13 +8,12 @@ Api and middleware for redux applications. While configurable, the basics are:
 ---
 
 ## Contents
-+ [Quick Start - Middleware](#Quick Start - Middleware)
- + [Install](#Install)
- + [Action Creator](#Action Creator)
-+ [Quick Start - Api](#Quick Start - Api)
-+ [Docs](#Docs)
- + [Middleware Configuration](#Middleware Configuration)
- + [Action](#Action)
++ [Quick Start - Middleware](#quick-start---middleware)
+ + [Install](#install)
+ + [Action Creator](#action-creator)
++ [Quick Start - Api](#quick-start---api)
++ [Docs](#docs)
+ + [Middleware Configuration](#middleware-configuration)
 
 ---
 
