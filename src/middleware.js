@@ -83,11 +83,11 @@ export default function ({ onUnauthorized, ...options }) {
     // Make the request
     return http(url, requestOptions)
       .catch(error => {
-        const response = error.response || error.message || 'There was an error.'
+        const response = error
 
         // Send failure action to API reducer
         next(lpApiFailure(requestKey))
-        
+
         // Send user-specified failure action
         if (failureAction) {
           next(parseAction({
@@ -113,7 +113,7 @@ export default function ({ onUnauthorized, ...options }) {
             payload: { ...rest, response },
           }))
         }
-        
+
       })
   }
 }
@@ -135,5 +135,3 @@ function parseAction ({ action, payload={}, error=false }) {
   default: throw 'Invalid action definition (must be function, object or string).'
   }
 }
-
-
