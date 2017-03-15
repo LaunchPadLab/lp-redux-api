@@ -4,11 +4,12 @@
   "description": "redux middleware and api library",
   "main": "lib/index.js",
   "scripts": {
+    "start": "yarn run build:development",
     "build": "mkdir -p lib && babel src --out-dir lib --no-comments --minified",
+    "build:development": "mkdir -p lib && babel src --watch --out-dir lib",
     "clean": "rimraf lib",
-    "dev": "mkdir -p lib && babel src --watch --out-dir lib",
     "lint": "eslint src",
-    "prepublish": "npm run lint && npm run clean && npm run build",
+    "prepublish": "yarn run lint && yarn run clean && yarn run build",
     "test": "jest"
   },
   "repository": "launchpadlab/lp-redux-api",
