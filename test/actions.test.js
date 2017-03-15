@@ -14,7 +14,8 @@ test('REQUEST action creator creates action of expected type', () => {
     type: LP_API_ACTION,
     payload: {
       key: requestKey,
-      status: LP_API_STATUS_LOADING
+      status: LP_API_STATUS_LOADING,
+      response: null
     }
   }
   expect(lpApiRequest(requestKey)).toEqual(requestAction)
@@ -26,10 +27,11 @@ test('SUCCESS action creator creates action of expected type', () => {
     type: LP_API_ACTION,
     payload: {
       key: requestKey,
-      status: LP_API_STATUS_SUCCESS
+      status: LP_API_STATUS_SUCCESS,
+      response: 'response'
     }
   }
-  expect(lpApiSuccess(requestKey)).toEqual(requestAction)
+  expect(lpApiSuccess(requestKey, 'response')).toEqual(requestAction)
 })
 
 test('FAILURE action creator creates action of expected type', () => {
@@ -38,7 +40,8 @@ test('FAILURE action creator creates action of expected type', () => {
     type: LP_API_ACTION,
     payload: {
       key: requestKey,
-      status: LP_API_STATUS_FAILURE
+      status: LP_API_STATUS_FAILURE,
+      response: null
     }
   }
   expect(lpApiFailure(requestKey)).toEqual(requestAction)

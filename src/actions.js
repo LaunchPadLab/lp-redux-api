@@ -3,7 +3,7 @@ export const LP_API_STATUS_LOADING = 'loading'
 export const LP_API_STATUS_SUCCESS = 'success'
 export const LP_API_STATUS_FAILURE = 'failure'
 
-function lpApiAction (key, status, response={}) {
+function lpApiAction (key, status, response=null) {
   return {
     type: LP_API_ACTION,
     payload: { key, status, response }
