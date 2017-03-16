@@ -125,8 +125,8 @@ export default function ({ onUnauthorized, ...options }) {
 }
 
 function validateOptions ({ url, actionTypes }) {
-  if (!url || typeof url !== 'string') throw 'Must provide string \'url\' argument'
-  if (!actionTypes.length) throw 'Must provide at least one action definition. Use \'api\' module for requests with no associated actions.'
+  if (!url || typeof url !== 'string') throw `Must provide string 'url' argument`
+  if (!actionTypes.length) throw `Must provide at least one action definition. Use 'api' module for requests with no associated actions.`
 }
 
 // Create an action from an action "definition."

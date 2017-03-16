@@ -1,7 +1,7 @@
 import LP_API from './LP_API'
 
 export default function (requestKey, options={}) {
-  if (!requestKey) throw 'Must include \'requestKey\' argument'
+  if (!requestKey) throw `Must include 'requestKey' argument`
   return {
     [LP_API]: {
       ...options,
