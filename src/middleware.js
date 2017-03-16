@@ -128,7 +128,7 @@ function validateOptions ({ url, actionTypes }) {
 function parseAction ({ action, payload={}, error=false }) {
   switch (typeof action) {
   // If it's an action creator, create the action
-  case 'function': return action(payload.response)
+  case 'function': return action(payload)
   // If it's an action object return the action
   case 'object': return action
   // Otherwise, create a "default" action object with the given type
