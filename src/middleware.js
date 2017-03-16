@@ -83,7 +83,8 @@ export default function ({ onUnauthorized, ...options }) {
     // Make the request
     return http(url, requestOptions)
       .catch(error => {
-        const response = error
+        const response = error.response || error.message || 'There was an error.'
+        const statusCode = error.status
 
         // Send failure action to API reducer
         next(lpApiFailure(requestKey))
@@ -92,7 +93,7 @@ export default function ({ onUnauthorized, ...options }) {
         if (failureAction) {
           next(parseAction({
             action: failureAction,
-            payload: { ...rest, response },
+            payload: { ...rest, response, statusCode },
             error: true,
           }))
         }
@@ -110,7 +111,7 @@ export default function ({ onUnauthorized, ...options }) {
         if (successAction) {
           next(parseAction({
             action: successAction,
-            payload: { ...rest, response },
+            payload: { ...rest, response, status },
           }))
         }
 
