@@ -84,15 +84,16 @@ export default function ({ onUnauthorized, ...options }) {
     return http(url, requestOptions)
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
+        const statusCode = error.status
 
         // Send failure action to API reducer
         next(lpApiFailure(requestKey))
-        
+
         // Send user-specified failure action
         if (failureAction) {
           next(parseAction({
             action: failureAction,
-            payload: { ...rest, response },
+            payload: { ...rest, response, statusCode },
             error: true,
           }))
         }
@@ -113,7 +114,7 @@ export default function ({ onUnauthorized, ...options }) {
             payload: { ...rest, response },
           }))
         }
-        
+
       })
   }
 }
@@ -127,7 +128,7 @@ function validateOptions ({ url, actionTypes }) {
 function parseAction ({ action, payload={}, error=false }) {
   switch (typeof action) {
   // If it's an action creator, create the action
-  case 'function': return action(payload.response)
+  case 'function': return action(payload)
   // If it's an action object return the action
   case 'object': return action
   // Otherwise, create a "default" action object with the given type
@@ -135,5 +136,3 @@ function parseAction ({ action, payload={}, error=false }) {
   default: throw 'Invalid action definition (must be function, object or string).'
   }
 }
-
-
