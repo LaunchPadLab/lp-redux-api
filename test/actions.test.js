@@ -29,7 +29,7 @@ test('SUCCESS action creator creates action of expected type', () => {
       status: LP_API_STATUS_SUCCESS
     }
   }
-  expect(lpApiSuccess(requestKey)).toEqual(requestAction)
+  expect(lpApiSuccess(requestKey, 'response')).toEqual(requestAction)
 })
 
 test('FAILURE action creator creates action of expected type', () => {

@@ -1,3 +1,5 @@
+[ ![Codeship Status for LaunchPadLab/lp-redux-api](https://app.codeship.com/projects/5b514ba0-ebe2-0134-f96d-2efd70753ac1/status?branch=master)](https://app.codeship.com/projects/208187)
+
 # lp-redux-api
 Api and middleware for redux applications. While configurable, the basics are:
 + Uses `isomorphic-fetch` under the hood
@@ -8,13 +10,12 @@ Api and middleware for redux applications. While configurable, the basics are:
 ---
 
 ## Contents
-+ [Quick Start - Middleware](#Quick Start - Middleware)
- + [Install](#Install)
- + [Action Creator](#Action Creator)
-+ [Quick Start - Api](#Quick Start - Api)
-+ [Docs](#Docs)
- + [Middleware Configuration](#Middleware Configuration)
- + [Action](#Action)
++ [Quick Start - Middleware](#quick-start---middleware)
+ + [Install](#install)
+ + [Action Creator](#action-creator)
++ [Quick Start - Api](#quick-start---api)
++ [Docs](#docs)
+ + [Middleware Configuration](#middleware-configuration)
 
 ---
 

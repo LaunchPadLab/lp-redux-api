@@ -38,26 +38,32 @@ export default function ({ onUnauthorized, ...options }) {
     }
 
     const {
+      actions,
+      types,
+      ...options
+    } = lpApi
+
+    // Alias 'actions' with 'types' for backwards compatibility
+    const actionTypes = actions || types || []
+    const [ requestFallback, successFallback, failureFallback ] = actionTypes
+
+    const {
+      url,
       body,
       credentials,
       csrf,
       headers,
       method,
       mode,
-      actions,
-      types,
-      url,
-      requestKey='REQUEST',
+      requestAction=requestFallback,
+      successAction=successFallback,
+      failureAction=failureFallback,
+      requestKey='DEFAULT_REQUEST_KEY',
       ...rest,
-    } = lpApi
-
-    // Alias 'actions' with 'types' for backwards compatibility
-    const actionTypes = actions || types
+    } = options
 
     // Make sure required options exist
-    validateOptions({ url, actionTypes })
-
-    const [ requestAction, successAction, failureAction ] = actionTypes
+    validateOptions({ url, actionTypes: [requestAction, successAction, failureAction] })
 
     // Send request action to API reducer
     next(lpApiRequest(requestKey))
@@ -105,7 +111,7 @@ export default function ({ onUnauthorized, ...options }) {
       .then(response => {
 
         // Send success action to API reducer
-        next(lpApiSuccess(requestKey))
+        next(lpApiSuccess(requestKey, response))
 
         // Send user-specified success action
         if (successAction) {
@@ -120,8 +126,8 @@ export default function ({ onUnauthorized, ...options }) {
 }
 
 function validateOptions ({ url, actionTypes }) {
-  if (!url || typeof url !== 'string') throw 'Must provide string \'url\' argument'
-  if (!actionTypes || !Array.isArray(actionTypes)) throw 'Must provide an array of actions. Use \'api\' module for requests with no associated actions.'
+  if (!url || typeof url !== 'string') throw `Must provide string 'url' argument`
+  if (!actionTypes.length) throw `Must provide at least one action definition. Use 'api' module for requests with no associated actions.`
 }
 
 // Create an action from an action "definition."

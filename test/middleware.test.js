@@ -1,8 +1,16 @@
 jest.mock('isomorphic-fetch')
 
-import { successUrl, failureUrl, networkErrorUrl } from 'isomorphic-fetch'
+import { successUrl, failureUrl, networkErrorUrl, responseBody } from 'isomorphic-fetch'
 import { middleware, LP_API } from '../src'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../src/actions'
+
+import {
+  REQUEST_KEY,
+  ACTION_TYPE_REQUEST,
+  ACTION_TYPE_SUCCESS,
+  ACTION_TYPE_FAILURE,
+  actionWithURL
+} from './fixtures'
 
 const configuredMiddleware = middleware({})
 
@@ -20,23 +28,6 @@ const callMiddleware = (action, opt={}) => {
     }
     return configuredMiddleware()(next)(action)
   })
-}
-
-/* FIXTURES */
-
-const REQUEST_KEY = 'REQUEST_KEY'
-const ACTION_TYPE_REQUEST = 'ACTION_TYPE_REQUEST'
-const ACTION_TYPE_SUCCESS = 'ACTION_TYPE_SUCCESS'
-const ACTION_TYPE_FAILURE = 'ACTION_TYPE_FAILURE'
-
-const actionWithURL = (url) => {
-  return {
-    [LP_API]: {
-      url,
-      requestKey: REQUEST_KEY,
-      actions: [ACTION_TYPE_REQUEST, ACTION_TYPE_SUCCESS, ACTION_TYPE_FAILURE]
-    }
-  }
 }
 
 /* TESTS */
@@ -67,7 +58,7 @@ test('middleware dispatches user-defined REQUEST action', () => {
 test('middleware dispatches reducer SUCCESS action', () => {
   return callMiddleware(actionWithURL(successUrl), { waitForActions: 3 }).then((actions) => {
     const apiSuccessAction = actions.pop()
-    expect(apiSuccessAction).toEqual(lpApiSuccess(REQUEST_KEY))
+    expect(apiSuccessAction).toEqual(lpApiSuccess(REQUEST_KEY, responseBody))
   })
 })
 
