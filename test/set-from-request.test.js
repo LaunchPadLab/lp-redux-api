@@ -8,11 +8,13 @@ import { REQUEST_KEY } from './fixtures'
 
 /* HELPERS */
 
-const DATA_PATH = 'path.to.data'
+const PATH = 'path'
+const DATA_PATH = `${PATH}.data`
+const ERROR_PATH = `${PATH}.error`
 
 const reducer = (state={}, action) => {
   const handlers = {
-    ...setFromRequest(REQUEST_KEY, DATA_PATH)
+    ...setFromRequest(REQUEST_KEY, PATH)
   }
   const handler = handlers[action.type]
   return handler ? handler(state, action) : state
@@ -27,15 +29,17 @@ const [ requestAction, successAction, failureAction ] = request[LP_API].actions.
 
 test('setFromRequest ignores request actions', () => {
   const state = reducer({}, requestAction)
-  expect(get(DATA_PATH, state)).toEqual(undefined)
+  expect(get(PATH, state)).toEqual(undefined)
 })
 
-test('setFromRequest sets path to response on success', () => {
+test('setFromRequest sets data path to response on success', () => {
   const state = reducer({}, successAction)
   expect(get(DATA_PATH, state)).toEqual(responseBody)
+  expect(get(ERROR_PATH, state)).toEqual(undefined)
 })
 
-test('setFromRequest sets path to null on failure', () => {
+test('setFromRequest sets error path to error on failure', () => {
   const state = reducer({}, failureAction)
-  expect(get(DATA_PATH, state)).toEqual(null)
+  expect(get(ERROR_PATH, state)).toEqual(responseBody)
+  expect(get(DATA_PATH, state)).toEqual(undefined)
 })
