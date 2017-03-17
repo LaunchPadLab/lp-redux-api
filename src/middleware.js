@@ -131,7 +131,7 @@ function validateOptions ({ url, actionTypes }) {
 }
 
 // Create an action from an action "definition."
-function parseAction ({ action, payload={}, error=false }) {
+export function parseAction ({ action, payload={}, error=false }) {
   switch (typeof action) {
   // If it's an action creator, create the action
   case 'function': return action(payload)
