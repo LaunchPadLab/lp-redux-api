@@ -8,7 +8,7 @@ export default function (state={}, { type, payload }) {
 }
 
 export function selectStatus (key, state, slice='api') {
-  if (!key || !state) throw 'Must include key and state params'
+  if (!key || !state) throw `Must include 'key' and 'state' arguments`
   if (!get(slice, state)) throw `No reducer exists at path '${slice}'`
   return get(`${slice}.${key}`, state)
 }
