@@ -3,6 +3,8 @@
  *
  */
 
+import Symbol from 'es6-symbol'
+
 const LP_API = Symbol('Lp Api')
 
 export default LP_API
