@@ -89,7 +89,7 @@ export default function ({ onUnauthorized, root, ...options }) {
     })
 
     // Make the request
-    return http(`${root}${url}`, requestOptions)
+    return http(`${defaultConfigOptions.root}${url}`, requestOptions)
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
         const statusCode = error.status
