@@ -2,6 +2,8 @@ import fetch from 'isomorphic-fetch'
 import { camelizeKeys, decamelizeKeys, omitUndefined } from './utils'
 import HttpError from './http-error'
 
+const urlResolver = require('url')
+
 const CSRF_METHODS = ['PATCH', 'POST', 'PUT']
 
 const DEFAULT_CSRF_SELECTOR = 'csrf-token'
@@ -19,7 +21,7 @@ const DEFAULT_OPTIONS = {
   mode:        'same-origin',
 }
 
-export default function (url, options) {
+export default function (url, { root, ...options }) {
 
   const config = omitUndefined({
     ...DEFAULT_OPTIONS,
@@ -42,7 +44,7 @@ export default function (url, options) {
     config.headers['X-CSRF-Token'] = csrfToken(selector)
   }
 
-  return fetch(url, config)
+  return fetch(urlResolver.resolve(root || '', url), config)
     .then(response => response.json()
       .then(json => {
         const camelized = camelizeKeys(json.data || json)
