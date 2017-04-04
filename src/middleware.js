@@ -5,7 +5,8 @@ import { lpApiRequest, lpApiSuccess, lpApiFailure } from './actions'
 import urlResolver from 'url'
 
 const DEFAULT_CONFIG_OPTIONS = {
-  onUnauthorized: undefined
+  onUnauthorized: undefined,
+  root: undefined,
 }
 
 const DEFAULT_REQUEST_OPTIONS = {
