@@ -6,7 +6,6 @@ export { default as get } from 'lodash/fp/get'
 export { default as set } from 'lodash/fp/set'
 export { default as unset } from 'lodash/fp/unset'
 export { default as compose } from 'lodash/fp/compose'
-export { default as union } from 'lodash/union'
 
 export function camelizeKeys (obj) {
   return humps.camelizeKeys(obj, (key, convert) =>
