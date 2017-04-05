@@ -1,9 +1,9 @@
+import Symbol from 'es6-symbol'
+
 /**
- * Symbol key that carries Lp Api call info to be interpreted by this Redux middleware
+ * Symbol key that carries Lp Api call info to be interpreted by the Redux middleware
  *
  */
-
-import Symbol from 'es6-symbol'
 
 const LP_API = Symbol('Lp Api')
 
