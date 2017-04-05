@@ -36,7 +36,7 @@ import { hasOverlap } from './utils'
 export default function requestWithKey (requestKey, options={}) {
   if (!requestKey) throw 'Must include a key for requestWithKey() request.'
   const providedOpts = Object.keys(options)
-  if (hasOverlap(providedOpts, actionOpts)) throw 'Cannot speciify actions when using requestWithKey()'
+  if (hasOverlap(providedOpts, actionOpts)) throw 'Cannot specify custom actions when using requestWithKey()'
   return {
     [LP_API]: {
       ...options,
