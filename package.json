@@ -1,6 +1,6 @@
 {
   "name": "@launchpadlab/lp-redux-api",
-  "version": "1.6.2",
+  "version": "1.7.1",
   "description": "redux middleware and api library",
   "main": "lib/index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "build": "mkdir -p lib && babel src --out-dir lib --no-comments --minified",
     "build:development": "mkdir -p lib && babel src --watch --out-dir lib",
     "clean": "rimraf lib",
+    "docs": "documentation build src/index.js -f md -o docs.md",
     "lint": "eslint src",
     "prepublish": "yarn run lint && yarn run clean && yarn run build",
     "test": "jest"
@@ -42,6 +43,7 @@
     "rimraf": "^2.5.4"
   },
   "dependencies": {
+    "documentation": "^4.0.0-beta.18",
     "es6-symbol": "^3.1.1",
     "humps": "^2.0.0",
     "isomorphic-fetch": "^2.2.1",

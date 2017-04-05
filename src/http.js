@@ -3,21 +3,21 @@ import { camelizeKeys, decamelizeKeys, omitUndefined } from './utils'
 import HttpError from './http-error'
 import urlResolver from 'url'
 
-const CSRF_METHODS = ['PATCH', 'POST', 'PUT']
+const CSRF_METHODS = ['PATCH', 'POST', 'PUT', 'DELETE']
 
 const DEFAULT_CSRF_SELECTOR = 'csrf-token'
 
 export const DEFAULT_HEADERS = {
-  'Accept':           'application/json',
+  'Accept': 'application/json',
   'X-Requested-With': 'XMLHttpRequest',
-  'Content-Type':     'application/json',
+  'Content-Type': 'application/json',
 }
 
 const DEFAULT_OPTIONS = {
   credentials: 'same-origin',
-  csrf:        true,
-  headers:     DEFAULT_HEADERS,
-  mode:        'same-origin',
+  csrf: true,
+  headers: DEFAULT_HEADERS,
+  mode: 'same-origin',
 }
 
 export default function (url, { root, ...options }) {
@@ -53,10 +53,10 @@ export default function (url, { root, ...options }) {
     )
 }
 
-function csrfToken (selector) {
+function csrfToken(selector) {
   if (typeof document === 'undefined') return null
 
-  const token = document.querySelector(`meta[name="${selector}"]` )
+  const token = document.querySelector(`meta[name="${selector}"]`)
   if (token && (token instanceof window.HTMLMetaElement)) {
     return token.content
   }
