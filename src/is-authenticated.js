@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
 
 export default function () {
-  return !!Cookies.get('lp_auth')['token']
+  return !!Cookies.get('lp_auth')
 }
