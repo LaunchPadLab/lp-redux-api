@@ -3,7 +3,46 @@
 ### Table of Contents
 
 -   [LP_API](#lp_api)
+-   [requestWithKey](#requestwithkey)
 
 ## LP_API
 
-Symbol key that carries Lp Api call info to be interpreted by this Redux middleware
+Symbol key that carries Lp Api call info to be interpreted by the Redux middleware.
+
+## requestWithKey
+
+An action creator that automatically adds a requestKey and default actions to your request.
+These default actions can then be picked up by [setFromRequest](setFromRequest).
+
+Default actions are dynamically named using the key provided, like so:
+
+-   `<requestKey>_REQUEST`
+-   `<requestKey>_SUCCESS`
+-   `<requestKey>_FAILURE`
+
+**Parameters**
+
+-   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](setFromRequest) or [selectStatus](selectStatus)
+-   `options` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?= {}** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
+
+**Examples**
+
+```javascript
+export const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
+
+export const fetchUsers = requestWithKey(REQ_FETCH_USERS, {
+  url: '/users'
+})
+
+fetchUsers()
+
+// {
+//   [LP_API]: {
+//     url: '/users',
+//     requestKey: 'REQ_FETCH_USERS',
+//     actions: ['REQ_FETCH_USERS_REQUEST', 'REQ_FETCH_USERS_SUCCESS', 'REQ_FETCH_USERS_FAILURE']
+//   }
+// }
+```
+
+Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** An [LP_API] action that can be handled by the lp-redux-api middleware.
