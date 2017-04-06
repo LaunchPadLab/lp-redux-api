@@ -31,9 +31,9 @@ export function omitUndefined (obj) {
   return omitBy(obj, isUndefined)
 }
 
-export function parseWithKey (obj, key) {
+export function parseObject (obj) {
   const parsedObj = attempt(() => JSON.parse(obj))
-  if (!isError(parsedObj)) return parsedObj[key]
+  if (!isError(parsedObj)) return parsedObj
 }
 
 export function getLpAuthCookie () {
@@ -43,9 +43,12 @@ export function getLpAuthCookie () {
 export function getLpAuthToken () {
   const cookie = getLpAuthCookie()
   if (!cookie) return
-  return parseWithKey(cookie, 'token') || cookie
+  const parsedCookie = parseObject(cookie)
+  if (parsedCookie) return parsedCookie['token']
+  return cookie
 }
 
 export function getCookieContext (cookie) {
-  return parseWithKey(cookie, 'context')
+  const parsedCookie = parseObject(cookie)
+  if (parsedCookie) return parsedCookie['context']
 }
