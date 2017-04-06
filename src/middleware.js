@@ -2,7 +2,6 @@ import { omitUndefined } from './utils'
 import LP_API from './LP_API'
 import http from './http'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from './actions'
-import urlResolver from 'url'
 
 const DEFAULT_CONFIG_OPTIONS = {
   onUnauthorized: undefined,
@@ -15,12 +14,11 @@ const DEFAULT_REQUEST_OPTIONS = {
   mode:        'same-origin',
 }
 
-export default function ({ onUnauthorized, root, ...options }) {
+export default function ({ onUnauthorized, ...options }) {
 
   const defaultConfigOptions = omitUndefined({
     ...DEFAULT_CONFIG_OPTIONS,
     onUnauthorized,
-    root,
   })
 
   const defaultRequestOptions = omitUndefined({
@@ -90,7 +88,7 @@ export default function ({ onUnauthorized, root, ...options }) {
     })
 
     // Make the request
-    return http(urlResolver.resolve(root || '', url), requestOptions)
+    return http(url, requestOptions)
       .catch(error => {
         const response = error.response || error.message || 'There was an error.'
         const statusCode = error.status
