@@ -94,49 +94,49 @@ test('middleware rejects unsupported action definition types', () => {
 })
 
 test('middleware dispatches reducer REQUEST action', () => {
-  return callMiddleware(actionWithURL(successUrl), { waitForActions: 1 }).then((actions) => {
+  return callMiddleware(actionWithURL(successUrl), { waitForActions: 2 }).then((actions) => {
     const apiRequestAction = actions.pop()
     expect(apiRequestAction).toEqual(lpApiRequest(REQUEST_KEY))
   })
 })
 
 test('middleware dispatches user-defined REQUEST action', () => {
-  return callMiddleware(actionWithURL(successUrl), { waitForActions: 2 }).then((actions) => {
+  return callMiddleware(actionWithURL(successUrl), { waitForActions: 1 }).then((actions) => {
     const userRequestAction = actions.pop()
     expect(userRequestAction.type).toEqual(ACTION_TYPE_REQUEST)
   })
 })
 
 test('middleware dispatches reducer SUCCESS action', () => {
-  return callMiddleware(actionWithURL(successUrl), { waitForActions: 3 }).then((actions) => {
+  return callMiddleware(actionWithURL(successUrl), { waitForActions: 4 }).then((actions) => {
     const apiSuccessAction = actions.pop()
     expect(apiSuccessAction).toEqual(lpApiSuccess(REQUEST_KEY, responseBody))
   })
 })
 
 test('middleware dispatches user-defined SUCCESS action', () => {
-  return callMiddleware(actionWithURL(successUrl), { waitForActions: 4 }).then((actions) => {
+  return callMiddleware(actionWithURL(successUrl), { waitForActions: 3 }).then((actions) => {
     const userSuccessAction = actions.pop()
     expect(userSuccessAction.type).toEqual(ACTION_TYPE_SUCCESS)
   })
 })
 
 test('middleware dispatches reducer FAILURE action', () => {
-  return callMiddleware(actionWithURL(failureUrl), { waitForActions: 3 }).then((actions) => {
+  return callMiddleware(actionWithURL(failureUrl), { waitForActions: 4 }).then((actions) => {
     const apiSuccessAction = actions.pop()
     expect(apiSuccessAction).toEqual(lpApiFailure(REQUEST_KEY))
   })
 })
 
 test('middleware dispatches user-defined FAILURE action', () => {
-  return callMiddleware(actionWithURL(failureUrl), { waitForActions: 4 }).then((actions) => {
+  return callMiddleware(actionWithURL(failureUrl), { waitForActions: 3 }).then((actions) => {
     const userSuccessAction = actions.pop()
     expect(userSuccessAction.type).toEqual(ACTION_TYPE_FAILURE)
   })
 })
 
 test('middleware dispatches reducer FAILURE action on network error', () => {
-  return callMiddleware(actionWithURL(networkErrorUrl), { waitForActions: 3 }).then((actions) => {
+  return callMiddleware(actionWithURL(networkErrorUrl), { waitForActions: 4 }).then((actions) => {
     const apiSuccessAction = actions.pop()
     expect(apiSuccessAction).toEqual(lpApiFailure(REQUEST_KEY))
   })
