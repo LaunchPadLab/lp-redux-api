@@ -1,5 +1,6 @@
-import Cookies from 'js-cookie'
+import { getLpAuthToken } from './utils'
 
 export default function () {
-  return !!Cookies.get('lp_auth')
+  const lpAuthToken = getLpAuthToken()
+  return !!lpAuthToken
 }

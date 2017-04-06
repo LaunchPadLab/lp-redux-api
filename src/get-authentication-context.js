@@ -1,6 +1,7 @@
-import Cookies from 'js-cookie'
-import isAuthenticatedWithContext from './is-authenticated-with-context'
+import { getLpAuthCookie, getCookieContext } from './utils'
 
-export default function () {
-  return isAuthenticatedWithContext() && JSON.parse(Cookies.get('lp_auth'))['options']
+export default function (contextKey) {
+  const lpAuthCookie = getLpAuthCookie()
+  const cookieContext = getCookieContext(lpAuthCookie)
+  if (!!lpAuthCookie && !!cookieContext) return cookieContext[contextKey]
 }

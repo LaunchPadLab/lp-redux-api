@@ -1,10 +1,7 @@
-import Cookies from 'js-cookie'
+import { getLpAuthCookie, getCookieContext } from './utils'
 
 export default function () {
-  const lpAuthCookie = Cookies.get('lp_auth')
-  return !!lpAuthCookie && cookieHasContext(lpAuthCookie)
-}
-
-function cookieHasContext (cookie) {
-  return !!JSON.parse(cookie)['options']
+  const lpAuthCookie = getLpAuthCookie()
+  const cookieContext = getCookieContext(lpAuthCookie)
+  return !!lpAuthCookie && !!cookieContext
 }
