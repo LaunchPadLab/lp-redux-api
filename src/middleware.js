@@ -5,7 +5,6 @@ import { lpApiRequest, lpApiSuccess, lpApiFailure } from './actions'
 
 const DEFAULT_CONFIG_OPTIONS = {
   onUnauthorized: undefined,
-  root: undefined,
 }
 
 const DEFAULT_REQUEST_OPTIONS = {
