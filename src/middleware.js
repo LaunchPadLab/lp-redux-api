@@ -110,9 +110,6 @@ export default function ({ onUnauthorized, ...options }) {
       })
       .then(response => {
 
-        // Send success action to API reducer
-        next(lpApiSuccess(requestKey, response))
-
         // Send user-specified success action
         if (successAction) {
           next(parseAction({
@@ -120,7 +117,8 @@ export default function ({ onUnauthorized, ...options }) {
             payload: { ...rest, response },
           }))
         }
-
+        // Send success action to API reducer
+        next(lpApiSuccess(requestKey, response))
       })
   }
 }
