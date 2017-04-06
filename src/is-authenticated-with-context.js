@@ -6,5 +6,5 @@ export default function () {
 }
 
 function cookieHasContext (cookie) {
-  return JSON.parse(cookie).hasOwnProperty('options')
+  return !!JSON.parse(cookie)['options']
 }
