@@ -2,6 +2,9 @@ import humps from 'humps'
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
 import overlap from 'lodash/intersection'
+import attempt from 'lodash/attempt'
+import isError from 'lodash/isError'
+import Cookies from 'js-cookie'
 
 export { default as get } from 'lodash/fp/get'
 export { default as set } from 'lodash/fp/set'
@@ -26,4 +29,13 @@ export function decamelizeKeys (obj) {
 
 export function omitUndefined (obj) {
   return omitBy(obj, isUndefined)
+}
+
+export function parseObject (obj) {
+  const parsedObj = attempt(() => JSON.parse(obj))
+  if (!isError(parsedObj)) return parsedObj
+}
+
+export function getLpAuthCookie () {
+  return Cookies.get('lp_auth')
 }
