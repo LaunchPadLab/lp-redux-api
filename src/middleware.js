@@ -109,6 +109,8 @@ export default function ({ onUnauthorized, ...options }) {
         }
       })
       .then(response => {
+        // An error was handled above
+        if (!response) return
 
         // Send user-specified success action
         if (successAction) {
