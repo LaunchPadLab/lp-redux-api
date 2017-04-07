@@ -22,7 +22,7 @@ const reducer = (state={}, action) => {
 
 const request = requestWithKey(REQUEST_KEY)
 const [ requestAction, successAction, failureAction ] = request[LP_API].actions.map((type) => {
-  return { type, payload: responseBody }
+  return { type, payload: { response: responseBody } }
 })
 
 /* TESTS */
@@ -40,6 +40,6 @@ test('setFromRequest sets data path to response on success', () => {
 
 test('setFromRequest sets error path to error on failure', () => {
   const state = reducer({}, failureAction)
-  expect(get(ERROR_PATH, state)).toEqual(responseBody)
+  expect(get(ERROR_PATH, state)).toEqual({ response: responseBody})
   expect(get(DATA_PATH, state)).toEqual(undefined)
 })
