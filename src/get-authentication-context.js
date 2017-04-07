@@ -1,7 +1,7 @@
-import { getLpAuthCookie, getCookieContext } from './utils'
+import { getLpAuthCookie, parseObject } from './utils'
 
-export default function (contextKey) {
+export default function () {
   const lpAuthCookie = getLpAuthCookie()
-  const cookieContext = getCookieContext(lpAuthCookie)
-  if (!!lpAuthCookie && !!cookieContext) return cookieContext[contextKey]
+  const parsedCookie = parseObject(lpAuthCookie)
+  if (parsedCookie) return parsedCookie.context
 }

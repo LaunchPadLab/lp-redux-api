@@ -39,16 +39,3 @@ export function parseObject (obj) {
 export function getLpAuthCookie () {
   return Cookies.get('lp_auth')
 }
-
-export function getLpAuthToken () {
-  const cookie = getLpAuthCookie()
-  if (!cookie) return
-  const parsedCookie = parseObject(cookie)
-  if (parsedCookie) return parsedCookie['token']
-  return cookie
-}
-
-export function getCookieContext (cookie) {
-  const parsedCookie = parseObject(cookie)
-  if (parsedCookie) return parsedCookie['context']
-}

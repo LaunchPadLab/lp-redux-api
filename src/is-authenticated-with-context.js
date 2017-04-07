@@ -1,7 +1,7 @@
-import { getLpAuthCookie, getCookieContext } from './utils'
+import { getLpAuthCookie, parseObject } from './utils'
 
-export default function () {
+export default function (ctxPath) {
   const lpAuthCookie = getLpAuthCookie()
-  const cookieContext = getCookieContext(lpAuthCookie)
-  return !!lpAuthCookie && !!cookieContext
+  const cookieObj = parseObject(lpAuthCookie)
+  return cookieObj ? cookieObj.context === ctxPath : false
 }
