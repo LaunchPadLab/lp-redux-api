@@ -65,9 +65,6 @@ export default function ({ onUnauthorized, ...options }) {
     // Make sure required options exist
     validateOptions({ url, actionTypes: [requestAction, successAction, failureAction] })
 
-    // Send request action to API reducer
-    next(lpApiRequest(requestKey))
-
     // Send user-specified request action
     if (requestAction) {
       next(parseAction({
@@ -75,6 +72,9 @@ export default function ({ onUnauthorized, ...options }) {
         payload: rest,
       }))
     }
+    
+    // Send request action to API reducer
+    next(lpApiRequest(requestKey))
 
     const requestOptions = omitUndefined({
       ...defaultRequestOptions,
@@ -92,9 +92,6 @@ export default function ({ onUnauthorized, ...options }) {
         const response = error.response || error.message || 'There was an error.'
         const statusCode = error.status
 
-        // Send failure action to API reducer
-        next(lpApiFailure(requestKey))
-
         // Send user-specified failure action
         if (failureAction) {
           next(parseAction({
@@ -104,14 +101,16 @@ export default function ({ onUnauthorized, ...options }) {
           }))
         }
 
+        // Send failure action to API reducer
+        next(lpApiFailure(requestKey))
+
         if (error.status === 401 && defaultConfigOptions.onUnauthorized) {
           next(defaultConfigOptions.onUnauthorized())
         }
       })
       .then(response => {
-
-        // Send success action to API reducer
-        next(lpApiSuccess(requestKey, response))
+        // An error was handled above
+        if (!response) return
 
         // Send user-specified success action
         if (successAction) {
@@ -121,6 +120,8 @@ export default function ({ onUnauthorized, ...options }) {
           }))
         }
 
+        // Send success action to API reducer
+        next(lpApiSuccess(requestKey, response))
       })
   }
 }
