@@ -3,11 +3,43 @@
 ### Table of Contents
 
 -   [LP_API](#lp_api)
+-   [reducer](#reducer)
 -   [requestWithKey](#requestwithkey)
 
 ## LP_API
 
 Symbol key that carries Lp Api call info to be interpreted by the Redux middleware.
+
+## reducer
+
+Stores the status of API requests in your state.
+Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey](#requestwithkey)),
+and can be retrieved by using [selectStatus](selectStatus).
+
+To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
+but you will need to reference it explicitly when using [selectStatus](selectStatus).
+
+**Examples**
+
+```javascript
+// When creating store, attach reducer
+
+import { reducer as apiReducer } from 'lp-redux-api'
+
+combineReducers({ 
+  api: apiReducer,
+  ...
+})
+
+// Now you can keep track of request status elsewhere in your app
+
+import { requestKey, selectStatus } from 'lp-redux-api'
+
+const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
+dispatch(requestWithKey(REQ_FETCH_USERS, { url: '/users' }))
+
+selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
+```
 
 ## requestWithKey
 
