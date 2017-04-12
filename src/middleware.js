@@ -58,7 +58,7 @@ export default function ({ onUnauthorized, ...options }) {
       requestAction=requestFallback,
       successAction=successFallback,
       failureAction=failureFallback,
-      requestKey='DEFAULT_REQUEST_KEY',
+      requestKey,
       ...rest,
     } = options
 
@@ -74,7 +74,7 @@ export default function ({ onUnauthorized, ...options }) {
     }
     
     // Send request action to API reducer
-    next(lpApiRequest(requestKey))
+    if (requestKey) next(lpApiRequest(requestKey))
 
     const requestOptions = omitUndefined({
       ...defaultRequestOptions,
@@ -102,7 +102,7 @@ export default function ({ onUnauthorized, ...options }) {
         }
 
         // Send failure action to API reducer
-        next(lpApiFailure(requestKey))
+        if (requestKey) next(lpApiFailure(requestKey))
 
         if (error.status === 401 && defaultConfigOptions.onUnauthorized) {
           next(defaultConfigOptions.onUnauthorized())
@@ -121,7 +121,7 @@ export default function ({ onUnauthorized, ...options }) {
         }
 
         // Send success action to API reducer
-        next(lpApiSuccess(requestKey, response))
+        if (requestKey) next(lpApiSuccess(requestKey, response))
       })
   }
 }
