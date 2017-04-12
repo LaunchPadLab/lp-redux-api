@@ -5,6 +5,7 @@
 -   [LP_API](#lp_api)
 -   [reducer](#reducer)
 -   [requestWithKey](#requestwithkey)
+-   [selectStatus](#selectstatus)
 
 ## LP_API
 
@@ -14,10 +15,10 @@ Symbol key that carries Lp Api call info to be interpreted by the Redux middlewa
 
 Stores the status of API requests in your state.
 Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey](#requestwithkey)),
-and can be retrieved by using [selectStatus](selectStatus).
+and can be retrieved by using [selectStatus](#selectstatus).
 
 To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
-but you will need to reference it explicitly when using [selectStatus](selectStatus).
+but you will need to reference it explicitly when using [selectStatus](#selectstatus).
 
 **Examples**
 
@@ -54,7 +55,7 @@ Default actions are dynamically named using the key provided, like so:
 
 **Parameters**
 
--   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](setFromRequest) or [selectStatus](selectStatus)
+-   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](setFromRequest) or [selectStatus](#selectstatus)
 -   `options` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?= {}** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
 
 **Examples**
@@ -78,3 +79,44 @@ fetchUsers()
 ```
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** An [LP_API] action that can be handled by the lp-redux-api middleware.
+
+## selectStatus
+
+A function that, given the redux state, returns the status of a given API request. 
+In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
+
+The status of a request can be one of the following exported constants:
+
+-   `LP_API_STATUS_LOADING`: `'loading'`
+-   `LP_API_STATUS_SUCCESS`: `'success'`
+-   `LP_API_STATUS_FAILURE`: `'failure'`
+
+**Parameters**
+
+-   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that references a request created by [requestWithKey](#requestwithkey)
+-   `state` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** The state of your redux store
+-   `slice` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** The path to the slice of state handled by the `lp-redux-api` reducer (optional, default `'api'`)
+
+**Examples**
+
+```javascript
+// When creating store, attach reducer
+
+import { reducer as apiReducer } from 'lp-redux-api'
+
+combineReducers({ 
+  api: apiReducer,
+  ...
+})
+
+// Now you can keep track of request status elsewhere in your app
+
+import { requestKey, selectStatus } from 'lp-redux-api'
+
+const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
+dispatch(requestWithKey(REQ_FETCH_USERS, { url: '/users' }))
+
+selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
+```
+
+Returns **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string constant indicating request status
