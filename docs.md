@@ -10,7 +10,27 @@
 
 ## LP_API
 
-Symbol key that carries Lp Api call info to be interpreted by the Redux middleware.
+A unique key that identifies dispatched actions to be handled by the LP
+Redux Api middleware. This is implemented as a Symbol, instead of a String
+to guarantee uniqueness.
+
+The params provided as the value include anything that is support by
+[LP Redux Api Middleware](Middlware)
+
+**Examples**
+
+```javascript
+// An example action creator
+function fooAction () {
+  return {
+    [LP_API]: {
+      url: 'http://foo.com/posts',
+      types: ['REQUEST', 'SUCCESS', 'FAILURE'],
+      // ...
+    }
+  }
+}
+```
 
 ## reducer
 
