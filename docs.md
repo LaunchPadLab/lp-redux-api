@@ -2,11 +2,70 @@
 
 ### Table of Contents
 
+-   [isAuthenticated](#isauthenticated)
+-   [isAuthenticatedWithContext](#isauthenticatedwithcontext)
 -   [LP_API](#lp_api)
 -   [reducer](#reducer)
 -   [requestWithKey](#requestwithkey)
 -   [selectStatus](#selectstatus)
 -   [setFromRequest](#setfromrequest)
+
+## isAuthenticated
+
+A helper function to determine if the current user is authenticated.
+This returns true when the LP Redux Api cookie exists and contains a
+token.
+
+Note, this does not **validate** the token, it only checks for
+presence, validation must be done on the server.
+
+**Examples**
+
+```javascript
+// After sign in
+isAuthenticated() // true
+
+// After sign out
+isAuthenticated() // false
+```
+
+Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+## isAuthenticatedWithContext
+
+A helper function to determine if the current user is authenticated
+for a specific context. This is useful if the client needs to know
+more about the type of user that is logged in.
+
+This returns true when the LP Redux Api cookie exists, contains a
+token, and contains the specified context.
+
+Note, this does not **validate** the token, it only checks for
+presence, validation must be done on the server.
+
+**Parameters**
+
+-   `context` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** a context that corresponds to one provided by the server
+
+**Examples**
+
+```javascript
+// After an 'admin' signs in
+isAuthenticatedWithContext('admin') // true
+
+isAuthenticatedWithContext('non-admin') // false
+
+isAuthenticatedWithContext() // false
+
+// After sign out
+isAuthenticatedWithContext('admin') // false
+
+isAuthenticatedWithContext('non-admin') // false
+
+isAuthenticatedWithContext() // false
+```
+
+Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
 ## LP_API
 
