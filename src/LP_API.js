@@ -5,7 +5,7 @@ import Symbol from 'es6-symbol'
  * Redux Api middleware. This is implemented as a Symbol, instead of a String
  * to guarantee uniqueness.
  * 
- * The params provided as the value include anything that is support by
+ * The params provided as the value include anything that is supported by
  * {@link Middlware|LP Redux Api Middleware}
  * 
  * @constant
