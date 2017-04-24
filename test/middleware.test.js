@@ -15,9 +15,11 @@ import {
 
 /* HELPERS */
 
+const defaultMiddleware = middleware({})
+
 // Pass action to middleware, and wait for the specified number of actions 
 // to be passed to the next middleware before resolving
-const callMiddleware = (action, opt={}, configuredMiddleware=middleware({})) => {
+const callMiddleware = (action, opt={}, configuredMiddleware=defaultMiddleware) => {
   const { waitForActions = 1 } = opt
   const nextMiddleware = []
   return new Promise((resolve) => {
