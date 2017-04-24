@@ -1,6 +1,6 @@
 jest.mock('isomorphic-fetch')
 
-import { successUrl, failureUrl, networkErrorUrl, responseBody } from 'isomorphic-fetch'
+import { successUrl, failureUrl, unauthorizedUrl, networkErrorUrl, responseBody } from 'isomorphic-fetch'
 import { middleware, LP_API } from '../src'
 import { parseAction } from '../src/middleware'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../src/actions'
@@ -13,13 +13,11 @@ import {
   actionWithURL
 } from './fixtures'
 
-const configuredMiddleware = middleware({})
-
 /* HELPERS */
 
 // Pass action to middleware, and wait for the specified number of actions 
 // to be passed to the next middleware before resolving
-const callMiddleware = (action, opt={}) => {
+const callMiddleware = (action, opt={}, configuredMiddleware=middleware({})) => {
   const { waitForActions = 1 } = opt
   const nextMiddleware = []
   return new Promise((resolve) => {
@@ -93,6 +91,14 @@ test('middleware rejects unsupported action definition types', () => {
   expect(() => parseAction({ })).toThrow()
 })
 
+test('middleware passes non-LP_API actions through', () => {
+  const otherAction = { type: 'OTHER' }
+  return callMiddleware(otherAction, { waitForActions: 1 }).then((actions) => {
+    const passedAction = actions.pop()
+    expect(passedAction).toEqual(otherAction)
+  })
+})
+
 test('middleware dispatches user-defined REQUEST action', () => {
   return callMiddleware(actionWithURL(successUrl), { waitForActions: 1 }).then((actions) => {
     const userRequestAction = actions.pop()
@@ -139,5 +145,16 @@ test('middleware dispatches reducer FAILURE action on network error', () => {
   return callMiddleware(actionWithURL(networkErrorUrl), { waitForActions: 4 }).then((actions) => {
     const apiSuccessAction = actions.pop()
     expect(apiSuccessAction).toEqual(lpApiFailure(REQUEST_KEY))
+  })
+})
+
+test('middleware dispatches custom unauthorized action on auth error', () => {
+  const unauthorizedAction = { type: 'UNAUTHORIZED' }
+  const configuredMiddleware = middleware({
+    onUnauthorized: () => unauthorizedAction
+  })
+  return callMiddleware(actionWithURL(unauthorizedUrl), { waitForActions: 5 }, configuredMiddleware).then((actions) => {
+    const passedAction = actions.pop()
+    expect(passedAction).toEqual(unauthorizedAction)
   })
 })
