@@ -1,5 +1,3 @@
-jest.mock('isomorphic-fetch')
-
 import { responseBody } from 'isomorphic-fetch'
 import { get } from '../src/utils'
 import { setFromRequest, requestWithKey, LP_API } from '../src/'

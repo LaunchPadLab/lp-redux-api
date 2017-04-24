@@ -1,5 +1,3 @@
-jest.mock('isomorphic-fetch')
-
 import { successUrl, failureUrl, unauthorizedUrl, networkErrorUrl, responseBody } from 'isomorphic-fetch'
 import { middleware, LP_API } from '../src'
 import { parseAction } from '../src/middleware'
