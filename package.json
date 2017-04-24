@@ -1,6 +1,6 @@
 {
   "name": "@launchpadlab/lp-redux-api",
-  "version": "1.11.6",
+  "version": "1.11.7",
   "description": "redux middleware and api library",
   "main": "lib/index.js",
   "scripts": {
