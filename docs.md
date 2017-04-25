@@ -28,8 +28,6 @@ or if the LP Redux API cookie does not exist.
 // After an 'admin' signs in
 getAuthenticationContext() // 'admin'
 
-getAuthenticationContext() // 'non-admin'
-
 // After a user with no context signs in
 getAuthenticationContext() // undefined 
 
