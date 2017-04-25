@@ -1,6 +1,33 @@
 import { getLpAuthCookie, parseObject } from './utils'
 
-export default function () {
+/**
+ * A helper function to retrieve the authentication context for the 
+ * authenticated user.
+ * 
+ * This function returns the context string when the LP Redux Api cookie exists, 
+ * contains a token, and contains a context.
+ * 
+ * This function returns `undefined` when there is no context present,
+ * or if the LP Redux API cookie does not exist.
+ *
+ * 
+ * @returns {String}
+ * @example
+ * 
+ * // After an 'admin' signs in
+ * getAuthenticationContext() // 'admin'
+ * 
+ * getAuthenticationContext() // 'non-admin'
+ * 
+ * // After a user with no context signs in
+ * getAuthenticationContext() // undefined 
+ *
+ * // After sign out
+ * getAuthenticationContext() // undefined
+ * 
+**/
+
+export default function getAuthenticationContext () {
   const lpAuthCookie = getLpAuthCookie()
   const parsedCookie = parseObject(lpAuthCookie)
   if (parsedCookie) return parsedCookie.context
