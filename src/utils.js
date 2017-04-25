@@ -31,11 +31,15 @@ export function omitUndefined (obj) {
   return omitBy(obj, isUndefined)
 }
 
-export function parseObject (obj) {
-  const parsedObj = attempt(() => JSON.parse(obj))
+// Parses an object from a string and returns the result
+// Returns undefined if there's a parsing error
+export function parseObject (str) {
+  const parsedObj = attempt(() => JSON.parse(str))
   if (!isError(parsedObj)) return parsedObj
 }
 
+// Get the auth cookie used by lp_token_auth
+// Returns undefined if the cookie is not set
 export function getLpAuthCookie () {
   return Cookies.get('lp_auth')
 }
