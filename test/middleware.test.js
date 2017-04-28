@@ -1,4 +1,4 @@
-import { successUrl, failureUrl, unauthorizedUrl, networkErrorUrl, responseBody } from 'isomorphic-fetch'
+import { successUrl, failureUrl, unauthorizedUrl, networkErrorUrl } from 'isomorphic-fetch'
 import { middleware, LP_API } from '../src'
 import { parseAction } from '../src/middleware'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../src/actions'
@@ -130,7 +130,7 @@ test('middleware dispatches user-defined FAILURE action', () => {
 test('middleware dispatches reducer SUCCESS action', () => {
   return callMiddleware(actionWithURL(successUrl), { waitForActions: 4 }).then((actions) => {
     const apiSuccessAction = actions.pop()
-    expect(apiSuccessAction).toEqual(lpApiSuccess(REQUEST_KEY, responseBody))
+    expect(apiSuccessAction).toEqual(lpApiSuccess(REQUEST_KEY))
   })
 })
 
