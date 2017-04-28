@@ -321,7 +321,7 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 ## api
 
 A lightweight wrapper around the [http](http) module.
-Provides functions to make API requests with specified HTTP methods (`'GET'`, `'POST'` etc.)
+Provides functions to make API requests with specified HTTP methods.
 
 The functions are as follows:
 
