@@ -6,6 +6,7 @@
 -   [isAuthenticated](#isauthenticated)
 -   [isAuthenticatedWithContext](#isauthenticatedwithcontext)
 -   [LP_API](#lp_api)
+-   [onResponse](#onresponse)
 -   [reducer](#reducer)
 -   [requestWithKey](#requestwithkey)
 -   [selectStatus](#selectstatus)
@@ -118,6 +119,39 @@ function fooAction () {
   }
 }
 ```
+
+## onResponse
+
+A function that returns a React HOC to handle rendering that depends on an API response. 
+A combination of [selectStatus](#selectstatus) and `onMount` from `lp-utils`.
+
+**Parameters**
+
+-   `requestKeys` **([String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array))?= \[]** A key or set of keys corresponding to `lp-redux-api` requests.
+-   `LoadingComponent` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)?** A component to render during the loading state. (optional, default `null`)
+
+**Examples**
+
+```javascript
+import { REQ_USERS, requestUsers } from 'actions'
+
+ function MyComponent (name) {
+   return (
+     <p>{name}</p>
+   )
+ }
+
+ export default compose(
+   onMount(requestUsers),
+   onResponse(REQ_USERS),
+ )(MyComponent)
+ 
+ // requestUsers() dispatches an LP_API action with key 'REQ_USERS' on component mount.
+ // When the status of 'REQ_USERS' request becomes 'success' or 'failure', the component will render.
+ // Otherwise, the default {@link onMount} loading component will be rendered.
+```
+
+Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** A higher order component (HOC).
 
 ## reducer
 
