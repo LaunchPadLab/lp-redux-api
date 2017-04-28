@@ -12,6 +12,8 @@ export { default as unset } from 'lodash/fp/unset'
 export { default as compose } from 'lodash/fp/compose'
 export { default as union } from 'lodash/union'
 
+export { onLoad } from '@launchpadlab/lp-utils'
+
 export function hasOverlap (arr1, arr2) {
   const overlapItems = overlap(arr1, arr2)
   return (overlapItems.length > 0)
