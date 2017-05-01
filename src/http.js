@@ -55,7 +55,6 @@ export const DEFAULT_HEADERS = {
 
 const DEFAULT_OPTIONS = {
   credentials: 'same-origin',
-  headers: DEFAULT_HEADERS,
   mode: 'same-origin',
 }
 
@@ -63,6 +62,7 @@ export default function http (endpoint, { root='', csrf=true, ...options }) {
 
   const config = omitUndefined({
     ...DEFAULT_OPTIONS,
+    headers: { ...DEFAULT_HEADERS },
     ...options
   })
 

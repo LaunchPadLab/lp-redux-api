@@ -12,7 +12,7 @@ const statuses = {
 export default jest.fn(function (url, options) {
   const response = {
     // Response echoes back passed options
-    json: () => Promise.resolve(options),
+    json: () => Promise.resolve({ ...options, url }),
     ok: ![failureUrl, unauthorizedUrl].includes(url),
     status: statuses[url]
   }
