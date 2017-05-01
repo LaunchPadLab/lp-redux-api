@@ -5,37 +5,37 @@ import { successUrl } from 'isomorphic-fetch'
 // returning options as the response
 
 test('api.get() adds GET method to request options', () => {
-  api.get(successUrl).then((res) => {
+  return api.get(successUrl).then((res) => {
     expect(res.method).toEqual('GET')
   })
 })
 
 test('api.patch() adds PATCH method to request options', () => {
-  api.patch(successUrl).then((res) => {
+  return api.patch(successUrl).then((res) => {
     expect(res.method).toEqual('PATCH')
   })
 })
 
 test('api.post() adds POST method to request options', () => {
-  api.post(successUrl).then((res) => {
+  return api.post(successUrl).then((res) => {
     expect(res.method).toEqual('POST')
   })
 })
 
 test('api.put() adds PUT method to request options', () => {
-  api.put(successUrl).then((res) => {
+  return api.put(successUrl).then((res) => {
     expect(res.method).toEqual('PUT')
   })
 })
 
 test('api.destroy() adds DELETE method to request options', () => {
-  api.destroy(successUrl).then((res) => {
+  return api.destroy(successUrl).then((res) => {
     expect(res.method).toEqual('DELETE')
   })
 })
 
 test('api.call() adds passed method to request options', () => {
-  api.call(successUrl, 'OPTIONS').then((res) => {
+  return api.call(successUrl, 'OPTIONS').then((res) => {
     expect(res.method).toEqual('OPTIONS')
   })
 })
@@ -43,9 +43,9 @@ test('api.call() adds passed method to request options', () => {
 test('api methods pass provided body and options to request', () => {
   const body = { foo: true }
   const options = { customOption: 5 }
-  api.post(successUrl, body, options).then((res) => {
+  return api.post(successUrl, body, options).then((res) => {
     expect(res.method).toEqual('POST')
-    expect(res.body).toEqual(body)
+    expect(res.body).toEqual(JSON.stringify(body))
     expect(res.customOption).toEqual(5)
   })
 })
