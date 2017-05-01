@@ -1,11 +1,8 @@
 import fetch from 'isomorphic-fetch'
+import { getToken } from './csrf'
 import { camelizeKeys, decamelizeKeys, omitUndefined } from './utils'
 import HttpError from './http-error'
 import url from 'url'
-
-const CSRF_METHODS = ['PATCH', 'POST', 'PUT', 'DELETE']
-
-const DEFAULT_CSRF_SELECTOR = 'csrf-token'
 
 export const DEFAULT_HEADERS = {
   'Accept': 'application/json',
@@ -15,35 +12,26 @@ export const DEFAULT_HEADERS = {
 
 const DEFAULT_OPTIONS = {
   credentials: 'same-origin',
-  csrf: true,
   headers: DEFAULT_HEADERS,
   mode: 'same-origin',
 }
 
-export default function (endpoint, { root, ...options }) {
+export default function (endpoint, { root='', csrf=true, ...options }) {
 
   const config = omitUndefined({
     ...DEFAULT_OPTIONS,
     ...options
   })
 
-  const csrf = config.csrf
+  if (config.body) config.body = JSON.stringify(decamelizeKeys(config.body))
 
-  delete config.csrf
+  const csrfToken = getToken(csrf, config.method)
+  if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken
 
-  if (config.body)
-    config.body = JSON.stringify(decamelizeKeys(config.body))
+  // Build full URL
+  const endpointUrl = url.resolve(root, endpoint)
 
-  if (csrf && CSRF_METHODS.includes(config.method)) {
-
-    const selector = (typeof csrf === 'string')
-      ? csrf
-      : DEFAULT_CSRF_SELECTOR
-
-    config.headers['X-CSRF-Token'] = csrfToken(selector)
-  }
-
-  return fetch(url.resolve(root || '', endpoint), config)
+  return fetch(endpointUrl, config)
     .then(response => response.json()
       .then(json => {
         const camelized = camelizeKeys(json.data || json)
@@ -51,14 +39,4 @@ export default function (endpoint, { root, ...options }) {
         throw new HttpError(response.status, response.statusText, camelized)
       })
     )
-}
-
-function csrfToken(selector) {
-  if (typeof document === 'undefined') return null
-
-  const token = document.querySelector(`meta[name="${selector}"]`)
-  if (token && (token instanceof window.HTMLMetaElement)) {
-    return token.content
-  }
-  return null
 }
