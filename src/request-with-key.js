@@ -10,6 +10,8 @@ import { hasOverlap } from './utils'
  * - `<requestKey>_SUCCESS`
  * - `<requestKey>_FAILURE`
  *
+ * @name requestWithKey
+ * @type Function
  * @param {String} requestKey - A unique key that you can use to reference your request in {@link setFromRequest} or {@link selectStatus}
  * @param {Object} options - Config options that you would normally include in an [LP_API] action, such as `url` and `method`
  * @returns {Object} An [LP_API] action that can be handled by the lp-redux-api middleware.

@@ -1,4 +1,4 @@
-# get-authentication-context
+# getAuthenticationContext
 
 A helper function to retrieve the authentication context for the 
 authenticated user.
@@ -68,9 +68,37 @@ getUsers()
    .catch(err => console.log('An error occurred!', err))
 ```
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A Promise that either resolves with the response or rejects with an error.
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A Promise that either resolves with the response or rejects with an [HttpError](#httperror).
 
-# is-authenticated
+# HttpError
+
+An error class that is thrown by the [http](http) module when a request fails.
+
+In addition to the standard [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) attributes, instances of `HttpError` include the following:
+
+-   `status`: the status code of the response
+-   `statusText`: the status text of the response
+-   `response`: the full response object
+-   `message`: A readable error message with format `<status> - <statusText>`
+
+**Parameters**
+
+-   `status` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the status code of the response
+-   `statusText` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the status text of the response
+-   `response` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the full response object
+
+**Examples**
+
+```javascript
+// Instantiated manually
+const MyError = new HttpError(500, 'Something went wrong!')
+console.log(MyError.toString()) // "HttpError: 500 - Something went wrong"
+
+// Instantiated by http module
+http('/bad-route').catch(err => console.log(err.name)) // -> "HttpError"
+```
+
+# isAuthenticated
 
 A helper function to determine if the current user is authenticated.
 This returns true when the LP Redux Api cookie exists and contains a
@@ -91,7 +119,7 @@ isAuthenticated() // false
 
 Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
-# is-authenticated-with-context
+# isAuthenticatedWithContext
 
 A helper function to determine if the current user is authenticated
 for a specific context. This is useful if the client needs to know
@@ -151,14 +179,14 @@ function fooAction () {
 }
 ```
 
-# on-response
+# onResponse
 
 A function that returns a React HOC to handle rendering that depends on an API response. 
-A combination of [selectStatus](selectStatus) and `onMount` from `lp-utils`.
+A combination of [selectStatus](#selectstatus) and `onMount` from `lp-utils`.
 
 **Parameters**
 
--   `requestKeys` **\[([String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array))](default \[])** A key or set of keys corresponding to `lp-redux-api` requests.
+-   `requestKeys` **([String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array))** A key or set of keys corresponding to `lp-redux-api` requests.
 -   `LoadingComponent` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** A component to render during the loading state. (optional, default `null`)
 
 **Examples**
@@ -187,11 +215,11 @@ Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 # reducer
 
 Stores the status of API requests in your state.
-Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey](requestWithKey)),
-and can be retrieved by using [selectStatus](selectStatus).
+Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey](#requestwithkey)),
+and can be retrieved by using [selectStatus](#selectstatus).
 
 To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
-but you will need to reference it explicitly when using [selectStatus](selectStatus).
+but you will need to reference it explicitly when using [selectStatus](#selectstatus).
 
 **Examples**
 
@@ -215,10 +243,10 @@ dispatch(requestWithKey(REQ_FETCH_USERS, { url: '/users' }))
 selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
 ```
 
-# request-with-key
+# requestWithKey
 
 An action creator that automatically adds a requestKey and default actions to your request.
-These default actions can then be picked up by [setFromRequest](setFromRequest).
+These default actions can then be picked up by [setFromRequest](#setfromrequest).
 
 Default actions are dynamically named using the key provided, like so:
 
@@ -228,8 +256,8 @@ Default actions are dynamically named using the key provided, like so:
 
 **Parameters**
 
--   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](setFromRequest) or [selectStatus](selectStatus)
--   `options` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {})** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
+-   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](#setfromrequest) or [selectStatus](#selectstatus)
+-   `options` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
 
 **Examples**
 
@@ -253,7 +281,7 @@ fetchUsers()
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** An [LP_API] action that can be handled by the lp-redux-api middleware.
 
-# select-status
+# selectStatus
 
 A function that, given the redux state, returns the status of a given API request. 
 In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
@@ -294,9 +322,9 @@ selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
 
 Returns **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string constant indicating request status
 
-# set-from-request
+# setFromRequest
 
-A function that creates action handlers for actions generated by [requestWithKey](requestWithKey).
+A function that creates action handlers for actions generated by [requestWithKey](#requestwithkey).
 These handlers set data in the state from the response(s) of a given request.
 
 By default, setFromRequest creates handlers for `<requestKey>_SUCCESS` and `<requestKey>_FAILURE` action types.
@@ -309,7 +337,7 @@ Current behavior (subject to change):
 
 **Parameters**
 
--   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that references a request created by [requestWithKey](requestWithKey)
+-   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that references a request created by [requestWithKey](#requestwithkey)
 -   `path` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A path (in dot notation) indicating where the data will be set in the state
 
 **Examples**

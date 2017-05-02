@@ -9,6 +9,9 @@ import { get } from './utils'
  * - `LP_API_STATUS_SUCCESS`: `'success'`
  * - `LP_API_STATUS_FAILURE`: `'failure'`
  *
+ *
+ * @name selectStatus
+ * @type Function
  * @param {String} requestKey - A unique key that references a request created by [requestWithKey](#requestwithkey)
  * @param {Object} state - The state of your redux store
  * @param {String} [slice='api'] - The path to the slice of state handled by the `lp-redux-api` reducer

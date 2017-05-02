@@ -31,7 +31,7 @@ import url from 'url'
  * @type Function
  * @param {String} endpoint - The URL of the request
  * @param {Object} config - An object containing config information for the `Fetch` request, as well as the extra keys noted above.
- * @returns {Promise} A Promise that either resolves with the response or rejects with an error.
+ * @returns {Promise} A Promise that either resolves with the response or rejects with an {@link HttpError}.
  * 
  * @example
  * 

@@ -8,6 +8,8 @@ import { getLpAuthCookie, parseObject } from './utils'
  * Note, this does not **validate** the token, it only checks for
  * presence, validation must be done on the server.
  * 
+ * @name isAuthenticated
+ * @type Function
  * @returns {Boolean}
  * @example
  * 
