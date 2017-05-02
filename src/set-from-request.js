@@ -11,8 +11,6 @@ import { set, unset, compose } from './utils'
  * - If the request is successful, the response will be set at `<path>.data`, and `<path>.error` will be `null`
  * - If the request is unsuccessful, the response will be set at `<path>.error`, and `<path>.data` will be `null`
  *
- * @name setFromRequest
- * @type Function
  * @param {String} requestKey - A unique key that references a request created by {@link requestWithKey}
  * @param {String} path - A path (in dot notation) indicating where the data will be set in the state
  * @returns {Object} An hash of action handlers that can be included in a reducer by using object spread syntax

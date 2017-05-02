@@ -8,8 +8,6 @@
  * - `response`: the full response object
  * - `message`: A readable error message with format `<status> - <statusText>`
  *
- * @name HttpError
- * @type Class
  * @param {Number} status - the status code of the response
  * @param {String} statusText - the status text of the response
  * @param {Object} response - the full response object

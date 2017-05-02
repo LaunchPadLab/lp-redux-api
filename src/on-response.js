@@ -7,8 +7,6 @@ import { onLoad, compose } from './utils'
  * A function that returns a React HOC to handle rendering that depends on an API response. 
  * A combination of {@link selectStatus} and `onMount` from `lp-utils`.
  *
- * @name onResponse
- * @type Function
  * @param {String|Array} requestKeys - A key or set of keys corresponding to `lp-redux-api` requests.
  * @param {Function} [LoadingComponent = null] - A component to render during the loading state.
  * @returns {Function} - A higher order component (HOC).

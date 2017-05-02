@@ -8,8 +8,6 @@ import { LP_API_ACTION } from './actions'
  * To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
  * but you will need to reference it explicitly when using {@link selectStatus}.
  *
- * @name reducer
- * @type {Function}
  * @example
  * 
  * // When creating store, attach reducer

@@ -11,8 +11,6 @@ import { getLpAuthCookie, parseObject } from './utils'
  * Note, this does not **validate** the token, it only checks for
  * presence, validation must be done on the server.
  * 
- * @name isAuthenticatedWithContext
- * @type Function
  * @param {String} context - a context that corresponds to one provided by the server
  * @returns {Boolean}
  * @example
