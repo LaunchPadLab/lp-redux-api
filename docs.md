@@ -240,13 +240,6 @@ and can be retrieved by using [selectStatus](#selectstatus).
 To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
 but you will need to reference it explicitly when using [selectStatus](#selectstatus).
 
-**Parameters**
-
--   `state`   (optional, default `{}`)
--   `$1` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-    -   `$1.type`  
-    -   `$1.payload`  
-
 **Examples**
 
 ```javascript
