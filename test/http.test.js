@@ -1,5 +1,5 @@
 import { http } from '../src'
-import { successUrl } from 'isomorphic-fetch'
+import { successUrl, failureUrl } from 'isomorphic-fetch'
 
 // These tests rely on the mock Fetch() 
 // returning options as the response
@@ -56,6 +56,14 @@ test('http appends custom root to request', () => {
     root
   }).then((res) => {
     expect(res.url).toEqual(`${root}${successUrl}`)
+  })
+})
+
+test('http throws an HttpError on request failure', () => {
+  return http(failureUrl, {
+    method: 'POST'
+  }).catch((err) => {
+    expect(err.name).toEqual('HttpError')
   })
 })
 
