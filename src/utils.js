@@ -14,17 +14,20 @@ export { default as union } from 'lodash/union'
 
 export { onLoad } from '@launchpadlab/lp-utils'
 
+// Returns true when two arrays share common items
 export function hasOverlap (arr1, arr2) {
   const overlapItems = overlap(arr1, arr2)
   return (overlapItems.length > 0)
 }
 
+// Converts all keys of the given object to camelCase
 export function camelizeKeys (obj) {
   return humps.camelizeKeys(obj, (key, convert) =>
     /^_/.test(key) ? key : convert(key)
   )
 }
 
+// Converts all keys of the given object to lower_case
 export function decamelizeKeys (obj) {
   return humps.decamelizeKeys(obj)
 }
