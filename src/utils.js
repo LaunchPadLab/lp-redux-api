@@ -29,6 +29,8 @@ export function decamelizeKeys (obj) {
   return humps.decamelizeKeys(obj)
 }
 
+// Given an object, returns a copy of that object
+// with all keys with undefined values removed
 export function omitUndefined (obj) {
   return omitBy(obj, isUndefined)
 }
