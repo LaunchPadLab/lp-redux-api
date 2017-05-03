@@ -4,6 +4,7 @@
 
 -   [getAuthenticationContext](#getauthenticationcontext)
 -   [http](#http)
+-   [HttpError](#httperror)
 -   [isAuthenticated](#isauthenticated)
 -   [isAuthenticatedWithContext](#isauthenticatedwithcontext)
 -   [LP_API](#lp_api)
@@ -84,7 +85,37 @@ getUsers()
    .catch(err => console.log('An error occurred!', err))
 ```
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A Promise that either resolves with the response or rejects with an error.
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A Promise that either resolves with the response or rejects with an [HttpError](#httperror).
+
+## HttpError
+
+**Extends Error**
+
+An error class that is thrown by the [http](http) module when a request fails.
+
+In addition to the standard [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) attributes, instances of `HttpError` include the following:
+
+-   `status`: the status code of the response
+-   `statusText`: the status text of the response
+-   `response`: the full response object
+-   `message`: A readable error message with format `<status> - <statusText>`
+
+**Parameters**
+
+-   `status` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** the status code of the response
+-   `statusText` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the status text of the response
+-   `response` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the full response object
+
+**Examples**
+
+```javascript
+// Instantiated manually
+const MyError = new HttpError(500, 'Something went wrong!')
+console.log(MyError.toString()) // "HttpError: 500 - Something went wrong"
+
+// Instantiated by http module
+http('/bad-route').catch(err => console.log(err.name)) // -> "HttpError"
+```
 
 ## isAuthenticated
 
