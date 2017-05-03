@@ -19,9 +19,14 @@ const CAMELIZED = {
   'keyOne': 'foo',
   'keyTwo': 'foo2'
 }
+const UNDERSCORED = {
+  '_key_one': 'foo',
+  '_key_two': 'foo2'
+}
 
 test('camelizeKeys correctly camelizes keys', () => {
   expect(camelizeKeys(DECAMELIZED)).toEqual(CAMELIZED)
+  expect(camelizeKeys(UNDERSCORED)).toEqual(UNDERSCORED)
 })
 
 test('decamelizeKeys correctly decamelizes keys', () => {
