@@ -10,7 +10,6 @@ import { getLpAuthCookie, parseObject } from './utils'
  * This function returns `undefined` when there is no context present,
  * or if the LP Redux API cookie does not exist.
  *
- * 
  * @returns {String}
  * @example
  * 
