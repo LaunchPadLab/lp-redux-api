@@ -22,7 +22,10 @@ export function hasOverlap (arr1, arr2) {
 
 // A wrapper around the humps library
 // Converts all keys of the given object to camelCase
-// EXCEPT keys that begin with an underscore
+// EXCEPT keys that begin with an underscore to
+// support specific keys such as the `_error`
+// key used by Redux Form to communicate errors
+// that are not tied to specific form fields.
 export function camelizeKeys (obj) {
   return humps.camelizeKeys(obj, (key, convert) =>
     /^_/.test(key) ? key : convert(key)
