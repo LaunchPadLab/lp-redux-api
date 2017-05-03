@@ -3,6 +3,64 @@ import LP_API from './LP_API'
 import http from './http'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from './actions'
 
+/**
+ * ### Actions
+ * At a high level, `lp-redux-api` actions contain the following information:
+ * - The URL of an API request to execute
+ * - Any extra request details
+ * - One or many actions to dispatch based on the status of the request
+ *
+ * These actions are keyed using the {@link LP_API} symbol so that the middleware knows to handle them. Here's an example of a simple action creator:
+ * ```
+ * import { LP_API } from '@launchpadlab/lp-redux-api'
+ *
+ * export function fetchUser (id) {
+ *   return {
+ *     [LP_API]: {
+ *       url: `users/${id}`,
+ *       actions: ['USER_REQUEST', 'USER_SUCCESS', 'USER_FAILURE'],
+ *       ... any more configuration options 
+ *     },
+ *   }
+ * }
+ * ```
+ * When this action is dispatched to the store, the middleware will take over and:
+ * - Dispatch a `USER_REQUEST` action
+ * - Perform the api request to `/users`
+ * - Dispatch a `USER_SUCCESS` action with the response payload if the api request is successful
+ * - Dispatch a `USER_FAILURE` action with the response payload if the api request fails
+ * 
+ * Actions can be defined in the following ways:
+ * 
+ * - As an action type `string` (shown above)
+ * - As an action `object`
+ * - As an action creator `function` - will get passed the success/error response
+ * 
+ * As an alternative to passing an array of actions, you can also pass in a specific `requestAction`, `successAction` or `failureAction`.
+ * Redux middleware to handle custom `LP_API` actions.
+ *
+ * ### Middleware configuration
+ * In order to use `lp-redux-api` actions, you must first apply the custom middleware to your store when the store is created:
+ * ```
+ * import { middleware as apiMiddleware } from '@launchpadlab/lp-redux-api'
+ * const apiConfig = { ... }
+ * const middleware = applyMiddleware(
+ *    apiMiddleware(apiConfig),
+ *    ...
+ * )
+ * const store = createStore(reducer, initialState, middleware)
+ * ```
+ * The following options can be used to configure the middleware:
+ * - `authenticated` (default=`false`): Require a JWT on each request (may be overridden on a per-action basis)
+ * - `crsf` (default=`true`): Require CSRF token on applicable requests. If a string is specified, it will look for the token in a `meta` tag with that name.
+ * - `tokenName` (default=`'token'`): The key in localStorage where the JWT is stored.
+ * - `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
+ * - `root` (default=`null`): A path to be prepended to `url` provided in the action.
+ *
+ * @name middleware
+ * @type Function
+ */
+
 const DEFAULT_CONFIG_OPTIONS = {
   onUnauthorized: undefined,
 }
