@@ -13,6 +13,11 @@ test('getAuthenticationContext returns undefined when lp_auth cookie is set to a
   expect(getAuthenticationContext()).toEqual(undefined)
 })
 
+test('getAuthenticationContext returns undefined when lp_auth cookie does not contain a token', () => {
+  Cookies.set('lp_auth', {})
+  expect(getAuthenticationContext()).toEqual(undefined)
+})
+
 test('getAuthenticationContext returns the context string when lp_auth cookie contains a valid context', () => {
   Cookies.set('lp_auth', { token: true, context: CONTEXT })
   expect(getAuthenticationContext()).toEqual(CONTEXT)
