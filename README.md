@@ -6,7 +6,7 @@
 Lightweight API library and middleware for redux applications.
 
 ## Usage
-Documenation and usage information can be found in [docs.md](docs.md). These docs are auto-generated from inline [JSDoc-style](http://usejsdoc.org/) comments using [documentation.js](https://github.com/documentationjs/documentation). Any changes or additions to this library should be accompanied by corresponding changes to the docs, which can be compiled using `yarn run docs`.
+Documentation and usage information can be found in [docs.md](docs.md). These docs are auto-generated from inline [JSDoc-style](http://usejsdoc.org/) comments using [documentation.js](https://github.com/documentationjs/documentation). Any changes or additions to this library should be accompanied by corresponding changes to the docs, which can be compiled using `yarn run docs`.
 
 ## Feature Requests
 For new requests, please submit an issue or PR with the label of `idea`, and include a description of the change and why it is necessary.
