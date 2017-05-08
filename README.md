@@ -20,7 +20,7 @@ Pull requests MUST be approved by someone on the team before merging into master
 
 If you are developing and want to see the results in a local client application:
 * Link the local library:
-  * `yarn link` in the lp-utils directory
+  * `yarn link` in the lp-redux-api directory
   * `yarn link @launchpadlab/lp-redux-api` in the client directory
 * Run the watchful build: `yarn start`
 
