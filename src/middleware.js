@@ -1,6 +1,6 @@
+import { http } from './requests'
 import { omitUndefined } from './utils'
 import LP_API from './LP_API'
-import http from './http'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from './actions'
 
 /**
