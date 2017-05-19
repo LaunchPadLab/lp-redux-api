@@ -1,36 +1,12 @@
 import { 
   hasOverlap,
-  camelizeKeys,
-  decamelizeKeys,
   omitUndefined,
-  parseObject
+  parseObject,
 } from '../src/utils'
 
 test('hasOverlap correctly determines whether two arrays contain common elements', () => {
   expect(hasOverlap([1, 2], [3, 2])).toEqual(true)
   expect(hasOverlap([1, 2], [3, 4])).toEqual(false)
-})
-
-const DECAMELIZED = {
-  'key_one': 'foo',
-  'key_two': 'foo2'
-}
-const CAMELIZED = {
-  'keyOne': 'foo',
-  'keyTwo': 'foo2'
-}
-const UNDERSCORED = {
-  '_key_one': 'foo',
-  '_key_two': 'foo2'
-}
-
-test('camelizeKeys correctly camelizes keys', () => {
-  expect(camelizeKeys(DECAMELIZED)).toEqual(CAMELIZED)
-  expect(camelizeKeys(UNDERSCORED)).toEqual(UNDERSCORED)
-})
-
-test('decamelizeKeys correctly decamelizes keys', () => {
-  expect(decamelizeKeys(CAMELIZED)).toEqual(DECAMELIZED)
 })
 
 test('omitUndefined omits keys with undefined values', () => {

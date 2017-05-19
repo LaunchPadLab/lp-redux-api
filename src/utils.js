@@ -1,4 +1,3 @@
-import humps from 'humps'
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
 import overlap from 'lodash/intersection'
@@ -18,24 +17,6 @@ export { onLoad } from '@launchpadlab/lp-utils'
 export function hasOverlap (arr1, arr2) {
   const overlapItems = overlap(arr1, arr2)
   return (overlapItems.length > 0)
-}
-
-// A wrapper around the humps library
-// Converts all keys of the given object to camelCase
-// EXCEPT keys that begin with an underscore to
-// support specific keys such as the `_error`
-// key used by Redux Form to communicate errors
-// that are not tied to specific form fields.
-export function camelizeKeys (obj) {
-  return humps.camelizeKeys(obj, (key, convert) =>
-    /^_/.test(key) ? key : convert(key)
-  )
-}
-
-// A wrapper around the humps library
-// Converts all keys of the given object to lower_case
-export function decamelizeKeys (obj) {
-  return humps.decamelizeKeys(obj)
 }
 
 // Given an object, returns a copy of that object
