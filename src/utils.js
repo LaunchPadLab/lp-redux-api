@@ -11,7 +11,12 @@ export { default as unset } from 'lodash/fp/unset'
 export { default as compose } from 'lodash/fp/compose'
 export { default as union } from 'lodash/union'
 
-export { onLoad } from '@launchpadlab/lp-utils'
+export { onLoad, deprecate } from '@launchpadlab/lp-utils'
+export {
+  api,
+  http,
+  HttpError,
+} from '@launchpadlab/lp-requests'
 
 // Returns true when two arrays share common items
 export function hasOverlap (arr1, arr2) {
