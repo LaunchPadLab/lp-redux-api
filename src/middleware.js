@@ -133,8 +133,7 @@ export default function ({ onUnauthorized, ...options }) {
     // Send request action to API reducer
     if (requestKey) next(lpApiRequest(requestKey))
 
-    const requestOptions = omitUndefined({
-      ...defaultRequestOptions,
+    const givenRequestOptions = omitUndefined({
       body,
       credentials,
       csrf,
@@ -142,6 +141,11 @@ export default function ({ onUnauthorized, ...options }) {
       method,
       mode,
     })
+
+    const requestOptions = {
+      ...defaultRequestOptions,
+      ...givenRequestOptions,
+    }
 
     // Make the request
     return http(url, requestOptions)
