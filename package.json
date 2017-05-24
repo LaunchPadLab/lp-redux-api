@@ -56,7 +56,7 @@
     "rimraf": "^2.5.4"
   },
   "dependencies": {
-    "@launchpadlab/lp-requests": "^1.0.1",
+    "@launchpadlab/lp-requests": "^1.1.0",
     "@launchpadlab/lp-utils": "^2.6.11",
     "babel-preset-react": "^6.24.1",
     "es6-symbol": "^3.1.1",

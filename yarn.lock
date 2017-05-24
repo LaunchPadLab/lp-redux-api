@@ -2,14 +2,15 @@
 # yarn lockfile v1
 
 
-"@launchpadlab/lp-requests@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@launchpadlab/lp-requests/-/lp-requests-1.0.1.tgz#eecfa8bfc8bbc471efad1a43bc1a4d8447fe20c7"
+"@launchpadlab/lp-requests@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@launchpadlab/lp-requests/-/lp-requests-1.1.0.tgz#652395de58e219b8ab73e5559f548b6f3fe56547"
   dependencies:
     babel-preset-react "^6.24.1"
     humps "^2.0.0"
     isomorphic-fetch "^2.2.1"
     lodash "^4.17.4"
+    url-join "^2.0.2"
 
 "@launchpadlab/lp-utils@^2.6.11":
   version "2.6.11"
@@ -4728,6 +4729,10 @@ untildify@^2.1.0:
   resolved "https://registry.yarnpkg.com/untildify/-/untildify-2.1.0.tgz#17eb2807987f76952e9c0485fc311d06a826a2e0"
   dependencies:
     os-homedir "^1.0.0"
+
+url-join@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/url-join/-/url-join-2.0.2.tgz#c072756967ad24b8b59e5741551caac78f50b8b7"
 
 user-home@^1.1.1:
   version "1.1.1"
