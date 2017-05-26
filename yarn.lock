@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@launchpadlab/lp-requests@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@launchpadlab/lp-requests/-/lp-requests-1.1.1.tgz#f04ece9fe967dcbb1be5bdf178d424063b9914d2"
+"@launchpadlab/lp-requests@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@launchpadlab/lp-requests/-/lp-requests-1.2.0.tgz#7056515bb625ed928bd2734fb09bdb03b92c51ad"
   dependencies:
     babel-preset-react "^6.24.1"
     humps "^2.0.0"
