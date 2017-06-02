@@ -1,6 +1,8 @@
-import { http, omitUndefined } from './utils'
-import LP_API from './LP_API'
-import { lpApiRequest, lpApiSuccess, lpApiFailure } from './actions'
+import { http, omitUndefined, getData } from '../utils'
+import LP_API from '../LP_API'
+import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../actions'
+import parseAction from './parse-action'
+import parseOptions from './parse-options'
 
 /**
  * ### Actions
@@ -70,16 +72,18 @@ const DEFAULT_REQUEST_OPTIONS = {
   mode:        'same-origin',
 }
 
-export default function ({ onUnauthorized, ...options }) {
+function middleware (options={}) {
+
+  const { configOptions, requestOptions } = parseOptions(options)
 
   const defaultConfigOptions = omitUndefined({
     ...DEFAULT_CONFIG_OPTIONS,
-    onUnauthorized,
+    ...configOptions,
   })
 
   const defaultRequestOptions = omitUndefined({
     ...DEFAULT_REQUEST_OPTIONS,
-    ...options,
+    ...requestOptions,
   })
 
   return () => next => action => {
@@ -87,77 +91,48 @@ export default function ({ onUnauthorized, ...options }) {
     // ignore undefined or null actions
     if (!action) return
 
-    const lpApi = action[LP_API]
-
     // Do not process actions without a [LP_API] property
-    if (typeof lpApi === 'undefined') {
-      return next(action)
-    }
+    const lpApi = action[LP_API]
+    if (!lpApi) return next(action)
+
+    const { configOptions, requestOptions, url } = parseOptions(lpApi)
+    if (!url) throw `Middleware: Must provide string 'url' argument`
+
+    // Merge options
+    const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
+    const mergedRequestOptions = { ...defaultRequestOptions, ...requestOptions }
 
     const {
-      actions,
-      types,
-      ...options
-    } = lpApi
-
-    // Alias 'actions' with 'types' for backwards compatibility
-    const actionTypes = actions || types || []
-    const [ requestFallback, successFallback, failureFallback ] = actionTypes
-
-    const {
-      url,
-      body,
-      credentials,
-      csrf,
-      headers,
-      method,
-      mode,
-      requestAction=requestFallback,
-      successAction=successFallback,
-      failureAction=failureFallback,
+      onUnauthorized,
+      requestAction,
+      successAction,
+      failureAction,
       requestKey,
-      ...rest,
-    } = options
-
-    // Make sure required options exist
-    validateOptions({ url, actionTypes: [requestAction, successAction, failureAction] })
+      successDataPath,
+      failureDataPath,
+    } = mergedConfigOptions
 
     // Send user-specified request action
     if (requestAction) {
       next(parseAction({
         action: requestAction,
-        payload: rest,
+        payload: lpApi,
       }))
     }
     
     // Send request action to API reducer
     if (requestKey) next(lpApiRequest(requestKey))
 
-    const givenRequestOptions = omitUndefined({
-      body,
-      credentials,
-      csrf,
-      headers,
-      method,
-      mode,
-    })
-
-    const requestOptions = {
-      ...defaultRequestOptions,
-      ...givenRequestOptions,
-    }
-
     // Make the request
-    return http(url, requestOptions)
+
+    return http(url, mergedRequestOptions)
       .catch(error => {
-        const response = error.response || error.message || 'There was an error.'
-        const statusCode = error.status
 
         // Send user-specified failure action
         if (failureAction) {
           next(parseAction({
             action: failureAction,
-            payload: { ...rest, response, statusCode },
+            payload: getData(error, failureDataPath),
             error: true,
           }))
         }
@@ -165,8 +140,8 @@ export default function ({ onUnauthorized, ...options }) {
         // Send failure action to API reducer
         if (requestKey) next(lpApiFailure(requestKey))
 
-        if (error.status === 401 && defaultConfigOptions.onUnauthorized) {
-          next(defaultConfigOptions.onUnauthorized())
+        if (error.status === 401 && onUnauthorized) {
+          next(onUnauthorized())
         }
       })
       .then(response => {
@@ -177,7 +152,7 @@ export default function ({ onUnauthorized, ...options }) {
         if (successAction) {
           next(parseAction({
             action: successAction,
-            payload: { ...rest, response },
+            payload: getData(response, successDataPath),
           }))
         }
 
@@ -187,20 +162,4 @@ export default function ({ onUnauthorized, ...options }) {
   }
 }
 
-function validateOptions ({ url, actionTypes }) {
-  if (!url || typeof url !== 'string') throw `Must provide string 'url' argument`
-  if (!actionTypes.length) throw `Must provide at least one action definition. Use 'api' module for requests with no associated actions.`
-}
-
-// Create an action from an action "definition."
-export function parseAction ({ action, payload={}, error=false }) {
-  switch (typeof action) {
-  // If it's an action creator, create the action
-  case 'function': return action(payload)
-  // If it's an action object return the action
-  case 'object': return action
-  // Otherwise, create a "default" action object with the given type
-  case 'string': return { type: action, payload, error }
-  default: throw 'Invalid action definition (must be function, object or string).'
-  }
-}
+export default middleware
