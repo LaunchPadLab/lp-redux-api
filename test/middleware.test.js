@@ -1,7 +1,8 @@
-import { successUrl, failureUrl, unauthorizedUrl, networkErrorUrl } from 'isomorphic-fetch'
+import { successUrl, failureUrl, unauthorizedUrl } from 'isomorphic-fetch'
 import { middleware, LP_API } from '../src'
-import { parseAction } from '../src/middleware'
+import parseAction from '../src/middleware/parse-action'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../src/actions'
+import configureStore from 'redux-mock-store'
 
 import {
   REQUEST_KEY,
@@ -13,32 +14,14 @@ import {
 
 /* HELPERS */
 
-const defaultMiddleware = middleware({})
-
-// Pass action to middleware, and wait for the specified number of actions 
-// to be passed to the next middleware before resolving
-const callMiddleware = (action, opt={}, configuredMiddleware=defaultMiddleware) => {
-  const { waitForActions = 1 } = opt
-  const nextMiddleware = []
-  return new Promise((resolve) => {
-    const next = (a) => {
-      nextMiddleware.push(a)
-      if (nextMiddleware.length === waitForActions) resolve([...nextMiddleware])
-    }
-    return configuredMiddleware()(next)(action)
-  })
-}
+const UNAUTHORIZED_ACTION = { type: 'UNAUTHORIZED' }
+const mockStore = configureStore([ middleware({
+  onUnauthorized: () => UNAUTHORIZED_ACTION
+}) ])
 
 /* TESTS */
 
-test('middleware requires user and actions/types arguments', () => {
-  const emptyAction = { [LP_API]: {} }
-  callMiddleware(emptyAction)
-    .then(() => fail('should complain about missing params'))
-    .catch((err) => {
-      expect(err).toExist()
-    })
-})
+// Parse action tests
 
 const actionString = 'ACTION'
 const testPayload = { test: true }
@@ -91,70 +74,56 @@ test('middleware rejects unsupported action definition types', () => {
   expect(() => parseAction({ })).toThrow()
 })
 
+// Middleware tests
+
+test('middleware requires url argument', () => {
+  const store = mockStore({})
+  const emptyAction = { [LP_API]: {} }
+  expect(() => store.dispatch(emptyAction)).toThrow()
+})
+
 test('middleware passes non-LP_API actions through', () => {
+  const store = mockStore({})
   const otherAction = { type: 'OTHER' }
-  return callMiddleware(otherAction, { waitForActions: 1 }).then((actions) => {
-    const passedAction = actions.pop()
-    expect(passedAction).toEqual(otherAction)
+  store.dispatch(otherAction)
+  const actions = store.getActions()
+  expect(actions.pop()).toEqual(otherAction)
+})
+
+test('middleware dispatches success actions in the correct order', () => {
+  const store = mockStore({})
+  return store.dispatch(actionWithURL(successUrl)).then(() => {
+    const actions = store.getActions()
+    // User defined REQUEST action
+    expect(actions[0].type).toEqual(ACTION_TYPE_REQUEST)
+    // Internal REQUEST action
+    expect(actions[1]).toEqual(lpApiRequest(REQUEST_KEY))
+    // User defined SUCCESS action
+    expect(actions[2].type).toEqual(ACTION_TYPE_SUCCESS)
+    // Internal SUCCESS action
+    expect(actions[3]).toEqual(lpApiSuccess(REQUEST_KEY))
   })
 })
 
-test('middleware dispatches user-defined REQUEST action', () => {
-  return callMiddleware(actionWithURL(successUrl), { waitForActions: 1 }).then((actions) => {
-    const userRequestAction = actions.pop()
-    expect(userRequestAction.type).toEqual(ACTION_TYPE_REQUEST)
-  })
-})
-
-test('middleware dispatches reducer REQUEST action', () => {
-  return callMiddleware(actionWithURL(successUrl), { waitForActions: 2 }).then((actions) => {
-    const apiRequestAction = actions.pop()
-    expect(apiRequestAction).toEqual(lpApiRequest(REQUEST_KEY))
-  })
-})
-
-test('middleware dispatches user-defined SUCCESS action', () => {
-  return callMiddleware(actionWithURL(successUrl), { waitForActions: 3 }).then((actions) => {
-    const userSuccessAction = actions.pop()
-    expect(userSuccessAction.type).toEqual(ACTION_TYPE_SUCCESS)
-  })
-})
-
-test('middleware dispatches user-defined FAILURE action', () => {
-  return callMiddleware(actionWithURL(failureUrl), { waitForActions: 3 }).then((actions) => {
-    const userSuccessAction = actions.pop()
-    expect(userSuccessAction.type).toEqual(ACTION_TYPE_FAILURE)
-  })
-})
-
-test('middleware dispatches reducer SUCCESS action', () => {
-  return callMiddleware(actionWithURL(successUrl), { waitForActions: 4 }).then((actions) => {
-    const apiSuccessAction = actions.pop()
-    expect(apiSuccessAction).toEqual(lpApiSuccess(REQUEST_KEY))
-  })
-})
-
-test('middleware dispatches reducer FAILURE action', () => {
-  return callMiddleware(actionWithURL(failureUrl), { waitForActions: 4 }).then((actions) => {
-    const apiSuccessAction = actions.pop()
-    expect(apiSuccessAction).toEqual(lpApiFailure(REQUEST_KEY))
-  })
-})
-
-test('middleware dispatches reducer FAILURE action on network error', () => {
-  return callMiddleware(actionWithURL(networkErrorUrl), { waitForActions: 4 }).then((actions) => {
-    const apiSuccessAction = actions.pop()
-    expect(apiSuccessAction).toEqual(lpApiFailure(REQUEST_KEY))
+test('middleware dispatches failure actions in the correct order', () => {
+  const store = mockStore({})
+  return store.dispatch(actionWithURL(failureUrl)).then(() => {
+    const actions = store.getActions()
+    // User defined REQUEST action
+    expect(actions[0].type).toEqual(ACTION_TYPE_REQUEST)
+    // Internal REQUEST action
+    expect(actions[1]).toEqual(lpApiRequest(REQUEST_KEY))
+    // User defined FAILURE action
+    expect(actions[2].type).toEqual(ACTION_TYPE_FAILURE)
+    // Internal FAILURE action
+    expect(actions[3]).toEqual(lpApiFailure(REQUEST_KEY))
   })
 })
 
 test('middleware dispatches custom unauthorized action on auth error', () => {
-  const unauthorizedAction = { type: 'UNAUTHORIZED' }
-  const configuredMiddleware = middleware({
-    onUnauthorized: () => unauthorizedAction
-  })
-  return callMiddleware(actionWithURL(unauthorizedUrl), { waitForActions: 5 }, configuredMiddleware).then((actions) => {
-    const passedAction = actions.pop()
-    expect(passedAction).toEqual(unauthorizedAction)
+  const store = mockStore({})
+  return store.dispatch(actionWithURL(unauthorizedUrl)).then(() => {
+    const actions = store.getActions()
+    expect(actions.pop()).toEqual(UNAUTHORIZED_ACTION)
   })
 })
