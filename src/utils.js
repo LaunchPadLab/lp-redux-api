@@ -46,8 +46,7 @@ export function getLpAuthCookie () {
 // Get data at path if path exists,
 // otherwise return full object
 export function getData (obj, path) {
-  if (!path) return obj
-  return get(path, obj)
+  return path ? get(path, obj) : obj
 }
 
 export { get }

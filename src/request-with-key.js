@@ -27,24 +27,26 @@ import { hasOverlap } from './utils'
  * //   [LP_API]: {
  * //     url: '/users',
  * //     requestKey: 'REQ_FETCH_USERS',
- * //     actions: ['REQ_FETCH_USERS_REQUEST', 'REQ_FETCH_USERS_SUCCESS', 'REQ_FETCH_USERS_FAILURE']
- * //   }
+ * //     requestAction: 'REQ_FETCH_USERS_REQUEST', 
+ * //     successAction: 'REQ_FETCH_USERS_SUCCESS', 
+ * //     failureAction: 'REQ_FETCH_USERS_FAILURE',
  * // }
  *
 **/
 
 export default function requestWithKey (requestKey, options={}) {
   if (!requestKey) throw 'Must include a key for requestWithKey() request.'
-  const providedOpts = Object.keys(options)
-  if (hasOverlap(providedOpts, actionOpts)) throw 'Cannot specify custom actions when using requestWithKey()'
+  if (hasOverlap(Object.keys(options), actionOpts)) throw 'Cannot specify custom actions when using requestWithKey()'
   return {
     [LP_API]: {
       ...options,
       requestKey,
-      actions: [`${requestKey}_REQUEST`, `${requestKey}_SUCCESS`, `${requestKey}_FAILURE`]
+      requestAction: `${requestKey}_REQUEST`, 
+      successAction: `${requestKey}_SUCCESS`, 
+      failureAction: `${requestKey}_FAILURE`,
     }
   }
 }
 
 // Action-related options that are forbidden
-const actionOpts = ['actions', 'types', 'requestAction', 'successAction', 'failureAction']
+const actionOpts = ['requestAction', 'successAction', 'failureAction']

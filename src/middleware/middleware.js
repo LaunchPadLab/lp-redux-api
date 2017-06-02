@@ -19,7 +19,9 @@ import parseOptions from './parse-options'
  *   return {
  *     [LP_API]: {
  *       url: `users/${id}`,
- *       actions: ['USER_REQUEST', 'USER_SUCCESS', 'USER_FAILURE'],
+ *       requestAction: 'USER_REQUEST', 
+ *       successAction: 'USER_SUCCESS', 
+ *       failureAction: 'USER_FAILURE',
  *       ... any more configuration options 
  *     },
  *   }
@@ -35,10 +37,7 @@ import parseOptions from './parse-options'
  * 
  * - As an action type `string` (shown above)
  * - As an action `object`
- * - As an action creator `function` - will get passed the success/error response
- * 
- * As an alternative to passing an array of actions, you can also pass in a specific `requestAction`, `successAction` or `failureAction`.
- * Redux middleware to handle custom `LP_API` actions.
+ * - As an action creator `function` - will get passed the success/error response as modified by `successDataPath` and `failureDataPath`
  *
  * ### Middleware configuration
  * In order to use `lp-redux-api` actions, you must first apply the custom middleware to your store when the store is created:
@@ -52,11 +51,10 @@ import parseOptions from './parse-options'
  * const store = createStore(reducer, initialState, middleware)
  * ```
  * The following options can be used to configure the middleware:
- * - `authenticated` (default=`false`): Require a JWT on each request (may be overridden on a per-action basis)
- * - `crsf` (default=`true`): Require CSRF token on applicable requests. If a string is specified, it will look for the token in a `meta` tag with that name.
- * - `tokenName` (default=`'token'`): The key in localStorage where the JWT is stored.
  * - `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
- * - `root` (default=`null`): A path to be prepended to `url` provided in the action.
+ * - `successDataPath`: The path of a successful response to be passed as the success action's payload
+ * - `failureDataPath`: The path of a failed response to be passed as the failure action's payload
+ * - any options used by the lp-requests [http](https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http) module
  *
  * @name middleware
  * @type Function
