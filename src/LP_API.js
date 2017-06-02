@@ -6,7 +6,7 @@ import Symbol from 'es6-symbol'
  * to guarantee uniqueness.
  * 
  * The params provided as the value include anything that is supported by
- * {@link Middlware|LP Redux Api Middleware}
+ * {@link middleware|LP Redux Api Middleware}
  * 
  * @constant
  * @type {Symbol}
@@ -18,12 +18,13 @@ import Symbol from 'es6-symbol'
  *   return {
  *     [LP_API]: {
  *       url: 'http://foo.com/posts',
- *       types: ['REQUEST', 'SUCCESS', 'FAILURE'],
- *       // ...
+ *       requestAction: 'REQUEST', 
+ *       successAction: 'SUCCESS', 
+ *       failureAction: 'FAILURE',
  *     }
  *   }
  * } 
  */
-const LP_API = Symbol('Lp Api')
 
+const LP_API = Symbol('Lp Api')
 export default LP_API

@@ -1,4 +1,4 @@
-import { http, omitUndefined, getData } from '../utils'
+import { http, getData } from '../utils'
 import LP_API from '../LP_API'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../actions'
 import parseAction from './parse-action'
@@ -31,16 +31,16 @@ import parseOptions from './parse-options'
  * - Dispatch a `USER_REQUEST` action
  * - Perform the api request to `/users`
  * - Dispatch a `USER_SUCCESS` action with the response payload if the api request is successful
- * - Dispatch a `USER_FAILURE` action with the response payload if the api request fails
+ * - Dispatch a `USER_FAILURE` action with the error payload if the api request fails
  * 
  * Actions can be defined in the following ways:
  * 
  * - As an action type `string` (shown above)
  * - As an action `object`
- * - As an action creator `function` - will get passed the success/error response as modified by `successDataPath` and `failureDataPath`
+ * - As an action creator `function` - will get passed the success/error response as modified by `successDataPath` and `failureDataPath` (see below)
  *
  * ### Middleware configuration
- * In order to use `lp-redux-api` actions, you must first apply the custom middleware to your store when the store is created:
+ * In order to use `lp-redux-api` actions, you must apply the custom middleware to your store when the store is created:
  * ```
  * import { middleware as apiMiddleware } from '@launchpadlab/lp-redux-api'
  * const apiConfig = { ... }
@@ -52,8 +52,8 @@ import parseOptions from './parse-options'
  * ```
  * The following options can be used to configure the middleware:
  * - `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
- * - `successDataPath`: The path of a successful response to be passed as the success action's payload
- * - `failureDataPath`: The path of a failed response to be passed as the failure action's payload
+ * - `successDataPath`: A path to response data that will be passed as the success action's payload
+ * - `failureDataPath`: A path to response data that will be passed as the failure action's payload
  * - any options used by the lp-requests [http](https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http) module
  *
  * @name middleware
@@ -61,55 +61,43 @@ import parseOptions from './parse-options'
  */
 
 const DEFAULT_CONFIG_OPTIONS = {
-  onUnauthorized: undefined,
+  onUnauthorized: null,
 }
 
 const DEFAULT_REQUEST_OPTIONS = {
   credentials: 'same-origin',
-  csrf:        true,
-  mode:        'same-origin',
+  csrf: true,
+  mode: 'same-origin',
 }
 
 function middleware (options={}) {
-
+  // Build defaults
   const { configOptions, requestOptions } = parseOptions(options)
-
-  const defaultConfigOptions = omitUndefined({
-    ...DEFAULT_CONFIG_OPTIONS,
-    ...configOptions,
-  })
-
-  const defaultRequestOptions = omitUndefined({
-    ...DEFAULT_REQUEST_OPTIONS,
-    ...requestOptions,
-  })
-
+  const defaultConfigOptions = { ...DEFAULT_CONFIG_OPTIONS, ...configOptions }
+  const defaultRequestOptions = { ...DEFAULT_REQUEST_OPTIONS, ...requestOptions }
+  // Handle actions
   return () => next => action => {
-
     // ignore undefined or null actions
     if (!action) return
-
-    // Do not process actions without a [LP_API] property
+    // Pull out action body
     const lpApi = action[LP_API]
+    // Do not process actions without a [LP_API] property
     if (!lpApi) return next(action)
-
+    // Parse options and merge with defaults
     const { configOptions, requestOptions, url } = parseOptions(lpApi)
     if (!url) throw `Middleware: Must provide string 'url' argument`
-
-    // Merge options
     const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
     const mergedRequestOptions = { ...defaultRequestOptions, ...requestOptions }
-
+    // Pull out config options
     const {
       onUnauthorized,
+      requestKey,
       requestAction,
       successAction,
       failureAction,
-      requestKey,
       successDataPath,
       failureDataPath,
     } = mergedConfigOptions
-
     // Send user-specified request action
     if (requestAction) {
       next(parseAction({
@@ -117,15 +105,11 @@ function middleware (options={}) {
         payload: lpApi,
       }))
     }
-    
     // Send request action to API reducer
     if (requestKey) next(lpApiRequest(requestKey))
-
     // Make the request
-
     return http(url, mergedRequestOptions)
       .catch(error => {
-
         // Send user-specified failure action
         if (failureAction) {
           next(parseAction({
@@ -134,18 +118,14 @@ function middleware (options={}) {
             error: true,
           }))
         }
-
         // Send failure action to API reducer
         if (requestKey) next(lpApiFailure(requestKey))
-
-        if (error.status === 401 && onUnauthorized) {
-          next(onUnauthorized())
-        }
+        // Dispatch unaithorized action if applicable
+        if (error.status === 401 && onUnauthorized) next(onUnauthorized())
       })
       .then(response => {
         // An error was handled above
         if (!response) return
-
         // Send user-specified success action
         if (successAction) {
           next(parseAction({
@@ -153,7 +133,6 @@ function middleware (options={}) {
             payload: getData(response, successDataPath),
           }))
         }
-
         // Send success action to API reducer
         if (requestKey) next(lpApiSuccess(requestKey, response))
       })
