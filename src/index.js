@@ -13,8 +13,3 @@ export { default as reducer } from './reducer'
 export { default as requestWithKey } from './request-with-key'
 export { default as selectStatus } from './select-status'
 export { default as setFromRequest } from './set-from-request'
-export {
-  api,
-  http,
-  HttpError
-} from './requests'

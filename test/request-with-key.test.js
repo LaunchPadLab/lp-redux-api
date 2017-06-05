@@ -11,7 +11,9 @@ test('requestWithKey fills in request key and action options correctly', () => {
   const action = requestWithKey(REQUEST_KEY)
   const expectedOptions = {
     requestKey: REQUEST_KEY,
-    actions: [`${REQUEST_KEY}_REQUEST`, `${REQUEST_KEY}_SUCCESS`, `${REQUEST_KEY}_FAILURE`]
+      requestAction: `${REQUEST_KEY}_REQUEST`, 
+      successAction: `${REQUEST_KEY}_SUCCESS`, 
+      failureAction: `${REQUEST_KEY}_FAILURE`,
   }
   expect(action[LP_API]).toEqual(expectedOptions)
 })
@@ -23,7 +25,9 @@ test('requestWithKey merges action options correctly', () => {
   const expectedOptions = {
     url: '/not-overridden',
     requestKey: REQUEST_KEY,
-    actions: [`${REQUEST_KEY}_REQUEST`, `${REQUEST_KEY}_SUCCESS`, `${REQUEST_KEY}_FAILURE`]
+    requestAction: `${REQUEST_KEY}_REQUEST`, 
+    successAction: `${REQUEST_KEY}_SUCCESS`, 
+    failureAction: `${REQUEST_KEY}_FAILURE`,
   }
   expect(action[LP_API]).toEqual(expectedOptions)
 })
@@ -31,7 +35,7 @@ test('requestWithKey merges action options correctly', () => {
 test('requestWithKey refuses action-related options', () => {
   const createBadAction = () => {
     return requestWithKey(REQUEST_KEY, {
-      actions: ['not', 'allowed']
+      successAction: 'NOT_ALLOWED',
     })
   }
   expect(createBadAction).toThrow()

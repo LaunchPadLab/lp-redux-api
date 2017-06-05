@@ -12,7 +12,9 @@ export const actionWithURL = (url) => {
     [LP_API]: {
       url,
       requestKey: REQUEST_KEY,
-      actions: [ACTION_TYPE_REQUEST, ACTION_TYPE_SUCCESS, ACTION_TYPE_FAILURE]
+      requestAction: ACTION_TYPE_REQUEST, 
+      successAction: ACTION_TYPE_SUCCESS,
+      failureAction: ACTION_TYPE_FAILURE,
     }
   }
 }
