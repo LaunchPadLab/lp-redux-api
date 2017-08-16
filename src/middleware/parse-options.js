@@ -11,8 +11,6 @@ function parseOptions ({
   successAction,
   failureAction,
   requestKey,
-  successDataPath,
-  failureDataPath,
   ...requestOptions
 }) {
   return {
@@ -24,8 +22,6 @@ function parseOptions ({
       successAction,
       failureAction,
       requestKey,
-      successDataPath,
-      failureDataPath,
     }),
     requestOptions,
     url,

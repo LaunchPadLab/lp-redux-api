@@ -18,7 +18,7 @@ const UNAUTHORIZED_ACTION = { type: 'UNAUTHORIZED' }
 const mockStore = configureStore([ middleware({
   onUnauthorized: () => UNAUTHORIZED_ACTION,
   successDataPath: 'url',
-  failureDataPath: 'name',
+  failureDataPath: 'url',
 }) ])
 
 /* TESTS */
@@ -144,6 +144,6 @@ test('middleware applies failureDataPath correctly', () => {
   return store.dispatch(actionWithURL(failureUrl)).then(() => {
     const actions = store.getActions()
     // User defined FAILURE action
-    expect(actions[2].payload).toEqual('HttpError')
+    expect(actions[2].payload.response).toEqual(failureUrl)
   })
 })
