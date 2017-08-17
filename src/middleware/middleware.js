@@ -1,4 +1,4 @@
-import { http, getData } from '../utils'
+import { http } from '../utils'
 import LP_API from '../LP_API'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../actions'
 import parseAction from './parse-action'
@@ -95,8 +95,6 @@ function middleware (options={}) {
       requestAction,
       successAction,
       failureAction,
-      successDataPath,
-      failureDataPath,
     } = mergedConfigOptions
     // Send user-specified request action
     if (requestAction) {
@@ -114,13 +112,13 @@ function middleware (options={}) {
         if (failureAction) {
           next(parseAction({
             action: failureAction,
-            payload: getData(error, failureDataPath),
+            payload: error,
             error: true,
           }))
         }
         // Send failure action to API reducer
         if (requestKey) next(lpApiFailure(requestKey))
-        // Dispatch unaithorized action if applicable
+        // Dispatch unauthorized action if applicable
         if (error.status === 401 && onUnauthorized) next(onUnauthorized())
       })
       .then(response => {
@@ -130,7 +128,7 @@ function middleware (options={}) {
         if (successAction) {
           next(parseAction({
             action: successAction,
-            payload: getData(response, successDataPath),
+            payload: response,
           }))
         }
         // Send success action to API reducer
