@@ -13,8 +13,7 @@ export { default as union } from 'lodash/union'
 
 export { onLoad, deprecate } from '@launchpadlab/lp-utils'
 export {
-  api,
-  http,
+  configureHttp,
   HttpError,
 } from '@launchpadlab/lp-requests'
 
