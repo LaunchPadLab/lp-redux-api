@@ -1,4 +1,4 @@
-import { http } from '../utils'
+import { configureHttp } from '../utils'
 import LP_API from '../LP_API'
 import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../actions'
 import parseAction from './parse-action'
@@ -75,6 +75,7 @@ function middleware (options={}) {
   const { configOptions, requestOptions } = parseOptions(options)
   const defaultConfigOptions = { ...DEFAULT_CONFIG_OPTIONS, ...configOptions }
   const defaultRequestOptions = { ...DEFAULT_REQUEST_OPTIONS, ...requestOptions }
+  const http = configureHttp(defaultRequestOptions)
   // Handle actions
   return () => next => action => {
     // ignore undefined or null actions
@@ -87,7 +88,6 @@ function middleware (options={}) {
     const { configOptions, requestOptions, url } = parseOptions(lpApi)
     if (!url) throw `Middleware: Must provide string 'url' argument`
     const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
-    const mergedRequestOptions = { ...defaultRequestOptions, ...requestOptions }
     // Pull out config options
     const {
       onUnauthorized,
@@ -106,7 +106,7 @@ function middleware (options={}) {
     // Send request action to API reducer
     if (requestKey) next(lpApiRequest(requestKey))
     // Make the request
-    return http(url, mergedRequestOptions)
+    return http(url, requestOptions)
       .catch(error => {
         // Send user-specified failure action
         if (failureAction) {

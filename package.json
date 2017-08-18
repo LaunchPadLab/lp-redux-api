@@ -1,6 +1,6 @@
 {
   "name": "@launchpadlab/lp-redux-api",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "redux middleware and api library",
   "main": "lib/index.js",
   "scripts": {
@@ -36,6 +36,7 @@
     "lib/"
   ],
   "devDependencies": {
+    "@launchpadlab/lp-requests": "^2.1.0",
     "babel-cli": "^6.22.2",
     "babel-eslint": "^7.1.1",
     "babel-preset-es2015": "^6.22.0",
@@ -57,7 +58,6 @@
     "rimraf": "^2.5.4"
   },
   "dependencies": {
-    "@launchpadlab/lp-requests": "^2.1.0",
     "@launchpadlab/lp-utils": "^2.6.11",
     "babel-preset-react": "^6.24.1",
     "es6-symbol": "^3.1.1",
@@ -68,6 +68,7 @@
     "react-redux": "^5.0.4"
   },
   "peerDependencies": {
-    "react": "^15.5.0"
+    "react": "^15.5.0",
+    "@launchpadlab/lp-requests": "^2.0.0"
   }
 }
