@@ -286,20 +286,23 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 ## selectors
 
-A function that, given the redux state, returns the status of a given API request. 
-In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
+This library exports the following selectors for determining the status of requests:
 
-The status of a request can be one of the following exported constants:
+-   `selectors.status(state, requestKey)`
+-   `selectors.hasStatus(state, requestKey, [slice])`
+-   `selectors.isLoading(state, requestKey, [slice])`
+-   `selectors.isSuccess(state, requestKey, [slice])`
+-   `selectors.isFailure(state, requestKey, [slice])`
+
+In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
+These selectors expect that reducer to be keyed under `'api'`. If it uses a different key,
+it must be passed as the optional `slice` parameter.
+
+The status returned by `selectors.status()` can be one of the following exported constants:
 
 -   `LP_API_STATUS_LOADING`: `'loading'`
 -   `LP_API_STATUS_SUCCESS`: `'success'`
 -   `LP_API_STATUS_FAILURE`: `'failure'`
-
-**Parameters**
-
--   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that references a request created by [requestWithKey](#requestwithkey)
--   `state` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** The state of your redux store
--   `slice` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** The path to the slice of state handled by the `lp-redux-api` reducer (optional, default `'api'`)
 
 **Examples**
 
@@ -315,15 +318,13 @@ combineReducers({
 
 // Now you can keep track of request status elsewhere in your app
 
-import { requestKey, selectStatus } from 'lp-redux-api'
+import { requestWithKey, selectors as apiSelectors } from 'lp-redux-api'
 
 const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
 dispatch(requestWithKey(REQ_FETCH_USERS, { url: '/users' }))
 
-selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
+apiSelectors.status(state, REQ_FETCH_USERS) // -> 'loading'
 ```
-
-Returns **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string constant indicating request status
 
 ## setFromRequest
 
