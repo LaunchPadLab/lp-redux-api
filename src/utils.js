@@ -11,7 +11,6 @@ export { default as unset } from 'lodash/fp/unset'
 export { default as compose } from 'lodash/fp/compose'
 export { default as union } from 'lodash/union'
 
-export { onLoad, omitProps, deprecate } from '@launchpadlab/lp-utils'
 export {
   configureHttp,
   HttpError,

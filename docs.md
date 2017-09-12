@@ -6,7 +6,6 @@
 -   [middleware](#middleware)
     -   [Actions](#actions)
     -   [Middleware configuration](#middleware-configuration)
--   [onResponse](#onresponse)
 -   [reducer](#reducer)
 -   [requestWithKey](#requestwithkey)
 -   [selectors](#selectors)
@@ -94,39 +93,6 @@ The following options can be used to configure the middleware:
 -   `successDataPath`: A path to response data that will be passed as the success action's payload
 -   `failureDataPath`: A path to response data that will be passed as the failure action's payload
 -   any options used by the lp-requests [http](https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http) module
-
-## onResponse
-
-A function that returns a React HOC to handle rendering that depends on an API response. 
-A combination of [selectors](#selectors) and `onLoad` from `lp-utils`.
-
-**Parameters**
-
--   `requestKeys` **([String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array))?= \[]** A key or set of keys corresponding to `lp-redux-api` requests.
--   `LoadingComponent` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)?** A component to render during the loading state. (optional, default `null`)
-
-**Examples**
-
-```javascript
-import { REQ_USERS, requestUsers } from 'actions'
-
- function MyComponent (name) {
-   return (
-     <p>{name}</p>
-   )
- }
-
- export default compose(
-   onMount(requestUsers),
-   onResponse(REQ_USERS),
- )(MyComponent)
- 
- // requestUsers() dispatches an LP_API action with key 'REQ_USERS' on component mount.
- // When the status of 'REQ_USERS' request becomes 'success' or 'failure', the component will render.
- // Otherwise, the default `onLoad` loading component will be rendered.
-```
-
-Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** A higher order component (HOC).
 
 ## reducer
 
