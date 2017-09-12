@@ -14,7 +14,7 @@ import {
  * - `selectors.isFailure(state, requestKey, [slice])`
  * 
  * In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
- * These selectors expect that reducer to be keyed under `'api'`. If it uses a different key,
+ * Selectors expect the reducer to be keyed under `'api'`- if a different key is used,
  * it must be passed as the optional `slice` parameter.
  *
  * The status returned by `selectors.status()` can be one of the following exported constants:
