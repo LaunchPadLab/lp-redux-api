@@ -1,6 +1,6 @@
 import { configureHttp } from '../utils'
 import LP_API from '../LP_API'
-import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../actions'
+import * as actions from '../actions'
 import parseAction from './parse-action'
 import parseOptions from './parse-options'
 
@@ -104,7 +104,7 @@ function middleware (options={}) {
       }))
     }
     // Send request action to API reducer
-    if (requestKey) next(lpApiRequest(requestKey))
+    if (requestKey) next(actions.setStatusLoading(requestKey))
     // Make the request
     return http(url, requestOptions)
       .catch(error => {
@@ -117,7 +117,7 @@ function middleware (options={}) {
           }))
         }
         // Send failure action to API reducer
-        if (requestKey) next(lpApiFailure(requestKey))
+        if (requestKey) next(actions.setStatusFailure(requestKey))
         // Dispatch unauthorized action if applicable
         if (error.status === 401 && onUnauthorized) next(onUnauthorized())
       })
@@ -132,7 +132,7 @@ function middleware (options={}) {
           }))
         }
         // Send success action to API reducer
-        if (requestKey) next(lpApiSuccess(requestKey, response))
+        if (requestKey) next(actions.setStatusSuccess(requestKey, response))
       })
   }
 }

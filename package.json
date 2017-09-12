@@ -58,7 +58,7 @@
     "rimraf": "^2.5.4"
   },
   "dependencies": {
-    "@launchpadlab/lp-utils": "^2.6.11",
+    "@launchpadlab/lp-utils": "^2.15.0",
     "babel-preset-react": "^6.24.1",
     "es6-symbol": "^3.1.1",
     "humps": "^2.0.0",
@@ -68,7 +68,7 @@
     "react-redux": "^5.0.4"
   },
   "peerDependencies": {
-    "react": "^15.5.0",
-    "@launchpadlab/lp-requests": "^2.0.0"
+    "@launchpadlab/lp-requests": "^2.0.0",
+    "react": "^15.5.0"
   }
 }

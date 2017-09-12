@@ -13,10 +13,12 @@
     lodash "^4.17.4"
     url-join "^2.0.2"
 
-"@launchpadlab/lp-utils@^2.6.11":
-  version "2.6.11"
-  resolved "https://registry.yarnpkg.com/@launchpadlab/lp-utils/-/lp-utils-2.6.11.tgz#53b6b389c400336cf40c2d224f9555eb612d35a7"
+"@launchpadlab/lp-utils@^2.15.0":
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/@launchpadlab/lp-utils/-/lp-utils-2.15.0.tgz#d09ff983b5683ee76305474f6f094f96c39061f7"
   dependencies:
+    classnames "^2.2.5"
+    humps "^2.0.1"
     lodash "^4.17.4"
     prop-types "^15.5.8"
     validate.js "^0.11.1"
@@ -1193,6 +1195,10 @@ ci-info@^1.0.0:
 circular-json@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
+
+classnames@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
 cli-cursor@^1.0.1:
   version "1.0.2"
@@ -2397,6 +2403,10 @@ http-signature@~1.1.0:
 humps@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/humps/-/humps-2.0.0.tgz#dd4a423e9784626fe7b9f19fde0baff659b40173"
+
+humps@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/humps/-/humps-2.0.1.tgz#dd02ea6081bd0568dc5d073184463957ba9ef9aa"
 
 husky@^0.13.3:
   version "0.13.3"

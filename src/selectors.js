@@ -1,4 +1,9 @@
 import { get } from './utils'
+import {
+  LP_API_STATUS_LOADING,
+  LP_API_STATUS_SUCCESS,
+  LP_API_STATUS_FAILURE,
+} from './actions'
 
 /**
  * A function that, given the redux state, returns the status of a given API request. 
@@ -35,8 +40,29 @@ import { get } from './utils'
  *
 **/
 
-export default function selectStatus (requestKey, state, slice='api') {
+const selectors = {}
+
+selectors.status = function (state, requestKey, slice='api') {
   if (!requestKey || !state) throw 'Must include key and state params'
   if (!get(slice, state)) throw `No reducer exists at path '${slice}'`
   return get(`${slice}.${requestKey}`, state)
 }
+
+selectors.hasStatus = function (...args) {
+  return !!selectors.status(...args)
+}
+
+selectors.isLoading = function (...args) {
+  return selectors.status(...args) === LP_API_STATUS_LOADING
+}
+
+selectors.isSuccess = function (...args) {
+  return selectors.status(...args) === LP_API_STATUS_SUCCESS
+}
+
+selectors.isFailure = function (...args) {
+  return selectors.status(...args) === LP_API_STATUS_FAILURE
+}
+
+export default selectors
+

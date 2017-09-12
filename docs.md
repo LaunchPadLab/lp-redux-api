@@ -12,7 +12,7 @@
 -   [onResponse](#onresponse)
 -   [reducer](#reducer)
 -   [requestWithKey](#requestwithkey)
--   [selectStatus](#selectstatus)
+-   [selectors](#selectors)
 -   [setFromRequest](#setfromrequest)
 
 ## getAuthenticationContext
@@ -184,7 +184,7 @@ The following options can be used to configure the middleware:
 ## onResponse
 
 A function that returns a React HOC to handle rendering that depends on an API response. 
-A combination of [selectStatus](#selectstatus) and `onMount` from `lp-utils`.
+A combination of [selectors](#selectors) and `onLoad` from `lp-utils`.
 
 **Parameters**
 
@@ -209,7 +209,7 @@ import { REQ_USERS, requestUsers } from 'actions'
  
  // requestUsers() dispatches an LP_API action with key 'REQ_USERS' on component mount.
  // When the status of 'REQ_USERS' request becomes 'success' or 'failure', the component will render.
- // Otherwise, the default {@link onMount} loading component will be rendered.
+ // Otherwise, the default `onLoad` loading component will be rendered.
 ```
 
 Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** A higher order component (HOC).
@@ -218,10 +218,10 @@ Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 
 Stores the status of API requests in your state.
 Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey](#requestwithkey)),
-and can be retrieved by using [selectStatus](#selectstatus).
+and can be retrieved by using [selectStatus](selectStatus).
 
 To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
-but you will need to reference it explicitly when using [selectStatus](#selectstatus).
+but you will need to reference it explicitly when using [selectStatus](selectStatus).
 
 **Examples**
 
@@ -258,7 +258,7 @@ Default actions are dynamically named using the key provided, like so:
 
 **Parameters**
 
--   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](#setfromrequest) or [selectStatus](#selectstatus)
+-   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](#setfromrequest) or [selectStatus](selectStatus)
 -   `options` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?= {}** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
 
 **Examples**
@@ -284,7 +284,7 @@ fetchUsers()
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** An [LP_API] action that can be handled by the lp-redux-api middleware.
 
-## selectStatus
+## selectors
 
 A function that, given the redux state, returns the status of a given API request. 
 In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
