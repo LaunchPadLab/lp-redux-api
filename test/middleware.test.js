@@ -1,7 +1,7 @@
 import { successUrl, failureUrl, unauthorizedUrl } from 'isomorphic-fetch'
 import { middleware, LP_API } from '../src'
 import parseAction from '../src/middleware/parse-action'
-import { lpApiRequest, lpApiSuccess, lpApiFailure } from '../src/actions'
+import * as actions from '../src/actions'
 import configureStore from 'redux-mock-store'
 
 import {
@@ -88,62 +88,62 @@ test('middleware passes non-LP_API actions through', () => {
   const store = mockStore({})
   const otherAction = { type: 'OTHER' }
   store.dispatch(otherAction)
-  const actions = store.getActions()
-  expect(actions.pop()).toEqual(otherAction)
+  const dispatchedActions = store.getActions()
+  expect(dispatchedActions.pop()).toEqual(otherAction)
 })
 
 test('middleware dispatches success actions in the correct order', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(successUrl)).then(() => {
-    const actions = store.getActions()
+    const dispatchedActions = store.getActions()
     // User defined REQUEST action
-    expect(actions[0].type).toEqual(ACTION_TYPE_REQUEST)
+    expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
     // Internal REQUEST action
-    expect(actions[1]).toEqual(lpApiRequest(REQUEST_KEY))
+    expect(dispatchedActions[1]).toEqual(actions.setStatusLoading(REQUEST_KEY))
     // User defined SUCCESS action
-    expect(actions[2].type).toEqual(ACTION_TYPE_SUCCESS)
+    expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_SUCCESS)
     // Internal SUCCESS action
-    expect(actions[3]).toEqual(lpApiSuccess(REQUEST_KEY))
+    expect(dispatchedActions[3]).toEqual(actions.setStatusSuccess(REQUEST_KEY))
   })
 })
 
 test('middleware dispatches failure actions in the correct order', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(failureUrl)).then(() => {
-    const actions = store.getActions()
+    const dispatchedActions = store.getActions()
     // User defined REQUEST action
-    expect(actions[0].type).toEqual(ACTION_TYPE_REQUEST)
+    expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
     // Internal REQUEST action
-    expect(actions[1]).toEqual(lpApiRequest(REQUEST_KEY))
+    expect(dispatchedActions[1]).toEqual(actions.setStatusLoading(REQUEST_KEY))
     // User defined FAILURE action
-    expect(actions[2].type).toEqual(ACTION_TYPE_FAILURE)
+    expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_FAILURE)
     // Internal FAILURE action
-    expect(actions[3]).toEqual(lpApiFailure(REQUEST_KEY))
+    expect(dispatchedActions[3]).toEqual(actions.setStatusFailure(REQUEST_KEY))
   })
 })
 
 test('middleware dispatches custom unauthorized action on auth error', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(unauthorizedUrl)).then(() => {
-    const actions = store.getActions()
-    expect(actions.pop()).toEqual(UNAUTHORIZED_ACTION)
+    const dispatchedActions = store.getActions()
+    expect(dispatchedActions.pop()).toEqual(UNAUTHORIZED_ACTION)
   })
 })
 
 test('middleware applies successDataPath correctly', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(successUrl)).then(() => {
-    const actions = store.getActions()
+    const dispatchedActions = store.getActions()
     // User defined SUCCESS action
-    expect(actions[2].payload).toEqual(successUrl)
+    expect(dispatchedActions[2].payload).toEqual(successUrl)
   })
 })
 
 test('middleware applies failureDataPath correctly', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(failureUrl)).then(() => {
-    const actions = store.getActions()
+    const dispatchedActions = store.getActions()
     // User defined FAILURE action
-    expect(actions[2].payload.response).toEqual(failureUrl)
+    expect(dispatchedActions[2].payload.response).toEqual(failureUrl)
   })
 })

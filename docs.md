@@ -2,101 +2,14 @@
 
 ### Table of Contents
 
--   [getAuthenticationContext](#getauthenticationcontext)
--   [isAuthenticated](#isauthenticated)
--   [isAuthenticatedWithContext](#isauthenticatedwithcontext)
 -   [LP_API](#lp_api)
 -   [middleware](#middleware)
     -   [Actions](#actions)
     -   [Middleware configuration](#middleware-configuration)
--   [onResponse](#onresponse)
 -   [reducer](#reducer)
 -   [requestWithKey](#requestwithkey)
--   [selectStatus](#selectstatus)
+-   [selectors](#selectors)
 -   [setFromRequest](#setfromrequest)
-
-## getAuthenticationContext
-
-A helper function to retrieve the authentication context for the 
-authenticated user.
-
-This function returns the context string when the LP Redux Api cookie exists, 
-contains a valid token, and contains a context.
-
-This function returns `undefined` when there is no context present,
-or if the LP Redux API cookie does not exist.
-
-**Examples**
-
-```javascript
-// After an 'admin' signs in
-getAuthenticationContext() // 'admin'
-
-// After a user with no context signs in
-getAuthenticationContext() // undefined 
-
-// After sign out
-getAuthenticationContext() // undefined
-```
-
-Returns **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
-
-## isAuthenticated
-
-A helper function to determine if the current user is authenticated.
-This returns true when the LP Redux Api cookie exists and contains a
-token.
-
-Note, this does not **validate** the token, it only checks for
-presence, validation must be done on the server.
-
-**Examples**
-
-```javascript
-// After sign in
-isAuthenticated() // true
-
-// After sign out
-isAuthenticated() // false
-```
-
-Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
-
-## isAuthenticatedWithContext
-
-A helper function to determine if the current user is authenticated
-for a specific context. This is useful if the client needs to know
-more about the type of user that is logged in.
-
-This returns true when the LP Redux Api cookie exists, contains a
-token, and contains the specified context.
-
-Note, this does not **validate** the token, it only checks for
-presence, validation must be done on the server.
-
-**Parameters**
-
--   `context` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** a context that corresponds to one provided by the server
-
-**Examples**
-
-```javascript
-// After an 'admin' signs in
-isAuthenticatedWithContext('admin') // true
-
-isAuthenticatedWithContext('non-admin') // false
-
-isAuthenticatedWithContext() // false
-
-// After sign out
-isAuthenticatedWithContext('admin') // false
-
-isAuthenticatedWithContext('non-admin') // false
-
-isAuthenticatedWithContext() // false
-```
-
-Returns **[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
 ## LP_API
 
@@ -181,47 +94,14 @@ The following options can be used to configure the middleware:
 -   `failureDataPath`: A path to response data that will be passed as the failure action's payload
 -   any options used by the lp-requests [http](https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http) module
 
-## onResponse
-
-A function that returns a React HOC to handle rendering that depends on an API response. 
-A combination of [selectStatus](#selectstatus) and `onMount` from `lp-utils`.
-
-**Parameters**
-
--   `requestKeys` **([String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array))?= \[]** A key or set of keys corresponding to `lp-redux-api` requests.
--   `LoadingComponent` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)?** A component to render during the loading state. (optional, default `null`)
-
-**Examples**
-
-```javascript
-import { REQ_USERS, requestUsers } from 'actions'
-
- function MyComponent (name) {
-   return (
-     <p>{name}</p>
-   )
- }
-
- export default compose(
-   onMount(requestUsers),
-   onResponse(REQ_USERS),
- )(MyComponent)
- 
- // requestUsers() dispatches an LP_API action with key 'REQ_USERS' on component mount.
- // When the status of 'REQ_USERS' request becomes 'success' or 'failure', the component will render.
- // Otherwise, the default {@link onMount} loading component will be rendered.
-```
-
-Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** A higher order component (HOC).
-
 ## reducer
 
 Stores the status of API requests in your state.
 Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey](#requestwithkey)),
-and can be retrieved by using [selectStatus](#selectstatus).
+and can be retrieved by using [selectStatus](selectStatus).
 
 To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
-but you will need to reference it explicitly when using [selectStatus](#selectstatus).
+but you will need to reference it explicitly when using [selectStatus](selectStatus).
 
 **Examples**
 
@@ -258,7 +138,7 @@ Default actions are dynamically named using the key provided, like so:
 
 **Parameters**
 
--   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](#setfromrequest) or [selectStatus](#selectstatus)
+-   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](#setfromrequest) or [selectStatus](selectStatus)
 -   `options` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?= {}** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
 
 **Examples**
@@ -284,22 +164,25 @@ fetchUsers()
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** An [LP_API] action that can be handled by the lp-redux-api middleware.
 
-## selectStatus
+## selectors
 
-A function that, given the redux state, returns the status of a given API request. 
+This library exports the following selectors for determining the status of requests:
+
+-   `selectors.status(state, requestKey)`
+-   `selectors.hasStatus(state, requestKey, [slice])`
+-   `selectors.isLoading(state, requestKey, [slice])`
+-   `selectors.isSuccess(state, requestKey, [slice])`
+-   `selectors.isFailure(state, requestKey, [slice])`
+
 In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
+Selectors expect the reducer to be keyed under `'api'`- if a different key is used,
+it must be passed as the optional `slice` parameter.
 
-The status of a request can be one of the following exported constants:
+The status returned by `selectors.status()` can be one of the following exported constants:
 
 -   `LP_API_STATUS_LOADING`: `'loading'`
 -   `LP_API_STATUS_SUCCESS`: `'success'`
 -   `LP_API_STATUS_FAILURE`: `'failure'`
-
-**Parameters**
-
--   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that references a request created by [requestWithKey](#requestwithkey)
--   `state` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** The state of your redux store
--   `slice` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** The path to the slice of state handled by the `lp-redux-api` reducer (optional, default `'api'`)
 
 **Examples**
 
@@ -315,15 +198,13 @@ combineReducers({
 
 // Now you can keep track of request status elsewhere in your app
 
-import { requestKey, selectStatus } from 'lp-redux-api'
+import { requestWithKey, selectors as apiSelectors } from 'lp-redux-api'
 
 const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
 dispatch(requestWithKey(REQ_FETCH_USERS, { url: '/users' }))
 
-selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
+apiSelectors.status(state, REQ_FETCH_USERS) // -> 'loading'
 ```
-
-Returns **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string constant indicating request status
 
 ## setFromRequest
 

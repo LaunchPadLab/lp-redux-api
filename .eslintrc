@@ -10,14 +10,10 @@
     sourceType: module
     ecmaFeatures:
       experimentalObjectRestSpread: true
-      jsx: true
       impliedStrict: true
-  plugins:
-    - react
   globals:
     Symbol: true
   extends:
     - eslint:recommended
-    - plugin:react/recommended
     - plugin:import/errors
     - plugin:import/warnings
