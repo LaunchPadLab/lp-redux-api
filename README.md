@@ -9,7 +9,7 @@ Lightweight API library and middleware for redux applications.
 Documentation and usage info can be found in [docs.md](docs.md).
 
 ## Migration Guides
-- [v5.0.0](migration-guides/v5.0.0)
+- [v5.0.0](migration-guides/v5.0.0.md)
 
 ## Contribution
 This package follows the Opex [NPM package guidelines](https://github.com/LaunchPadLab/opex/blob/master/gists/npm-package-guidelines.md). Please refer to the linked document for information on contributing, testing and versioning.
