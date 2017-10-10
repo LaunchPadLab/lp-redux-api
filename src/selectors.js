@@ -49,8 +49,8 @@ import {
 const selectors = {}
 
 selectors.status = function (state, requestKey, slice='api') {
-  if (!requestKey || !state) throw 'Must include key and state params'
-  if (!get(slice, state)) throw `No reducer exists at path '${slice}'`
+  if (!requestKey || !state) throw new Error('Must include key and state params')
+  if (!get(slice, state)) throw new Error(`No reducer exists at path '${slice}'`)
   return get(`${slice}.${requestKey}`, state)
 }
 

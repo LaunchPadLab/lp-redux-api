@@ -86,7 +86,7 @@ function middleware (options={}) {
     if (!lpApi) return next(action)
     // Parse options and merge with defaults
     const { configOptions, requestOptions, url } = parseOptions(lpApi)
-    if (!url) throw `Middleware: Must provide string 'url' argument`
+    if (!url) throw new Error(`Middleware: Must provide string 'url' argument`)
     const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
     // Pull out config options
     const {
