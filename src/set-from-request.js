@@ -46,8 +46,8 @@ import { compose, set, unset } from './utils'
 **/
 
 export default function setFromRequest (requestKey, path) {
-  if (!requestKey) throw 'Must include a key for the request handled by setFromRequest().'
-  if (!path) throw 'Must include path to be set by setFromRequest().'
+  if (!requestKey) throw new Error('Must include a key for the request handled by setFromRequest().')
+  if (!path) throw new Error('Must include path to be set by setFromRequest().')
   const successPath = `${ path }.success`
   const failurePath = `${ path }.failure`
   return {
