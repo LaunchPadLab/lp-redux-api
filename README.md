@@ -3,6 +3,8 @@
 [![License](http://img.shields.io/badge/license-MIT-yellowgreen.svg)](#license)
 
 # lp-redux-api
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/LaunchPadLab/lp-redux-api.svg)](https://greenkeeper.io/)
 Lightweight API library and middleware for redux applications.
 
 ## Documentation 
