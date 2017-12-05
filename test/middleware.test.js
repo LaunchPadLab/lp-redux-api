@@ -134,7 +134,6 @@ test('middleware applies successDataPath correctly', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(successUrl)).then(() => {
     const dispatchedActions = store.getActions()
-    // User defined SUCCESS action
     expect(dispatchedActions[2].payload).toEqual(successUrl)
   })
 })
@@ -143,7 +142,6 @@ test('middleware applies failureDataPath correctly', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(failureUrl)).then(() => {
     const dispatchedActions = store.getActions()
-    // User defined FAILURE action
-    expect(dispatchedActions[2].payload.response).toEqual(failureUrl)
+    expect(dispatchedActions[2].payload.errors).toEqual(failureUrl)
   })
 })
