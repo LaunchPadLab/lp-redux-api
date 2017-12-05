@@ -139,7 +139,7 @@ Default actions are dynamically named using the key provided, like so:
 **Parameters**
 
 -   `requestKey` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A unique key that you can use to reference your request in [setFromRequest](#setfromrequest) or [selectStatus](selectStatus)
--   `options` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?= {}** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
+-   `options` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Config options that you would normally include in an [LP_API] action, such as `url` and `method` (optional, default `{}`)
 
 **Examples**
 
