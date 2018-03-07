@@ -65,6 +65,24 @@ test('selectors.isLoading returns true when status is loading', () => {
   expect(selectors.isLoading(fullState, REQUEST_KEY)).toEqual(true)
 })
 
+test('selectors.isComplete returns false when status is loading', () => {
+  const initialState = {}
+  const newState = reducer(initialState, actions.setStatusLoading(REQUEST_KEY))
+  const fullState = {
+    api: newState
+  }
+  expect(selectors.isComplete(fullState, REQUEST_KEY)).toEqual(false)
+})
+
+test('selectors.isComplete returns true when status is not loading', () => {
+  const initialState = {}
+  const newState = reducer(initialState, actions.setStatusSuccess(REQUEST_KEY))
+  const fullState = {
+    api: newState
+  }
+  expect(selectors.isComplete(fullState, REQUEST_KEY)).toEqual(true)
+})
+
 test('selectors.isSuccess returns false when status is not success', () => {
   const initialState = {}
   const newState = reducer(initialState, actions.setStatusLoading(REQUEST_KEY))
