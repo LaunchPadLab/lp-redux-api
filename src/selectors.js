@@ -7,9 +7,10 @@ import {
 
 /**
  * This library exports the following selectors for determining the status of requests:
- * - `selectors.status(state, requestKey)`
+ * - `selectors.status(state, requestKey, [slice])`
  * - `selectors.hasStatus(state, requestKey, [slice])`
  * - `selectors.isLoading(state, requestKey, [slice])`
+ * - `selectors.isComplete(state, requestKey, [slice])`
  * - `selectors.isSuccess(state, requestKey, [slice])`
  * - `selectors.isFailure(state, requestKey, [slice])`
  * 
@@ -60,6 +61,10 @@ selectors.hasStatus = function (...args) {
 
 selectors.isLoading = function (...args) {
   return selectors.status(...args) === LP_API_STATUS_LOADING
+}
+
+selectors.isComplete = function (...args) {
+  return selectors.status(...args) !== LP_API_STATUS_LOADING
 }
 
 selectors.isSuccess = function (...args) {

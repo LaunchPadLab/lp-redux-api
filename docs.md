@@ -168,9 +168,10 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 This library exports the following selectors for determining the status of requests:
 
--   `selectors.status(state, requestKey)`
+-   `selectors.status(state, requestKey, [slice])`
 -   `selectors.hasStatus(state, requestKey, [slice])`
 -   `selectors.isLoading(state, requestKey, [slice])`
+-   `selectors.isComplete(state, requestKey, [slice])`
 -   `selectors.isSuccess(state, requestKey, [slice])`
 -   `selectors.isFailure(state, requestKey, [slice])`
 
