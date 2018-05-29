@@ -107,31 +107,35 @@ function middleware (options={}) {
     if (requestKey) next(actions.setStatusLoading(requestKey))
     // Make the request
     return http(url, requestOptions)
-      .then(response => {
-        // Send user-specified success action
-        if (successAction) {
-          next(parseAction({
-            action: successAction,
-            payload: response,
-          }))
+      .then(
+        // Success handler
+        response => {
+          // Send user-specified success action
+          if (successAction) {
+            next(parseAction({
+              action: successAction,
+              payload: response,
+            }))
+          }
+          // Send success action to API reducer
+          if (requestKey) next(actions.setStatusSuccess(requestKey, response))
+        },
+        // Error handler
+        error => {
+          // Send user-specified failure action
+          if (failureAction) {
+            next(parseAction({
+              action: failureAction,
+              payload: error,
+              error: true,
+            }))
+          }
+          // Send failure action to API reducer
+          if (requestKey) next(actions.setStatusFailure(requestKey))
+          // Dispatch unauthorized action if applicable
+          if (error.status === 401 && onUnauthorized) next(onUnauthorized())
         }
-        // Send success action to API reducer
-        if (requestKey) next(actions.setStatusSuccess(requestKey, response))
-      })
-      .catch(error => {
-        // Send user-specified failure action
-        if (failureAction) {
-          next(parseAction({
-            action: failureAction,
-            payload: error,
-            error: true,
-          }))
-        }
-        // Send failure action to API reducer
-        if (requestKey) next(actions.setStatusFailure(requestKey))
-        // Dispatch unauthorized action if applicable
-        if (error.status === 401 && onUnauthorized) next(onUnauthorized())
-      })
+      )
   }
 }
 
