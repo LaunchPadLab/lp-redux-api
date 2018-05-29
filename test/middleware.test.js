@@ -122,6 +122,21 @@ test('middleware dispatches failure actions in the correct order', () => {
   })
 })
 
+test('middleware dispatches success action when response body does not exist', () => {
+  const store = mockStore({})
+  return store.dispatch(actionWithURL(successUrl, { successDataPath: 'path.to.nothing' })).then(() => {
+    const dispatchedActions = store.getActions()
+    // User defined REQUEST action
+    expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
+    // Internal REQUEST action
+    expect(dispatchedActions[1]).toEqual(actions.setStatusLoading(REQUEST_KEY))
+    // User defined SUCCESS action
+    expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_SUCCESS)
+    // Internal SUCCESS action
+    expect(dispatchedActions[3]).toEqual(actions.setStatusSuccess(REQUEST_KEY))
+  })
+})
+
 test('middleware dispatches custom unauthorized action on auth error', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(unauthorizedUrl)).then(() => {

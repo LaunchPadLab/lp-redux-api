@@ -7,7 +7,7 @@ export const ACTION_TYPE_REQUEST = 'ACTION_TYPE_REQUEST'
 export const ACTION_TYPE_SUCCESS = 'ACTION_TYPE_SUCCESS'
 export const ACTION_TYPE_FAILURE = 'ACTION_TYPE_FAILURE'
 
-export const actionWithURL = (url) => {
+export function actionWithURL (url, options={}) {
   return {
     [LP_API]: {
       url,
@@ -15,6 +15,7 @@ export const actionWithURL = (url) => {
       requestAction: ACTION_TYPE_REQUEST, 
       successAction: ACTION_TYPE_SUCCESS,
       failureAction: ACTION_TYPE_FAILURE,
+      ...options,
     }
   }
 }
