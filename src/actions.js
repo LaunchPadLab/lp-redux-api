@@ -8,24 +8,24 @@ export const LP_API_STATUS_FAILURE = 'failure'
 // API status action creator:
 // (these actions are handled by reducer.js)
 
-function statusAction (key, status) {
+function statusAction (key, status, data) {
   return {
-    type: LP_API_ACTION,
-    payload: { key, status }
+    type: '@@lp-redux-api/' + key,
+    payload: { key, status, data }
   }
 }
 
 // Specific status action creators:
 // (used in middleware.js)
 
-export function setStatusLoading (key) {
-  return statusAction(key, LP_API_STATUS_LOADING)
+export function setStatusLoading (key, data) {
+  return statusAction(key, LP_API_STATUS_LOADING, data)
 }
 
-export function setStatusSuccess (key) {
-  return statusAction(key, LP_API_STATUS_SUCCESS)
+export function setStatusSuccess (key, data) {
+  return statusAction(key, LP_API_STATUS_SUCCESS, data)
 }
 
-export function setStatusFailure (key) {
-  return statusAction(key, LP_API_STATUS_FAILURE)
+export function setStatusFailure (key, data) {
+  return statusAction(key, LP_API_STATUS_FAILURE, data)
 }
