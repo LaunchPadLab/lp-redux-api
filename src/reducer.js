@@ -1,4 +1,4 @@
-import { LP_API_ACTION } from './actions'
+import { LP_API_ACTION_NAMESPACE } from './actions'
 
 /**
  * Stores the status of API requests in your state.
@@ -33,7 +33,7 @@ import { LP_API_ACTION } from './actions'
 **/
 
 export default function reducer (state={}, { type, payload }) {
-  if (!type.startsWith('@@lp-redux-api/')) return state
+  if (!type.startsWith(LP_API_ACTION_NAMESPACE)) return state
   const { key, status } = payload
   return { ...state, [key]: status }
 }

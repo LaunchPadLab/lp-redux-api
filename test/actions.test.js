@@ -1,7 +1,7 @@
 import * as actions from '../src/actions'
 
 const { 
-  LP_API_ACTION, 
+  LP_API_ACTION_NAMESPACE, 
   LP_API_STATUS_LOADING, 
   LP_API_STATUS_SUCCESS, 
   LP_API_STATUS_FAILURE,
@@ -10,7 +10,7 @@ const {
 test('REQUEST action creator creates action of expected type', () => {
   const requestKey = 'test request'
   const requestAction = {
-    type: LP_API_ACTION,
+    type: LP_API_ACTION_NAMESPACE + requestKey,
     payload: {
       key: requestKey,
       status: LP_API_STATUS_LOADING
@@ -22,10 +22,11 @@ test('REQUEST action creator creates action of expected type', () => {
 test('SUCCESS action creator creates action of expected type', () => {
   const requestKey = 'test request'
   const requestAction = {
-    type: LP_API_ACTION,
+    type: LP_API_ACTION_NAMESPACE + requestKey,
     payload: {
       key: requestKey,
-      status: LP_API_STATUS_SUCCESS
+      status: LP_API_STATUS_SUCCESS,
+      data: 'response',
     }
   }
   expect(actions.setStatusSuccess(requestKey, 'response')).toEqual(requestAction)
@@ -34,11 +35,12 @@ test('SUCCESS action creator creates action of expected type', () => {
 test('FAILURE action creator creates action of expected type', () => {
   const requestKey = 'test request'
   const requestAction = {
-    type: LP_API_ACTION,
+    type: LP_API_ACTION_NAMESPACE + requestKey,
     payload: {
       key: requestKey,
-      status: LP_API_STATUS_FAILURE
+      status: LP_API_STATUS_FAILURE,
+      data: 'error',
     }
   }
-  expect(actions.setStatusFailure(requestKey)).toEqual(requestAction)
+  expect(actions.setStatusFailure(requestKey, 'error')).toEqual(requestAction)
 })

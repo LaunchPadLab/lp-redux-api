@@ -131,7 +131,7 @@ function middleware (options={}) {
             }))
           }
           // Send failure action to API reducer
-          if (requestKey) next(actions.setStatusFailure(requestKey))
+          if (requestKey) next(actions.setStatusFailure(requestKey, error))
           // Dispatch unauthorized action if applicable
           if (error.status === 401 && onUnauthorized) next(onUnauthorized())
         }
