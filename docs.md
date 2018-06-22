@@ -217,7 +217,7 @@ A function that creates action creators for making API requests, much like [crea
 
 ### Parameters
 
--   `type` **[String][38]** A unique key that will be used to identify the request internally inr edux
+-   `type` **[String][38]** A unique key that will be used to identify the request internally in redux
 -   `definition` **([Object][41] \| [Function][37])** An object of `lp-request` config options, or a function that returns config options.
 
 ### Examples

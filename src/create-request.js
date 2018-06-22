@@ -1,11 +1,12 @@
 import LP_API from './LP_API'
+import { LP_API_ACTION_NAMESPACE } from './actions'
 import { isObject, isFunction } from 'lodash'
 
 /**
  * A function that creates action creators for making API requests, much like [createAction](https://redux-actions.js.org/api-reference/createaction-s) from `redux-actions`.
  *
  * @name createRequest
- * @param {String} type - A unique key that will be used to identify the request internally inr edux
+ * @param {String} type - A unique key that will be used to identify the request internally in redux
  * @param {Object|Function} definition - An object of `lp-request` config options, or a function that returns config options.
  * @returns {Function} An action creator that passes its arguments to `definition` and makes the resulting API request.
  * @example
@@ -44,7 +45,7 @@ function createRequest (type, definition) {
       }
     }
   }
-  actionCreator.toString = () => '@@lp-redux-api/' + type
+  actionCreator.toString = () => LP_API_ACTION_NAMESPACE + type
   return actionCreator
 }
 
