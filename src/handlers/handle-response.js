@@ -26,6 +26,7 @@ import { isSuccessAction, isFailureAction } from './helpers'
 **/
 
 function handleResponse (successHandler, failureHandler) {
+  if (!(successHandler && failureHandler)) throw new Error('handleResponse requires both a success handler and failure handler.')
   return (state, action) => {
     if (isSuccessAction(action)) return successHandler(state, action)
     if (isFailureAction(action)) return failureHandler(state, action)
