@@ -2,14 +2,166 @@
 
 ### Table of Contents
 
--   [LP_API][1]
--   [middleware][2]
-    -   [Actions][3]
-    -   [Middleware configuration][4]
--   [reducer][5]
--   [requestWithKey][6]
--   [selectors][7]
--   [setFromRequest][8]
+-   [handleSuccess][1]
+-   [handleSuccess][2]
+-   [handleFailure][3]
+-   [handleFailure][4]
+-   [handleResponse][5]
+-   [setOnResponse][6]
+-   [LP_API][7]
+-   [createRequest][8]
+-   [middleware][9]
+    -   [Actions][10]
+    -   [Middleware configuration][11]
+-   [reducer][12]
+-   [actionOpts][13]
+-   [selectors][14]
+-   [setFromRequest][15]
+
+## handleSuccess
+
+A function that takes an API action handler and only applies that handler when the request succeeds.
+
+**Parameters**
+
+-   `handler` **[Function][16]** An action handler that is passed `state` and `action` params
+
+**Examples**
+
+```javascript
+handleActions({
+   [apiActions.fetchUser]: handleSuccess((state, action) => {
+     // This code only runs when the call was successful
+     return set('currentUser', action.payload.data, state)
+   })
+})
+
+*
+```
+
+Returns **[Function][16]** An action handler that runs when a request is successful
+
+## handleSuccess
+
+A function that creates an API action handler that sets a path in the state with the returned data if a request succeeds.
+
+**Parameters**
+
+-   `path` **[String][17]** The path in the state to set with the returned data
+-   `transform` **[Function][16]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
+
+**Examples**
+
+```javascript
+handleActions({
+   // This will do the same thing as the example for handleSuccess
+   [apiActions.fetchUser]: setOnSuccess('currentSuccess')
+})
+
+*
+```
+
+Returns **[Function][16]** An action handler that runs when a request is unsuccessful
+
+## handleFailure
+
+A function that takes an API action handler and only applies that handler when the request fails.
+
+**Parameters**
+
+-   `handler` **[Function][16]** An action handler that is passed `state` and `action` params
+
+**Examples**
+
+```javascript
+handleActions({
+   [apiActions.fetchUser]: handleFailure((state, action) => {
+     // This code only runs when the call was unsuccessful
+     return set('userFetchError', action.payload.error, state)
+   })
+})
+
+*
+```
+
+Returns **[Function][16]** An action handler that runs when a request is unsuccessful
+
+## handleFailure
+
+A function that creates an API action handler that sets a path in the state with the returned error if a request fails.
+
+**Parameters**
+
+-   `path` **[String][17]** The path in the state to set with the returned error
+-   `transform` **[Function][16]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
+
+**Examples**
+
+```javascript
+handleActions({
+   // This will do the same thing as the example for handleFailure
+   [apiActions.fetchUser]: setOnFailure('userFetchError')
+})
+
+*
+```
+
+Returns **[Function][16]** An action handler that runs when a request is successful
+
+## handleResponse
+
+A function that takes two API action handlers, one for successful requests and one for failed requests,
+and applies the handlers when the responses have the correct status.
+
+**Parameters**
+
+-   `successHandler` **[Function][16]** An action handler that is passed `state` and `action` params
+-   `failureHandler` **[Function][16]** An action handler that is passed `state` and `action` params
+
+**Examples**
+
+```javascript
+handleActions({
+   [apiActions.fetchUser]: handleResponse(
+     (state, action) => {
+       // This code runs if the call is successful
+       return set('currentUser', action.payload.data, state)
+     },
+     (state, action) => {
+       // This code runs if the call is unsuccessful
+       return set('userFetchError', action.payload.error, state)
+     },
+   )
+})
+
+*
+```
+
+Returns **[Function][16]** An action handler runs the handler that corresponds to the request status
+
+## setOnResponse
+
+A function that creates an API action handler that sets one of two given paths in the state with the returned data depending on whether a request succeeds or fails.
+
+**Parameters**
+
+-   `path` **[String][17]** The path in the state to set with the returned data on success
+-   `path` **[String][17]** The path in the state to set with the returned error on failure
+-   `transform` **[Function][16]?** A function that determines the success data that is set in the state. Passed `action` and `state` params.
+-   `transform` **[Function][16]?** A function that determines the error data that is set in the state. Passed `action` and `state` params.
+
+**Examples**
+
+```javascript
+handleActions({
+   // This will do the same thing as the example for handleResponse
+   [apiActions.fetchUser]: setOnResponse('currentUser', 'userFetchError')
+})
+
+*
+```
+
+Returns **[Function][16]** An action handler
 
 ## LP_API
 
@@ -18,9 +170,9 @@ Redux Api middleware. This is implemented as a Symbol, instead of a String
 to guarantee uniqueness.
 
 The params provided as the value include anything that is supported by
-[LP Redux Api Middleware][2]
+[LP Redux Api Middleware][9]
 
-Type: [Symbol][9]
+Type: [Symbol][18]
 
 **Examples**
 
@@ -38,6 +190,36 @@ function fooAction () {
 }
 ```
 
+## createRequest
+
+A function that creates action creators for making API requests, much like [createAction][19] from `redux-actions`.
+
+**Parameters**
+
+-   `type` **[String][17]** A unique key that will be used to identify the request internally inr edux
+-   `definition` **([Object][20] \| [Function][16])** An object of `lp-request` config options, or a function that returns config options.
+
+**Examples**
+
+```javascript
+export const fetchUser = requestWithKey('FETCH_USER', (id) => ({
+  url: '/users/' + id,
+}))
+
+fetchUsers(5)
+// -> will make request to /users/5
+
+// Just like in redux-action, this action can be referenced in a reducer by name:
+
+handleActions({
+   [apiActions.fetchUser]: (state, action) => ...
+})
+
+*
+```
+
+Returns **[Function][16]** An action creator that passes its arguments to `definition` and makes the resulting API request.
+
 ## middleware
 
 ### Actions
@@ -48,7 +230,7 @@ At a high level, `lp-redux-api` actions contain the following information:
 -   Any extra request details
 -   One or many actions to dispatch based on the status of the request
 
-These actions are keyed using the [LP_API][1] symbol so that the middleware knows to handle them. Here's an example of a simple action creator:
+These actions are keyed using the [LP_API][7] symbol so that the middleware knows to handle them. Here's an example of a simple action creator:
 
     import { LP_API } from '@launchpadlab/lp-redux-api'
 
@@ -94,18 +276,18 @@ The following options can be used to configure the middleware:
 -   `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
 -   `successDataPath`: A path to response data that will be passed as the success action's payload
 -   `failureDataPath`: A path to response data that will be passed as the failure action's payload
--   any options used by the lp-requests [http][10] module
+-   any options used by the lp-requests [http][21] module
 
 ## reducer
 
 Stores the status of API requests in your state.
-Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey][6]),
-and can be retrieved by using [selectStatus][11].
+Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey][22]),
+and can be retrieved by using [selectStatus][23].
 
 To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
-but you will need to reference it explicitly when using [selectStatus][11].
+but you will need to reference it explicitly when using [selectStatus][23].
 
-Type: [Function][12]
+Type: [Function][16]
 
 **Examples**
 
@@ -131,10 +313,10 @@ selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
 *
 ```
 
-## requestWithKey
+## actionOpts
 
 An action creator that automatically adds a requestKey and default actions to your request.
-These default actions can then be picked up by [setFromRequest][8].
+These default actions can then be picked up by [setFromRequest][15].
 
 Default actions are dynamically named using the key provided, like so:
 
@@ -144,8 +326,8 @@ Default actions are dynamically named using the key provided, like so:
 
 **Parameters**
 
--   `requestKey` **[String][13]** A unique key that you can use to reference your request in [setFromRequest][8] or [selectStatus][11]
--   `options` **[Object][14]** Config options that you would normally include in an [LP_API] action, such as `url` and `method` (optional, default `{}`)
+-   `requestKey` **[String][17]** A unique key that you can use to reference your request in [setFromRequest][15] or [selectStatus][23]
+-   `options` **[Object][20]** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
 
 **Examples**
 
@@ -170,7 +352,7 @@ fetchUsers()
 *
 ```
 
-Returns **[Object][14]** An [LP_API] action that can be handled by the lp-redux-api middleware.
+Returns **[Object][20]** An [LP_API] action that can be handled by the lp-redux-api middleware.
 
 ## selectors
 
@@ -219,7 +401,7 @@ apiSelectors.status(state, REQ_FETCH_USERS) // -> 'loading'
 
 ## setFromRequest
 
-A function that creates action handlers for actions generated by [requestWithKey][6].
+A function that creates action handlers for actions generated by [requestWithKey][22].
 These handlers set data at a path in the state from the response(s) of a given request.
 
 If the request is successful, the data will be set at `<path>.success`.
@@ -230,8 +412,8 @@ You can override either of these handlers in your reducer by creating handlers e
 
 **Parameters**
 
--   `requestKey` **[String][13]** A unique key that references a request created by [requestWithKey][6]
--   `path` **[String][13]** A path (in dot notation) indicating where the data will be set in the state
+-   `requestKey` **[String][17]** A unique key that references a request created by [requestWithKey][22]
+-   `path` **[String][17]** A path (in dot notation) indicating where the data will be set in the state
 
 **Examples**
 
@@ -267,32 +449,50 @@ dispatch(fetchUsers())
 *
 ```
 
-Returns **[Object][14]** A hash of action handlers that can be included in a reducer by using object spread syntax
+Returns **[Object][20]** A hash of action handlers that can be included in a reducer by using object spread syntax
 
-[1]: #lp_api
+[1]: #handlesuccess
 
-[2]: #middleware
+[2]: #handlesuccess-1
 
-[3]: #actions
+[3]: #handlefailure
 
-[4]: #middleware-configuration
+[4]: #handlefailure-1
 
-[5]: #reducer
+[5]: #handleresponse
 
-[6]: #requestwithkey
+[6]: #setonresponse
 
-[7]: #selectors
+[7]: #lp_api
 
-[8]: #setfromrequest
+[8]: #createrequest
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+[9]: #middleware
 
-[10]: https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http
+[10]: #actions
 
-[11]: selectStatus
+[11]: #middleware-configuration
 
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[12]: #reducer
 
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[13]: #actionopts
 
-[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[14]: #selectors
+
+[15]: #setfromrequest
+
+[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+
+[19]: https://redux-actions.js.org/api-reference/createaction-s
+
+[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[21]: https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http
+
+[22]: requestWithKey
+
+[23]: selectStatus

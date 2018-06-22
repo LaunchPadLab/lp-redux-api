@@ -1,4 +1,6 @@
 export handleSuccess from './handle-success'
-// export handleFailure from './handle-failure'
-// export handleResponse from './handle-response'
+export handleFailure from './handle-failure'
+export handleResponse from './handle-response'
 export setOnSuccess from './set-on-success'
+export setOnFailure from './set-on-failure'
+export setOnResponse from './set-on-response'

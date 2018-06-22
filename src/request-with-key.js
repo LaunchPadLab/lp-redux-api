@@ -1,5 +1,5 @@
 import LP_API from './LP_API'
-import { hasOverlap } from './utils'
+import { hasOverlap, deprecate } from './utils'
 
 /**
  * An action creator that automatically adds a requestKey and default actions to your request.
@@ -34,7 +34,10 @@ import { hasOverlap } from './utils'
  *
 **/
 
-export default function requestWithKey (requestKey, options={}) {
+// Action-related options that are forbidden
+const actionOpts = ['requestAction', 'successAction', 'failureAction']
+
+function requestWithKey (requestKey, options={}) {
   if (!requestKey) throw new Error('Must include a key for requestWithKey() request.')
   if (hasOverlap(Object.keys(options), actionOpts)) throw new Error('Cannot specify custom actions when using requestWithKey()')
   return {
@@ -48,5 +51,4 @@ export default function requestWithKey (requestKey, options={}) {
   }
 }
 
-// Action-related options that are forbidden
-const actionOpts = ['requestAction', 'successAction', 'failureAction']
+export default deprecate(requestWithKey, 'Use createRequest() instead.')
