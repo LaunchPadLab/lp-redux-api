@@ -5,16 +5,16 @@
 -   [handleSuccess][1]
     -   [Parameters][2]
     -   [Examples][3]
--   [handleSuccess][4]
+-   [handleFailure][4]
     -   [Parameters][5]
     -   [Examples][6]
--   [handleFailure][7]
+-   [handleResponse][7]
     -   [Parameters][8]
     -   [Examples][9]
--   [handleFailure][10]
+-   [setOnSuccess][10]
     -   [Parameters][11]
     -   [Examples][12]
--   [handleResponse][13]
+-   [setOnFailure][13]
     -   [Parameters][14]
     -   [Examples][15]
 -   [setOnResponse][16]
@@ -62,28 +62,6 @@ handleActions({
 
 Returns **[Function][37]** An action handler that runs when a request is successful
 
-## handleSuccess
-
-A function that creates an API action handler that sets a path in the state with the returned data if a request succeeds.
-
-### Parameters
-
--   `path` **[String][38]** The path in the state to set with the returned data
--   `transform` **[Function][37]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
-
-### Examples
-
-```javascript
-handleActions({
-   // This will do the same thing as the example for handleSuccess
-   [apiActions.fetchUser]: setOnSuccess('currentSuccess')
-})
-
-*
-```
-
-Returns **[Function][37]** An action handler that runs when a request is unsuccessful
-
 ## handleFailure
 
 A function that takes an API action handler and only applies that handler when the request fails.
@@ -106,28 +84,6 @@ handleActions({
 ```
 
 Returns **[Function][37]** An action handler that runs when a request is unsuccessful
-
-## handleFailure
-
-A function that creates an API action handler that sets a path in the state with the returned error if a request fails.
-
-### Parameters
-
--   `path` **[String][38]** The path in the state to set with the returned error
--   `transform` **[Function][37]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
-
-### Examples
-
-```javascript
-handleActions({
-   // This will do the same thing as the example for handleFailure
-   [apiActions.fetchUser]: setOnFailure('userFetchError')
-})
-
-*
-```
-
-Returns **[Function][37]** An action handler that runs when a request is successful
 
 ## handleResponse
 
@@ -159,6 +115,50 @@ handleActions({
 ```
 
 Returns **[Function][37]** An action handler runs the handler that corresponds to the request status
+
+## setOnSuccess
+
+A function that creates an API action handler that sets a path in the state with the returned data if a request succeeds.
+
+### Parameters
+
+-   `path` **[String][38]** The path in the state to set with the returned data
+-   `transform` **[Function][37]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
+
+### Examples
+
+```javascript
+handleActions({
+   // This will do the same thing as the example for handleSuccess
+   [apiActions.fetchUser]: setOnSuccess('currentSuccess')
+})
+
+*
+```
+
+Returns **[Function][37]** An action handler that runs when a request is unsuccessful
+
+## setOnFailure
+
+A function that creates an API action handler that sets a path in the state with the returned error if a request fails.
+
+### Parameters
+
+-   `path` **[String][38]** The path in the state to set with the returned error
+-   `transform` **[Function][37]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
+
+### Examples
+
+```javascript
+handleActions({
+   // This will do the same thing as the example for handleFailure
+   [apiActions.fetchUser]: setOnFailure('userFetchError')
+})
+
+*
+```
+
+Returns **[Function][37]** An action handler that runs when a request is successful
 
 ## setOnResponse
 
@@ -478,25 +478,25 @@ Returns **[Object][41]** A hash of action handlers that can be included in a red
 
 [3]: #examples
 
-[4]: #handlesuccess-1
+[4]: #handlefailure
 
 [5]: #parameters-1
 
 [6]: #examples-1
 
-[7]: #handlefailure
+[7]: #handleresponse
 
 [8]: #parameters-2
 
 [9]: #examples-2
 
-[10]: #handlefailure-1
+[10]: #setonsuccess
 
 [11]: #parameters-3
 
 [12]: #examples-3
 
-[13]: #handleresponse
+[13]: #setonfailure
 
 [14]: #parameters-4
 
