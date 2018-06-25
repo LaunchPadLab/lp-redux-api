@@ -99,11 +99,11 @@ test('middleware dispatches success actions in the correct order', () => {
     // User defined REQUEST action
     expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
     // Internal REQUEST action
-    expect(dispatchedActions[1]).toEqual(actions.setStatusLoading(REQUEST_KEY))
+    expect(dispatchedActions[1].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
     // User defined SUCCESS action
     expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_SUCCESS)
     // Internal SUCCESS action
-    expect(dispatchedActions[3]).toEqual(actions.setStatusSuccess(REQUEST_KEY))
+    expect(dispatchedActions[3].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
   })
 })
 
@@ -114,11 +114,11 @@ test('middleware dispatches failure actions in the correct order', () => {
     // User defined REQUEST action
     expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
     // Internal REQUEST action
-    expect(dispatchedActions[1]).toEqual(actions.setStatusLoading(REQUEST_KEY))
+    expect(dispatchedActions[1].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
     // User defined FAILURE action
     expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_FAILURE)
     // Internal FAILURE action
-    expect(dispatchedActions[3]).toEqual(actions.setStatusFailure(REQUEST_KEY))
+    expect(dispatchedActions[3].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
   })
 })
 
@@ -129,11 +129,11 @@ test('middleware dispatches success action when response body does not exist', (
     // User defined REQUEST action
     expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
     // Internal REQUEST action
-    expect(dispatchedActions[1]).toEqual(actions.setStatusLoading(REQUEST_KEY))
+    expect(dispatchedActions[1].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
     // User defined SUCCESS action
     expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_SUCCESS)
     // Internal SUCCESS action
-    expect(dispatchedActions[3]).toEqual(actions.setStatusSuccess(REQUEST_KEY))
+    expect(dispatchedActions[3].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
   })
 })
 

@@ -7,12 +7,12 @@ import {
 
 /**
  * This library exports the following selectors for determining the status of requests:
- * - `selectors.status(state, requestKey, [slice])`
- * - `selectors.hasStatus(state, requestKey, [slice])`
- * - `selectors.isLoading(state, requestKey, [slice])`
- * - `selectors.isComplete(state, requestKey, [slice])`
- * - `selectors.isSuccess(state, requestKey, [slice])`
- * - `selectors.isFailure(state, requestKey, [slice])`
+ * - `selectors.status(state, requestAction, [slice])`
+ * - `selectors.hasStatus(state, requestAction, [slice])`
+ * - `selectors.isLoading(state, requestAction, [slice])`
+ * - `selectors.isComplete(state, requestAction, [slice])`
+ * - `selectors.isSuccess(state, requestAction, [slice])`
+ * - `selectors.isFailure(state, requestAction, [slice])`
  * 
  * In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
  * Selectors expect the reducer to be keyed under `'api'`- if a different key is used,
@@ -38,12 +38,12 @@ import {
  * 
  * // Now you can keep track of request status elsewhere in your app
  * 
- * import { requestWithKey, selectors as apiSelectors } from 'lp-redux-api'
+ * import { createRequest, selectors as apiSelectors } from 'lp-redux-api'
  * 
- * const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
- * dispatch(requestWithKey(REQ_FETCH_USERS, { url: '/users' }))
+ * const fetchUsers = createRequest('FETCH_USERS', { url: '/users' })
+ * dispatch(fetchUsers())
  * 
- * apiSelectors.status(state, REQ_FETCH_USERS) // -> 'loading'
+ * apiSelectors.status(state, fetchUsers) // -> 'loading'
  *
 **/
 

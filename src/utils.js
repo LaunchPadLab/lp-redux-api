@@ -1,12 +1,18 @@
-import omitBy from 'lodash/omitBy'
-import isUndefined from 'lodash/isUndefined'
-import overlap from 'lodash/intersection'
+import {
+  isUndefined,
+  omitBy,
+  intersection as overlap,
+} from 'lodash'
 
-export { default as get } from 'lodash/fp/get'
-export { default as set } from 'lodash/fp/set'
-export { default as unset } from 'lodash/fp/unset'
-export { default as compose } from 'lodash/fp/compose'
-export { default as union } from 'lodash/union'
+export {
+  get,
+  set,
+  unset,
+  compose,
+  union,
+} from 'lodash/fp'
+
+import baseDeprecate from 'util-deprecate'
 
 export {
   configureHttp,
@@ -23,4 +29,8 @@ export function hasOverlap (arr1, arr2) {
 // with all keys with undefined values removed
 export function omitUndefined (obj) {
   return omitBy(obj, isUndefined)
+}
+
+export function deprecate (func, msg='') {
+  return baseDeprecate(func, `WARNING: ${ func.name } is deprecated and will be removed in the next version of this library. ${ msg }`)
 }
