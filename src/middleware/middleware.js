@@ -119,6 +119,7 @@ function middleware (options={}) {
           }
           // Send success action to API reducer
           if (requestKey) next(actions.setStatusSuccess(requestKey, response))
+          return response
         },
         // Error handler
         error => {
@@ -134,6 +135,7 @@ function middleware (options={}) {
           if (requestKey) next(actions.setStatusFailure(requestKey, error))
           // Dispatch unauthorized action if applicable
           if (error.status === 401 && onUnauthorized) next(onUnauthorized())
+          throw error
         }
       )
   }
