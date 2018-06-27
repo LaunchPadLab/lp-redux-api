@@ -1,4 +1,4 @@
-import { isFailureAction } from './helpers'
+import { isFailureAction, getDataFromAction } from './helpers'
 
 /**
  * A function that takes an API action handler and only applies that handler when the request fails.
@@ -18,7 +18,7 @@ import { isFailureAction } from './helpers'
 **/
 
 function handleFailure (handler) {
-  return (state, action) => isFailureAction(action) ? handler(state, action) : state
+  return (state, action) => isFailureAction(action) ? handler(state, action, getDataFromAction(action)) : state
 }
 
 export default handleFailure

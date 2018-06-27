@@ -70,6 +70,12 @@ const DEFAULT_REQUEST_OPTIONS = {
   mode: 'same-origin',
 }
 
+function createStubHttp (data) {
+  return function http () {
+    return Promise.resolve(data)
+  }
+}
+
 function middleware (options={}) {
   // Build defaults
   const { configOptions, requestOptions } = parseOptions(options)
@@ -86,7 +92,6 @@ function middleware (options={}) {
     if (!lpApi) return next(action)
     // Parse options and merge with defaults
     const { configOptions, requestOptions, url } = parseOptions(lpApi)
-    if (!url) throw new Error(`Middleware: Must provide string 'url' argument`)
     const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
     // Pull out config options
     const {
@@ -95,7 +100,10 @@ function middleware (options={}) {
       requestAction,
       successAction,
       failureAction,
+      isStub,
+      stubData,
     } = mergedConfigOptions
+    if (!isStub && !url) throw new Error(`Middleware: Must provide string 'url' argument`)
     // Send user-specified request action
     if (requestAction) {
       next(parseAction({
@@ -106,7 +114,8 @@ function middleware (options={}) {
     // Send request action to API reducer
     if (requestKey) next(actions.setStatusLoading(requestKey))
     // Make the request
-    return http(url, requestOptions)
+    const request = isStub ? createStubHttp(stubData) : http
+    return request(url, requestOptions)
       .then(
         // Success handler
         response => {

@@ -9,6 +9,6 @@ export function isFailureAction (action) {
   return get('payload.status', action) === LP_API_STATUS_FAILURE
 }
 
-export function defaultTransform (action) {
+export function getDataFromAction (action) {
   return get('payload.data', action)
 }

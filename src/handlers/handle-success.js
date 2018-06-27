@@ -1,4 +1,4 @@
-import { isSuccessAction } from './helpers'
+import { isSuccessAction, getDataFromAction } from './helpers'
 
 /**
  * A function that takes an API action handler and only applies that handler when the request succeeds.
@@ -18,7 +18,7 @@ import { isSuccessAction } from './helpers'
 **/
 
 function handleSuccess (handler) {
-  return (state, action) => isSuccessAction(action) ? handler(state, action) : state
+  return (state, action) => isSuccessAction(action) ? handler(state, action, getDataFromAction(action)) : state
 }
 
 export default handleSuccess
