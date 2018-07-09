@@ -1,6 +1,6 @@
 import LP_API from './LP_API'
 import { LP_API_ACTION_NAMESPACE } from './actions'
-import { isObject, isFunction } from 'lodash'
+import { isObject, isFunction, identity } from 'lodash'
 
 /**
  * A function that creates action creators for making stubbed API requests.
@@ -34,7 +34,7 @@ function createActionOptions (definition, args) {
     : definition
 }
 
-function stubRequest (type, definition={}) {
+function stubRequest (type, definition=identity) {
   if (!type) throw new Error('Must include a type for your request.')
   if (!(isObject(definition) || isFunction(definition))) throw new Error('Request definition must be an object or a function.')
   function actionCreator (...args) {
