@@ -8,7 +8,7 @@ import { isObject, isFunction } from 'lodash'
  * Unlike {@link createRequest}, these action creators do not make real API calls but rather
  * resolve immediately with the provided data.
  *
- * @name createRequest
+ * @name stubRequest
  * @param {String} type - A unique key that will be used to identify the request internally in redux
  * @param {Object|Function} dataDefinition - Data that the request will resolve with, or a function that returns data to resolve with.
  * @returns {Function} An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
