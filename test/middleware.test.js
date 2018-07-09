@@ -108,8 +108,9 @@ test('middleware dispatches success actions in the correct order', () => {
 })
 
 test('middleware dispatches failure actions in the correct order', () => {
+  expect.assertions(4)
   const store = mockStore({})
-  return store.dispatch(actionWithURL(failureUrl)).then(() => {
+  return store.dispatch(actionWithURL(failureUrl)).catch(() => {
     const dispatchedActions = store.getActions()
     // User defined REQUEST action
     expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
@@ -138,8 +139,9 @@ test('middleware dispatches success action when response body does not exist', (
 })
 
 test('middleware dispatches custom unauthorized action on auth error', () => {
+  expect.assertions(1)
   const store = mockStore({})
-  return store.dispatch(actionWithURL(unauthorizedUrl)).then(() => {
+  return store.dispatch(actionWithURL(unauthorizedUrl)).catch(() => {
     const dispatchedActions = store.getActions()
     expect(dispatchedActions.pop()).toEqual(UNAUTHORIZED_ACTION)
   })
@@ -154,8 +156,9 @@ test('middleware applies successDataPath correctly', () => {
 })
 
 test('middleware applies failureDataPath correctly', () => {
+  expect.assertions(1)
   const store = mockStore({})
-  return store.dispatch(actionWithURL(failureUrl)).then(() => {
+  return store.dispatch(actionWithURL(failureUrl)).catch(() => {
     const dispatchedActions = store.getActions()
     expect(dispatchedActions[2].payload.errors).toEqual(failureUrl)
   })
