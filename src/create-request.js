@@ -12,14 +12,14 @@ import { isObject, isFunction } from 'lodash'
  * @example
  *
  *
- * export const fetchUser = requestWithKey('FETCH_USER', (id) => ({
+ * export const fetchUser = createRequest('FETCH_USER', (id) => ({
  *   url: '/users/' + id,
  * }))
  *
  * fetchUsers(5)
  * // -> will make request to /users/5
  *
- * // Just like in redux-action, this action can be referenced in a reducer by name:
+ * // Just like in redux-actions, this action can be referenced in a reducer by name:
  * 
  * handleActions({
  *    [apiActions.fetchUser]: (state, action) => ...

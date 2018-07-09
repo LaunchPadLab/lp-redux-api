@@ -70,6 +70,7 @@ const DEFAULT_REQUEST_OPTIONS = {
   mode: 'same-origin',
 }
 
+// custom HTTP method for stub requests- makes no call, but resolves with provided data.
 function createStubHttp (data) {
   return function http () {
     return Promise.resolve(data)
@@ -81,7 +82,7 @@ function middleware (options={}) {
   const { configOptions, requestOptions } = parseOptions(options)
   const defaultConfigOptions = { ...DEFAULT_CONFIG_OPTIONS, ...configOptions }
   const defaultRequestOptions = { ...DEFAULT_REQUEST_OPTIONS, ...requestOptions }
-  const http = configureHttp(defaultRequestOptions)
+  const baseHttp = configureHttp(defaultRequestOptions)
   // Handle actions
   return () => next => action => {
     // ignore undefined or null actions
@@ -114,8 +115,8 @@ function middleware (options={}) {
     // Send request action to API reducer
     if (requestKey) next(actions.setStatusLoading(requestKey))
     // Make the request
-    const request = isStub ? createStubHttp(stubData) : http
-    return request(url, requestOptions)
+    const http = isStub ? createStubHttp(stubData) : baseHttp
+    return http(url, requestOptions)
       .then(
         // Success handler
         response => {

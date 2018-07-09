@@ -3,7 +3,29 @@ import { LP_API_ACTION_NAMESPACE } from './actions'
 import { isObject, isFunction } from 'lodash'
 
 /**
-TODO
+ * A function that creates action creators for making stubbed API requests.
+ * 
+ * Unlike {@link createRequest}, these action creators do not make real API calls but rather
+ * resolve immediately with the provided data.
+ *
+ * @name createRequest
+ * @param {String} type - A unique key that will be used to identify the request internally in redux
+ * @param {Object|Function} dataDefinition - Data that the request will resolve with, or a function that returns data to resolve with.
+ * @returns {Function} An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
+ * @example
+ *
+ *
+ * export const fetchUser = stubRequest('FETCH_USER', (id) => ({ id }))
+ *
+ * fetchUsers(5)
+ * // -> won't make any api request, but will resolve with data { id: 5 }
+ *
+ * // Just like in redux-actions, this action can be referenced in a reducer by name:
+ * 
+ * handleActions({
+ *    [apiActions.fetchUser]: (state, action) => ...
+ * })
+ *
 **/
 
 function createActionOptions (definition, args) {
