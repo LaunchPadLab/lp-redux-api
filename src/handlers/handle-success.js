@@ -4,7 +4,7 @@ import { isSuccessAction, getDataFromAction } from './helpers'
  * A function that takes an API action handler and only applies that handler when the request succeeds.
  * 
  * @name handleSuccess
- * @param {Function} handler - An action handler that is passed `state` and `action` params
+ * @param {Function} handler - An action handler that is passed `state`, `action` and `data` params
  * @returns {Function} An action handler that runs when a request is successful
  * @example
  *

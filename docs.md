@@ -48,7 +48,7 @@ A function that takes an API action handler and only applies that handler when t
 
 ### Parameters
 
--   `handler` **[Function][40]** An action handler that is passed `state` and `action` params
+-   `handler` **[Function][40]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 
@@ -71,7 +71,7 @@ A function that takes an API action handler and only applies that handler when t
 
 ### Parameters
 
--   `handler` **[Function][40]** An action handler that is passed `state` and `action` params
+-   `handler` **[Function][40]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 
@@ -95,8 +95,8 @@ and applies the handlers when the responses have the correct status.
 
 ### Parameters
 
--   `successHandler` **[Function][40]** An action handler that is passed `state` and `action` params
--   `failureHandler` **[Function][40]** An action handler that is passed `state` and `action` params
+-   `successHandler` **[Function][40]** An action handler that is passed `state`, `action` and `data` params
+-   `failureHandler` **[Function][40]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 

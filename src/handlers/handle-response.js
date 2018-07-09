@@ -5,8 +5,8 @@ import { isSuccessAction, isFailureAction, getDataFromAction } from './helpers'
  * and applies the handlers when the responses have the correct status.
  * 
  * @name handleResponse
- * @param {Function} successHandler - An action handler that is passed `state` and `action` params
- * @param {Function} failureHandler - An action handler that is passed `state` and `action` params
+ * @param {Function} successHandler - An action handler that is passed `state`, `action` and `data` params
+ * @param {Function} failureHandler - An action handler that is passed `state`, `action` and `data` params
  * @returns {Function} An action handler runs the handler that corresponds to the request status
  * @example
  *

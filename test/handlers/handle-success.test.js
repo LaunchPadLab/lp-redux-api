@@ -2,15 +2,16 @@ import { handleSuccess, LP_API_STATUS_FAILURE, LP_API_STATUS_SUCCESS } from '../
 
 const STATE = { foo: 'bar' }
 const REQUEST_TYPE = 'FETCH_USERS'
-const FAILURE_ACTION = { type: REQUEST_TYPE, payload: { status: LP_API_STATUS_FAILURE }}
-const SUCCESS_ACTION = { type: REQUEST_TYPE, payload: { status: LP_API_STATUS_SUCCESS }}
+const DATA = 'response data'
+const FAILURE_ACTION = { type: REQUEST_TYPE, payload: { status: LP_API_STATUS_FAILURE, data: DATA }}
+const SUCCESS_ACTION = { type: REQUEST_TYPE, payload: { status: LP_API_STATUS_SUCCESS, data: DATA }}
 
 test('handleSuccess runs handler with state and action when request succeeds', () => {
   const NEW_STATE = { new: 'state' }
   const handler = jest.fn(() => NEW_STATE)
   const successHandler = handleSuccess(handler)
   const newState = successHandler(STATE, SUCCESS_ACTION)
-  expect(handler).toHaveBeenCalledWith(STATE, SUCCESS_ACTION)
+  expect(handler).toHaveBeenCalledWith(STATE, SUCCESS_ACTION, DATA)
   expect(newState).toEqual(NEW_STATE)
 })
 
