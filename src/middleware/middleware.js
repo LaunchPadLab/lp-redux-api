@@ -70,12 +70,19 @@ const DEFAULT_REQUEST_OPTIONS = {
   mode: 'same-origin',
 }
 
+// custom HTTP method for stub requests- makes no call, but resolves with provided data.
+function createStubHttp (data) {
+  return function http () {
+    return Promise.resolve(data)
+  }
+}
+
 function middleware (options={}) {
   // Build defaults
   const { configOptions, requestOptions } = parseOptions(options)
   const defaultConfigOptions = { ...DEFAULT_CONFIG_OPTIONS, ...configOptions }
   const defaultRequestOptions = { ...DEFAULT_REQUEST_OPTIONS, ...requestOptions }
-  const http = configureHttp(defaultRequestOptions)
+  const baseHttp = configureHttp(defaultRequestOptions)
   // Handle actions
   return () => next => action => {
     // ignore undefined or null actions
@@ -86,7 +93,6 @@ function middleware (options={}) {
     if (!lpApi) return next(action)
     // Parse options and merge with defaults
     const { configOptions, requestOptions, url } = parseOptions(lpApi)
-    if (!url) throw new Error(`Middleware: Must provide string 'url' argument`)
     const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
     // Pull out config options
     const {
@@ -95,7 +101,10 @@ function middleware (options={}) {
       requestAction,
       successAction,
       failureAction,
+      isStub,
+      stubData,
     } = mergedConfigOptions
+    if (!isStub && !url) throw new Error(`Middleware: Must provide string 'url' argument`)
     // Send user-specified request action
     if (requestAction) {
       next(parseAction({
@@ -106,6 +115,7 @@ function middleware (options={}) {
     // Send request action to API reducer
     if (requestKey) next(actions.setStatusLoading(requestKey))
     // Make the request
+    const http = isStub ? createStubHttp(stubData) : baseHttp
     return http(url, requestOptions)
       .then(
         // Success handler

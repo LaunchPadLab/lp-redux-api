@@ -11,6 +11,8 @@ function parseOptions ({
   successAction,
   failureAction,
   requestKey,
+  isStub,
+  stubData,
   ...requestOptions
 }) {
   return {
@@ -22,6 +24,8 @@ function parseOptions ({
       successAction,
       failureAction,
       requestKey,
+      isStub,
+      stubData,
     }),
     requestOptions,
     url,

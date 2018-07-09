@@ -1,4 +1,4 @@
-import { defaultTransform } from './helpers'
+import { getDataFromAction } from './helpers'
 import handleSuccess from './handle-success'
 import { set } from '../utils'
 
@@ -18,7 +18,7 @@ import { set } from '../utils'
  *
 **/
 
-function setOnSuccess (path, transform=defaultTransform) {
+function setOnSuccess (path, transform=getDataFromAction) {
   return handleSuccess((state, action) => set(path, transform(action, state), state))
 }
 

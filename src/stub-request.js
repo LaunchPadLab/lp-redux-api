@@ -3,21 +3,22 @@ import { LP_API_ACTION_NAMESPACE } from './actions'
 import { isObject, isFunction } from 'lodash'
 
 /**
- * A function that creates action creators for making API requests, much like [createAction](https://redux-actions.js.org/api-reference/createaction-s) from `redux-actions`.
+ * A function that creates action creators for making stubbed API requests.
+ * 
+ * Unlike {@link createRequest}, these action creators do not make real API calls but rather
+ * resolve immediately with the provided data.
  *
- * @name createRequest
+ * @name stubRequest
  * @param {String} type - A unique key that will be used to identify the request internally in redux
- * @param {Object|Function} definition - An object of `lp-request` config options, or a function that returns config options.
- * @returns {Function} An action creator that passes its arguments to `definition` and makes the resulting API request.
+ * @param {Object|Function} dataDefinition - Data that the request will resolve with, or a function that returns data to resolve with.
+ * @returns {Function} An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
  * @example
  *
  *
- * export const fetchUser = createRequest('FETCH_USER', (id) => ({
- *   url: '/users/' + id,
- * }))
+ * export const fetchUser = stubRequest('FETCH_USER', (id) => ({ id }))
  *
  * fetchUsers(5)
- * // -> will make request to /users/5
+ * // -> won't make any api request, but will resolve with data { id: 5 }
  *
  * // Just like in redux-actions, this action can be referenced in a reducer by name:
  * 
@@ -33,14 +34,14 @@ function createActionOptions (definition, args) {
     : definition
 }
 
-function createRequest (type, definition) {
+function stubRequest (type, definition={}) {
   if (!type) throw new Error('Must include a type for your request.')
-  if (!definition) throw new Error('Must include a request definition for your request.')
   if (!(isObject(definition) || isFunction(definition))) throw new Error('Request definition must be an object or a function.')
   function actionCreator (...args) {
     return {
       [LP_API]: {
-        ...createActionOptions(definition, args),
+        isStub: true,
+        stubData: createActionOptions(definition, args),
         requestKey: type,
       }
     }
@@ -49,4 +50,4 @@ function createRequest (type, definition) {
   return actionCreator
 }
 
-export default createRequest
+export default stubRequest

@@ -1,12 +1,12 @@
-import { isSuccessAction, isFailureAction } from './helpers'
+import { isSuccessAction, isFailureAction, getDataFromAction } from './helpers'
 
 /**
  * A function that takes two API action handlers, one for successful requests and one for failed requests,
  * and applies the handlers when the responses have the correct status.
  * 
  * @name handleResponse
- * @param {Function} successHandler - An action handler that is passed `state` and `action` params
- * @param {Function} failureHandler - An action handler that is passed `state` and `action` params
+ * @param {Function} successHandler - An action handler that is passed `state`, `action` and `data` params
+ * @param {Function} failureHandler - An action handler that is passed `state`, `action` and `data` params
  * @returns {Function} An action handler runs the handler that corresponds to the request status
  * @example
  *
@@ -28,8 +28,8 @@ import { isSuccessAction, isFailureAction } from './helpers'
 function handleResponse (successHandler, failureHandler) {
   if (!(successHandler && failureHandler)) throw new Error('handleResponse requires both a success handler and failure handler.')
   return (state, action) => {
-    if (isSuccessAction(action)) return successHandler(state, action)
-    if (isFailureAction(action)) return failureHandler(state, action)
+    if (isSuccessAction(action)) return successHandler(state, action, getDataFromAction(action))
+    if (isFailureAction(action)) return failureHandler(state, action, getDataFromAction(action))
     return state
   }
 }

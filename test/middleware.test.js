@@ -163,3 +163,17 @@ test('middleware applies failureDataPath correctly', () => {
     expect(dispatchedActions[2].payload.errors).toEqual(failureUrl)
   })
 })
+
+test('middleware resolves stubbed requests with provided data', () => {
+  const store = mockStore({})
+  const stubData = { foo: 'bar' }
+  const stubAction = {
+    [LP_API]: {
+      isStub: true,
+      stubData
+    }
+  }
+  return store.dispatch(stubAction).then((res) => {
+    expect(res).toEqual(stubData)
+  })
+})

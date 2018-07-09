@@ -1,4 +1,4 @@
-import { defaultTransform } from './helpers'
+import { getDataFromAction } from './helpers'
 import handleFailure from './handle-failure'
 import { set } from '../utils'
 
@@ -18,7 +18,7 @@ import { set } from '../utils'
  *
 **/
 
-function setOnFailure (path, transform=defaultTransform) {
+function setOnFailure (path, transform=getDataFromAction) {
   return handleFailure((state, action) => set(path, transform(action, state), state))
 }
 

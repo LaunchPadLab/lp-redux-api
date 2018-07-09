@@ -1,4 +1,4 @@
-import { defaultTransform } from './helpers'
+import { getDataFromAction } from './helpers'
 import handleResponse from './handle-response'
 import { set } from '../utils'
 
@@ -23,8 +23,8 @@ import { set } from '../utils'
 function setOnResponse (
   successPath, 
   failurePath, 
-  transformSuccess=defaultTransform, 
-  transformFailure=defaultTransform,
+  transformSuccess=getDataFromAction, 
+  transformFailure=getDataFromAction,
 ) {
   return handleResponse(
     (state, action) => set(successPath, transformSuccess(action, state), state),
