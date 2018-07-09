@@ -14,9 +14,15 @@ import {
 
 /* HELPERS */
 
-const UNAUTHORIZED_ACTION = { type: 'UNAUTHORIZED' }
+function onUnauthorized ({ error, request }) {
+  return {
+    type: 'UNAUTHORIZED',
+    payload: { error, request }
+  }
+}
+
 const mockStore = configureStore([ middleware({
-  onUnauthorized: () => UNAUTHORIZED_ACTION,
+  onUnauthorized,
   successDataPath: 'url',
   failureDataPath: 'url',
 }) ])
@@ -141,9 +147,10 @@ test('middleware dispatches success action when response body does not exist', (
 test('middleware dispatches custom unauthorized action on auth error', () => {
   expect.assertions(1)
   const store = mockStore({})
-  return store.dispatch(actionWithURL(unauthorizedUrl)).catch(() => {
+  const requestOptions = actionWithURL(unauthorizedUrl)[LP_API]
+  return store.dispatch(actionWithURL(unauthorizedUrl)).catch((error) => {
     const dispatchedActions = store.getActions()
-    expect(dispatchedActions.pop()).toEqual(UNAUTHORIZED_ACTION)
+    expect(dispatchedActions.pop().payload).toEqual({ error, request: requestOptions })
   })
 })
 
