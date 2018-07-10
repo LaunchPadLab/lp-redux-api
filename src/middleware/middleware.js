@@ -88,11 +88,11 @@ function middleware (options={}) {
     // ignore undefined or null actions
     if (!action) return
     // Pull out action body
-    const lpApi = action[LP_API]
+    const options = action[LP_API]
     // Do not process actions without a [LP_API] property
-    if (!lpApi) return next(action)
+    if (!options) return next(action)
     // Parse options and merge with defaults
-    const { configOptions, requestOptions, url } = parseOptions(lpApi)
+    const { configOptions, requestOptions, url } = parseOptions(options)
     const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
     // Pull out config options
     const {
@@ -109,7 +109,7 @@ function middleware (options={}) {
     if (requestAction) {
       next(parseAction({
         action: requestAction,
-        payload: lpApi,
+        payload: options,
       }))
     }
     // Send request action to API reducer
@@ -144,7 +144,7 @@ function middleware (options={}) {
           // Send failure action to API reducer
           if (requestKey) next(actions.setStatusFailure(requestKey, error))
           // Dispatch unauthorized action if applicable
-          if (error.status === 401 && onUnauthorized) next(onUnauthorized())
+          if (error.status === 401 && onUnauthorized) next(onUnauthorized({ error, request: options }))
           throw error
         }
       )
