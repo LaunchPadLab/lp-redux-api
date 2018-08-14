@@ -5,6 +5,7 @@ import {
   LP_API_STATUS_SUCCESS,
 } from '../src/'
 import * as actions from '../src/actions'
+const { LP_API_ACTION_NAMESPACE } = actions
   
 const REQUEST_KEY = 'test request'
 
@@ -15,6 +16,15 @@ test('selectors.status selects correctly', () => {
     api: newState
   }
   expect(selectors.status(fullState, REQUEST_KEY)).toEqual(LP_API_STATUS_LOADING)
+})
+
+test('selectors.status strips action namespace', () => {
+  const initialState = {}
+  const newState = reducer(initialState, actions.setStatusLoading(REQUEST_KEY))
+  const fullState = {
+    api: newState
+  }
+  expect(selectors.status(fullState, LP_API_ACTION_NAMESPACE + REQUEST_KEY)).toEqual(LP_API_STATUS_LOADING)
 })
 
 test('selectors.status can handle a custom reducer path', () => {
