@@ -1,5 +1,6 @@
 import { get } from './utils'
 import {
+  LP_API_ACTION_NAMESPACE,
   LP_API_STATUS_LOADING,
   LP_API_STATUS_SUCCESS,
   LP_API_STATUS_FAILURE,
@@ -49,10 +50,18 @@ import {
 
 const selectors = {}
 
+// Remove action namespace if it's at the beginning
+function stripNamespace (requestKey) {
+  return requestKey.startsWith(LP_API_ACTION_NAMESPACE)
+    ? requestKey.slice(LP_API_ACTION_NAMESPACE.length)
+    : requestKey
+}
+
 selectors.status = function (state, requestKey, slice='api') {
-  if (!requestKey || !state) throw new Error('Must include key and state params')
+  const key = stripNamespace(requestKey)
+  if (!key || !state) throw new Error('Must include key and state params')
   if (!get(slice, state)) throw new Error(`No reducer exists at path '${slice}'`)
-  return get(`${slice}.${requestKey}`, state)
+  return get(`${slice}.${key}`, state)
 }
 
 selectors.hasStatus = function (...args) {
