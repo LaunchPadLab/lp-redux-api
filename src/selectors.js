@@ -58,7 +58,7 @@ function stripNamespace (requestKey) {
 }
 
 selectors.status = function (state, requestKey, slice='api') {
-  const key = stripNamespace(requestKey)
+  const key = stripNamespace(String(requestKey))
   if (!key || !state) throw new Error('Must include key and state params')
   if (!get(slice, state)) throw new Error(`No reducer exists at path '${slice}'`)
   return get(`${slice}.${key}`, state)
