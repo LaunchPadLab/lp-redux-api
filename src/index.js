@@ -5,7 +5,14 @@ export {
 } from './actions'
 export * from './handlers'
 export { default as LP_API } from './LP_API'
-export { default as createRequest } from './create-request'
+export { 
+  createRequest,
+  createGetRequest,
+  createPostRequest,
+  createPutRequest,
+  createPatchRequest,
+  createDeleteRequest,
+} from './create-request'
 export { default as middleware } from './middleware'
 export { default as reducer } from './reducer'
 export { default as requestWithKey } from './request-with-key'
