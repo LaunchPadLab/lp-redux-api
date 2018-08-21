@@ -218,6 +218,8 @@ function fooAction () {
 
 A function that creates action creators for making API requests, much like [createAction][43] from `redux-actions`.
 
+Note: there are convenience functions for each request method: `createPostRequest()`, `createPutRequest()`, etc.
+
 ### Parameters
 
 -   `type` **[String][41]** A unique key that will be used to identify the request internally in redux
