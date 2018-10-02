@@ -18,7 +18,7 @@ import { isSuccessAction, isFailureAction, getDataFromAction } from './helpers'
  *      },
  *      (state, action) => {
  *        // This code runs if the call is unsuccessful
- *        return set('userFetchError', action.payload.error, state)
+ *        return set('userFetchError', action.payload.data, state)
  *      },
  *    )
  * })
