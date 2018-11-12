@@ -11,7 +11,7 @@ import { isFailureAction, getDataFromAction } from './helpers'
  * handleActions({
  *    [apiActions.fetchUser]: handleFailure((state, action) => {
  *      // This code only runs when the call was unsuccessful
- *      return set('userFetchError', action.payload.error, state)
+ *      return set('userFetchError', action.payload.data, state)
  *    })
  * })
  *

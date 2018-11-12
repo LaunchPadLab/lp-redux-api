@@ -79,7 +79,7 @@ A function that takes an API action handler and only applies that handler when t
 handleActions({
    [apiActions.fetchUser]: handleFailure((state, action) => {
      // This code only runs when the call was unsuccessful
-     return set('userFetchError', action.payload.error, state)
+     return set('userFetchError', action.payload.data, state)
    })
 })
 
@@ -109,7 +109,7 @@ handleActions({
      },
      (state, action) => {
        // This code runs if the call is unsuccessful
-       return set('userFetchError', action.payload.error, state)
+       return set('userFetchError', action.payload.data, state)
      },
    )
 })

@@ -184,3 +184,22 @@ test('middleware resolves stubbed requests with provided data', () => {
     expect(res).toEqual(stubData)
   })
 })
+
+test('middleware dispatches default success action with correct data argument', () => {
+  const store = mockStore({})
+  return store.dispatch(actionWithURL(successUrl)).then(() => {
+    const dispatchedActions = store.getActions()
+    // Internal SUCCESS action
+    expect(dispatchedActions[3].payload.data).toEqual(successUrl)
+  })
+})
+
+test('middleware dispatches default failure action with correct data argument', () => {
+  expect.assertions(1)
+  const store = mockStore({})
+  return store.dispatch(actionWithURL(failureUrl)).catch(() => {
+    const dispatchedActions = store.getActions()
+    // Internal FAILURE action
+    expect(dispatchedActions[3].payload.data.errors).toEqual(failureUrl)
+  })
+})
