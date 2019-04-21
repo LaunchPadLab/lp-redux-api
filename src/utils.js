@@ -15,7 +15,7 @@ export {
 import baseDeprecate from 'util-deprecate'
 
 export {
-  configureHttp,
+  http,
   HttpError,
 } from '@launchpadlab/lp-requests'
 

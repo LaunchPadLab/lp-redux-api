@@ -1,4 +1,4 @@
-import { configureHttp } from '../utils'
+import { http } from '../utils'
 import LP_API from '../LP_API'
 import * as actions from '../actions'
 import parseAction from './parse-action'
@@ -60,29 +60,19 @@ import parseOptions from './parse-options'
  * @type Function
  */
 
-const DEFAULT_CONFIG_OPTIONS = {
-  onUnauthorized: null,
-}
-
-const DEFAULT_REQUEST_OPTIONS = {
-  credentials: 'same-origin',
-  csrf: true,
-  mode: 'same-origin',
-}
-
 // custom HTTP method for stub requests- makes no call, but resolves with provided data.
-function createStubHttp (data) {
-  return function http () {
+function createStubRequest (data) {
+  return function request () {
     return Promise.resolve(data)
   }
 }
 
 function middleware (options={}) {
   // Build defaults
-  const { configOptions, requestOptions } = parseOptions(options)
-  const defaultConfigOptions = { ...DEFAULT_CONFIG_OPTIONS, ...configOptions }
-  const defaultRequestOptions = { ...DEFAULT_REQUEST_OPTIONS, ...requestOptions }
-  const baseHttp = configureHttp(defaultRequestOptions)
+  const { 
+    configOptions: defaultConfigOptions,
+    requestOptions: defaultRequestOptions
+  } = parseOptions(options)
   // Handle actions
   return () => next => action => {
     // ignore undefined or null actions
@@ -92,8 +82,9 @@ function middleware (options={}) {
     // Do not process actions without a [LP_API] property
     if (!options) return next(action)
     // Parse options and merge with defaults
-    const { configOptions, requestOptions, url } = parseOptions(options)
+    const { configOptions, requestOptions } = parseOptions(options)
     const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
+    const mergedRequestOptions = { ...defaultRequestOptions, ...requestOptions }
     // Pull out config options
     const {
       onUnauthorized,
@@ -104,7 +95,6 @@ function middleware (options={}) {
       isStub,
       stubData,
     } = mergedConfigOptions
-    if (!isStub && !url) throw new Error(`Middleware: Must provide string 'url' argument`)
     // Send user-specified request action
     if (requestAction) {
       next(parseAction({
@@ -115,8 +105,9 @@ function middleware (options={}) {
     // Send request action to API reducer
     if (requestKey) next(actions.setStatusLoading(requestKey))
     // Make the request
-    const http = isStub ? createStubHttp(stubData) : baseHttp
-    return http(url, requestOptions)
+    const request = isStub ? createStubRequest(stubData) : http
+    // TODO
+    return request(mergedRequestOptions.url, mergedRequestOptions)
       .then(
         // Success handler
         response => {

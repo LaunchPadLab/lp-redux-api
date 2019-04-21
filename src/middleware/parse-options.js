@@ -3,7 +3,6 @@ import { omitUndefined } from '../utils'
 // Separate middleware options into config options and request options
 
 function parseOptions ({
-  url,
   onUnauthorized,
   actions,
   types,
@@ -28,7 +27,6 @@ function parseOptions ({
       stubData,
     }),
     requestOptions,
-    url,
   }
 }
 

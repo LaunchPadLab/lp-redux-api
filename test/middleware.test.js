@@ -84,12 +84,6 @@ test('middleware rejects unsupported action definition types', () => {
 
 // Middleware tests
 
-test('middleware requires url argument', () => {
-  const store = mockStore({})
-  const emptyAction = { [LP_API]: {} }
-  expect(() => store.dispatch(emptyAction)).toThrow()
-})
-
 test('middleware passes non-LP_API actions through', () => {
   const store = mockStore({})
   const otherAction = { type: 'OTHER' }
