@@ -1,4 +1,3 @@
-import { http } from '../utils'
 import LP_API from '../LP_API'
 import * as actions from '../actions'
 import parseAction from './parse-action'
@@ -87,13 +86,14 @@ function middleware (options={}) {
     const mergedRequestOptions = { ...defaultRequestOptions, ...requestOptions }
     // Pull out config options
     const {
+      type,
       onUnauthorized,
-      requestKey,
       requestAction,
       successAction,
       failureAction,
       isStub,
       stubData,
+      adapter,
     } = mergedConfigOptions
     // Send user-specified request action
     if (requestAction) {
@@ -102,12 +102,13 @@ function middleware (options={}) {
         payload: options,
       }))
     }
-    // Send request action to API reducer
-    if (requestKey) next(actions.setStatusLoading(requestKey))
+    // Require adapter
+    if (!adapter) throw new Error(`Middleware: Must provide function 'adapter' argument.`)
+    // Send built-in request action
+    next(actions.setStatusLoading(type))
     // Make the request
-    const request = isStub ? createStubRequest(stubData) : http
-    // TODO
-    return request(mergedRequestOptions.url, mergedRequestOptions)
+    const request = isStub ? createStubRequest(stubData) : adapter
+    return request(mergedRequestOptions)
       .then(
         // Success handler
         response => {
@@ -118,8 +119,8 @@ function middleware (options={}) {
               payload: response,
             }))
           }
-          // Send success action to API reducer
-          if (requestKey) next(actions.setStatusSuccess(requestKey, response))
+          // Send built-in success action
+          next(actions.setStatusSuccess(type, response))
           return response
         },
         // Error handler
@@ -132,8 +133,8 @@ function middleware (options={}) {
               error: true,
             }))
           }
-          // Send failure action to API reducer
-          if (requestKey) next(actions.setStatusFailure(requestKey, error))
+          // Send built-in failure action
+          next(actions.setStatusFailure(type, error))
           // Dispatch unauthorized action if applicable
           if (error.status === 401 && onUnauthorized) next(onUnauthorized({ error, request: options }))
           throw error

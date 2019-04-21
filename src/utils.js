@@ -14,11 +14,6 @@ export {
 
 import baseDeprecate from 'util-deprecate'
 
-export {
-  http,
-  HttpError,
-} from '@launchpadlab/lp-requests'
-
 // Returns true when two arrays share common items
 export function hasOverlap (arr1, arr2) {
   const overlapItems = overlap(arr1, arr2)

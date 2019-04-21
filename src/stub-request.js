@@ -42,7 +42,7 @@ function stubRequest (type, definition=identity) {
       [LP_API]: {
         isStub: true,
         stubData: createActionOptions(definition, args),
-        requestKey: type,
+        type,
       }
     }
   }

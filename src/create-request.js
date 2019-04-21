@@ -44,7 +44,7 @@ function createRequestWithMethod (type, definition, method) {
       [LP_API]: {
         method,
         ...createActionOptions(definition, args),
-        requestKey: type,
+        type,
       }
     }
   }

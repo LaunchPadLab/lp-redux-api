@@ -9,7 +9,7 @@ test('stubRequest accepts object data', () => {
   const stubData = { foo: 'bar' }
   const actionCreator = stubRequest(REQUEST_TYPE, stubData)
   const action = actionCreator()
-  expect(action[LP_API]).toEqual({ requestKey: REQUEST_TYPE, isStub: true, stubData })
+  expect(action[LP_API]).toEqual({ type: REQUEST_TYPE, isStub: true, stubData })
 })
 
 test('stubRequest accepts function data creator', () => {
@@ -17,13 +17,13 @@ test('stubRequest accepts function data creator', () => {
     foo: arg
   }))
   const action = actionCreator('bar')
-  expect(action[LP_API]).toEqual({ requestKey: REQUEST_TYPE, isStub: true, stubData: { foo: 'bar' } })
+  expect(action[LP_API]).toEqual({ type: REQUEST_TYPE, isStub: true, stubData: { foo: 'bar' } })
 })
 
 test('stubRequest defaults to identity for data creator', () => {
   const actionCreator = stubRequest(REQUEST_TYPE)
   const action = actionCreator('bar')
-  expect(action[LP_API]).toEqual({ requestKey: REQUEST_TYPE, isStub: true, stubData: 'bar' })
+  expect(action[LP_API]).toEqual({ type: REQUEST_TYPE, isStub: true, stubData: 'bar' })
 })
 
 test('stubRequest rejects other types of data definitions', () => {

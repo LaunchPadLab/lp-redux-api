@@ -21,7 +21,7 @@ test('createRequest accepts object request definitions', () => {
   const options = { foo: 'bar' }
   const actionCreator = createRequest(REQUEST_TYPE, options)
   const action = actionCreator()
-  expect(action[LP_API]).toEqual({ requestKey: REQUEST_TYPE, foo: 'bar', method: 'GET' })
+  expect(action[LP_API]).toEqual({ type: REQUEST_TYPE, foo: 'bar', method: 'GET' })
 })
 
 test('createRequest accepts function request definitions', () => {
@@ -29,7 +29,7 @@ test('createRequest accepts function request definitions', () => {
     foo: arg
   }))
   const action = actionCreator('bar')
-  expect(action[LP_API]).toEqual({ requestKey: REQUEST_TYPE, foo: 'bar', method: 'GET' })
+  expect(action[LP_API]).toEqual({ type: REQUEST_TYPE, foo: 'bar', method: 'GET' })
 })
 
 test('createRequest rejects other types of request definitions', () => {

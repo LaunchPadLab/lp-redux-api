@@ -15,7 +15,5 @@ export {
 } from './create-request'
 export { default as middleware } from './middleware'
 export { default as reducer } from './reducer'
-export { default as requestWithKey } from './request-with-key'
 export { default as selectors } from './selectors'
-export { default as setFromRequest } from './set-from-request'
 export { default as stubRequest } from './stub-request'

@@ -1,11 +1,11 @@
-import { successUrl, failureUrl, unauthorizedUrl } from 'isomorphic-fetch'
 import { middleware, LP_API } from '../src'
 import parseAction from '../src/middleware/parse-action'
 import * as actions from '../src/actions'
 import configureStore from 'redux-mock-store'
+import axios, { successUrl, failureUrl, unauthorizedUrl } from 'axios'
 
 import {
-  REQUEST_KEY,
+  REQUEST_TYPE,
   ACTION_TYPE_REQUEST,
   ACTION_TYPE_SUCCESS,
   ACTION_TYPE_FAILURE,
@@ -23,8 +23,7 @@ function onUnauthorized ({ error, request }) {
 
 const mockStore = configureStore([ middleware({
   onUnauthorized,
-  successDataPath: 'url',
-  failureDataPath: 'url',
+  adapter: axios,
 }) ])
 
 /* TESTS */
@@ -99,11 +98,11 @@ test('middleware dispatches success actions in the correct order', () => {
     // User defined REQUEST action
     expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
     // Internal REQUEST action
-    expect(dispatchedActions[1].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
+    expect(dispatchedActions[1].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_TYPE)
     // User defined SUCCESS action
     expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_SUCCESS)
     // Internal SUCCESS action
-    expect(dispatchedActions[3].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
+    expect(dispatchedActions[3].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_TYPE)
   })
 })
 
@@ -115,26 +114,11 @@ test('middleware dispatches failure actions in the correct order', () => {
     // User defined REQUEST action
     expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
     // Internal REQUEST action
-    expect(dispatchedActions[1].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
+    expect(dispatchedActions[1].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_TYPE)
     // User defined FAILURE action
     expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_FAILURE)
     // Internal FAILURE action
-    expect(dispatchedActions[3].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
-  })
-})
-
-test('middleware dispatches success action when response body does not exist', () => {
-  const store = mockStore({})
-  return store.dispatch(actionWithURL(successUrl, { successDataPath: 'path.to.nothing' })).then(() => {
-    const dispatchedActions = store.getActions()
-    // User defined REQUEST action
-    expect(dispatchedActions[0].type).toEqual(ACTION_TYPE_REQUEST)
-    // Internal REQUEST action
-    expect(dispatchedActions[1].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
-    // User defined SUCCESS action
-    expect(dispatchedActions[2].type).toEqual(ACTION_TYPE_SUCCESS)
-    // Internal SUCCESS action
-    expect(dispatchedActions[3].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_KEY)
+    expect(dispatchedActions[3].type).toEqual(actions.LP_API_ACTION_NAMESPACE + REQUEST_TYPE)
   })
 })
 
@@ -145,23 +129,6 @@ test('middleware dispatches custom unauthorized action on auth error', () => {
   return store.dispatch(actionWithURL(unauthorizedUrl)).catch((error) => {
     const dispatchedActions = store.getActions()
     expect(dispatchedActions.pop().payload).toEqual({ error, request: requestOptions })
-  })
-})
-
-test('middleware applies successDataPath correctly', () => {
-  const store = mockStore({})
-  return store.dispatch(actionWithURL(successUrl)).then(() => {
-    const dispatchedActions = store.getActions()
-    expect(dispatchedActions[2].payload).toEqual(successUrl)
-  })
-})
-
-test('middleware applies failureDataPath correctly', () => {
-  expect.assertions(1)
-  const store = mockStore({})
-  return store.dispatch(actionWithURL(failureUrl)).catch(() => {
-    const dispatchedActions = store.getActions()
-    expect(dispatchedActions[2].payload.errors).toEqual(failureUrl)
   })
 })
 
@@ -184,7 +151,7 @@ test('middleware dispatches default success action with correct data argument', 
   return store.dispatch(actionWithURL(successUrl)).then(() => {
     const dispatchedActions = store.getActions()
     // Internal SUCCESS action
-    expect(dispatchedActions[3].payload.data).toEqual(successUrl)
+    expect(dispatchedActions[3].payload.data).toEqual({ url: successUrl })
   })
 })
 
@@ -194,6 +161,6 @@ test('middleware dispatches default failure action with correct data argument', 
   return store.dispatch(actionWithURL(failureUrl)).catch(() => {
     const dispatchedActions = store.getActions()
     // Internal FAILURE action
-    expect(dispatchedActions[3].payload.data.errors).toEqual(failureUrl)
+    expect(dispatchedActions[3].payload.data).toEqual({ status: 401, url: failureUrl })
   })
 })
