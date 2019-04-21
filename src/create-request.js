@@ -9,7 +9,7 @@ import { isObject, isFunction } from 'lodash'
  *
  * @name createRequest
  * @param {String} type - A unique key that will be used to identify the request internally in redux
- * @param {Object|Function} definition - An object of `lp-request` config options, or a function that returns config options.
+ * @param {Object|Function} definition - An object of config options for the adapter, or a function that returns config options.
  * @returns {Function} An action creator that passes its arguments to `definition` and makes the resulting API request.
  * @example
  *

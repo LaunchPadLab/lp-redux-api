@@ -151,7 +151,7 @@ test('middleware dispatches default success action with correct data argument', 
   return store.dispatch(actionWithURL(successUrl)).then(() => {
     const dispatchedActions = store.getActions()
     // Internal SUCCESS action
-    expect(dispatchedActions[3].payload.data).toEqual({ url: successUrl })
+    expect(dispatchedActions[3].payload.data).toEqual({ status: 200, data: { url: successUrl }})
   })
 })
 
@@ -161,6 +161,6 @@ test('middleware dispatches default failure action with correct data argument', 
   return store.dispatch(actionWithURL(failureUrl)).catch(() => {
     const dispatchedActions = store.getActions()
     // Internal FAILURE action
-    expect(dispatchedActions[3].payload.data).toEqual({ status: 401, url: failureUrl })
+    expect(dispatchedActions[3].payload.data).toEqual({ status: 401, data: { url: failureUrl }})
   })
 })

@@ -217,7 +217,7 @@ Note: there are convenience functions for each request method: `createPostReques
 ### Parameters
 
 -   `type` **[String][35]** A unique key that will be used to identify the request internally in redux
--   `definition` **([Object][38] \| [Function][34])** An object of `lp-request` config options, or a function that returns config options.
+-   `definition` **([Object][38] \| [Function][34])** An object of config options for the adapter, or a function that returns config options.
 
 ### Examples
 
