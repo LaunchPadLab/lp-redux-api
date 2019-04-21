@@ -294,8 +294,6 @@ In order to use `lp-redux-api` actions, you must apply the custom middleware to 
 The following options can be used to configure the middleware:
 
 -   `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
--   `successDataPath`: A path to response data that will be passed as the success action's payload
--   `failureDataPath`: A path to response data that will be passed as the failure action's payload
 -   any options used by the lp-requests [http][39] module
 
 ## reducer

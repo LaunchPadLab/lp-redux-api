@@ -51,8 +51,6 @@ import parseOptions from './parse-options'
  * ```
  * The following options can be used to configure the middleware:
  * - `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
- * - `successDataPath`: A path to response data that will be passed as the success action's payload
- * - `failureDataPath`: A path to response data that will be passed as the failure action's payload
  * - any options used by the lp-requests [http](https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http) module
  *
  * @name middleware
