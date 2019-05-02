@@ -21,10 +21,7 @@ function onUnauthorized ({ error, request }) {
   }
 }
 
-const mockStore = configureStore([ middleware({
-  onUnauthorized,
-  adapter: axios,
-}) ])
+const mockStore = configureStore([ middleware(axios, { onUnauthorized }) ])
 
 /* TESTS */
 
