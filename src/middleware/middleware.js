@@ -4,54 +4,28 @@ import parseAction from './parse-action'
 import parseOptions from './parse-options'
 
 /**
- * ### Actions
- * At a high level, `lp-redux-api` actions contain the following information:
- * - The URL of an API request to execute
- * - Any extra request details
- * - One or many actions to dispatch based on the status of the request
- *
- * These actions are keyed using the {@link LP_API} symbol so that the middleware knows to handle them. Here's an example of a simple action creator:
- * ```
- * import { LP_API } from '@launchpadlab/lp-redux-api'
- *
- * export function fetchUser (id) {
- *   return {
- *     [LP_API]: {
- *       url: `users/${id}`,
- *       requestAction: 'USER_REQUEST', 
- *       successAction: 'USER_SUCCESS', 
- *       failureAction: 'USER_FAILURE',
- *       ... any more configuration options 
- *     },
- *   }
- * }
- * ```
- * When this action is dispatched to the store, the middleware will take over and:
- * - Dispatch a `USER_REQUEST` action
- * - Perform the api request to `/users`
- * - Dispatch a `USER_SUCCESS` action with the response payload if the api request is successful
- * - Dispatch a `USER_FAILURE` action with the error payload if the api request fails
- * 
- * Actions can be defined in the following ways:
- * 
- * - As an action type `string` (shown above)
- * - As an action `object`
- * - As an action creator `function` - will get passed the success/error response as modified by `successDataPath` and `failureDataPath` (see below)
- *
- * ### Middleware configuration
- * In order to use `lp-redux-api` actions, you must apply the custom middleware to your store when the store is created:
+ * In order to use actions created by {@link createRequest}, you must apply the custom `lp-redux-api` middleware to your store when the store is created:
  * ```
  * import { middleware as apiMiddleware } from '@launchpadlab/lp-redux-api'
- * const apiConfig = { ... }
+ * 
+ * const defaultAdapterOptions = { ... }
+ * const adapter = axios
+ * 
  * const middleware = applyMiddleware(
- *    apiMiddleware(apiConfig),
+ *    apiMiddleware(adapter, defaultAdapterOptions),
  *    ...
  * )
  * const store = createStore(reducer, initialState, middleware)
  * ```
- * The following options can be used to configure the middleware:
+ * 
+ * The `adapter` argument is the function that will be invoked to make the API request. It will be passed an object of configuration arguments and it must return a promise indicating request status.
+ * 
+ * The following options may be used to configure the middleware:
  * - `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
- * - any options used by the lp-requests [http](https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http) module
+ * - `requestAction` (default=`null`): An action creator to be called and dispatched when the initial request is made.
+ * - `successAction` (default=`null`): An action creator to be called and dispatched if the request succeeds.
+ * - `failureAction` (default=`null`): An action creator to be called and dispatched if the request fails.
+ * - any options used by the adapter
  *
  * @name middleware
  * @type Function
@@ -64,7 +38,7 @@ function createStubRequest (data) {
   }
 }
 
-function middleware (options={}) {
+function middleware (mainAdapter, options={}) {
   // Build defaults
   const { 
     configOptions: defaultConfigOptions,
@@ -91,7 +65,7 @@ function middleware (options={}) {
       failureAction,
       isStub,
       stubData,
-      adapter,
+      adapter=mainAdapter,
     } = mergedConfigOptions
     // Send user-specified request action
     if (requestAction) {
@@ -100,8 +74,6 @@ function middleware (options={}) {
         payload: options,
       }))
     }
-    // Require adapter
-    if (!adapter) throw new Error(`Middleware: Must provide function 'adapter' argument.`)
     // Send built-in request action
     next(actions.setStatusLoading(type))
     // Make the request
