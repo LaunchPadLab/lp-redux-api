@@ -30,7 +30,7 @@
     -   [Examples][26]
 -   [selectors][27]
     -   [Examples][28]
--   [stubRequest][29]
+-   [createStubRequest][29]
     -   [Parameters][30]
     -   [Examples][31]
 
@@ -343,7 +343,7 @@ apiSelectors.status(state, fetchUsers) // -> 'loading'
 *
 ```
 
-## stubRequest
+## createStubRequest
 
 A function that creates action creators for making stubbed API requests.
 
@@ -358,7 +358,7 @@ resolve immediately with the provided data.
 ### Examples
 
 ```javascript
-export const fetchUser = stubRequest('FETCH_USER', (id) => ({ id }))
+export const fetchUser = createStubRequest('FETCH_USER', (id) => ({ id }))
 
 fetchUsers(5)
 // -> won't make any api request, but will resolve with data { id: 5 }
@@ -430,7 +430,7 @@ Returns **[Function][32]** An action creator that passes its arguments to `dataD
 
 [28]: #examples-9
 
-[29]: #stubrequest
+[29]: #createstubrequest
 
 [30]: #parameters-7
 

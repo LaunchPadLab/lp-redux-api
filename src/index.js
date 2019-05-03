@@ -16,4 +16,4 @@ export {
 export { default as middleware } from './middleware'
 export { default as reducer } from './reducer'
 export { default as selectors } from './selectors'
-export { default as stubRequest } from './stub-request'
+export { default as createStubRequest } from './create-stub-request'
