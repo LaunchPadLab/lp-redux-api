@@ -3,32 +3,32 @@ import { omitUndefined } from '../utils'
 // Separate middleware options into config options and request options
 
 function parseOptions ({
-  url,
+  type,
   onUnauthorized,
   actions,
   types,
   requestAction,
   successAction,
   failureAction,
-  requestKey,
   isStub,
   stubData,
+  adapter,
   ...requestOptions
 }) {
   return {
     configOptions: omitUndefined({ 
+      type,
       onUnauthorized,
       actions,
       types,
       requestAction,
       successAction,
       failureAction,
-      requestKey,
       isStub,
       stubData,
+      adapter,
     }),
     requestOptions,
-    url,
   }
 }
 

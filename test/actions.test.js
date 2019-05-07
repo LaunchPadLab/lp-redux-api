@@ -8,39 +8,39 @@ const {
 } = actions
 
 test('REQUEST action creator creates action of expected type', () => {
-  const requestKey = 'test request'
+  const type = 'test request'
   const requestAction = {
-    type: LP_API_ACTION_NAMESPACE + requestKey,
+    type: LP_API_ACTION_NAMESPACE + type,
     payload: {
-      key: requestKey,
+      type,
       status: LP_API_STATUS_LOADING
     }
   }
-  expect(actions.setStatusLoading(requestKey)).toEqual(requestAction)
+  expect(actions.setStatusLoading(type)).toEqual(requestAction)
 })
 
 test('SUCCESS action creator creates action of expected type', () => {
-  const requestKey = 'test request'
+  const type = 'test request'
   const requestAction = {
-    type: LP_API_ACTION_NAMESPACE + requestKey,
+    type: LP_API_ACTION_NAMESPACE + type,
     payload: {
-      key: requestKey,
+      type,
       status: LP_API_STATUS_SUCCESS,
       data: 'response',
     }
   }
-  expect(actions.setStatusSuccess(requestKey, 'response')).toEqual(requestAction)
+  expect(actions.setStatusSuccess(type, 'response')).toEqual(requestAction)
 })
 
 test('FAILURE action creator creates action of expected type', () => {
-  const requestKey = 'test request'
+  const type = 'test request'
   const requestAction = {
-    type: LP_API_ACTION_NAMESPACE + requestKey,
+    type: LP_API_ACTION_NAMESPACE + type,
     payload: {
-      key: requestKey,
+      type,
       status: LP_API_STATUS_FAILURE,
       data: 'error',
     }
   }
-  expect(actions.setStatusFailure(requestKey, 'error')).toEqual(requestAction)
+  expect(actions.setStatusFailure(type, 'error')).toEqual(requestAction)
 })

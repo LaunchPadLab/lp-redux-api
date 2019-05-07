@@ -1,88 +1,52 @@
-import { configureHttp } from '../utils'
 import LP_API from '../LP_API'
 import * as actions from '../actions'
 import parseAction from './parse-action'
 import parseOptions from './parse-options'
+import { isFunction } from 'lodash'
 
 /**
- * ### Actions
- * At a high level, `lp-redux-api` actions contain the following information:
- * - The URL of an API request to execute
- * - Any extra request details
- * - One or many actions to dispatch based on the status of the request
- *
- * These actions are keyed using the {@link LP_API} symbol so that the middleware knows to handle them. Here's an example of a simple action creator:
- * ```
- * import { LP_API } from '@launchpadlab/lp-redux-api'
- *
- * export function fetchUser (id) {
- *   return {
- *     [LP_API]: {
- *       url: `users/${id}`,
- *       requestAction: 'USER_REQUEST', 
- *       successAction: 'USER_SUCCESS', 
- *       failureAction: 'USER_FAILURE',
- *       ... any more configuration options 
- *     },
- *   }
- * }
- * ```
- * When this action is dispatched to the store, the middleware will take over and:
- * - Dispatch a `USER_REQUEST` action
- * - Perform the api request to `/users`
- * - Dispatch a `USER_SUCCESS` action with the response payload if the api request is successful
- * - Dispatch a `USER_FAILURE` action with the error payload if the api request fails
- * 
- * Actions can be defined in the following ways:
- * 
- * - As an action type `string` (shown above)
- * - As an action `object`
- * - As an action creator `function` - will get passed the success/error response as modified by `successDataPath` and `failureDataPath` (see below)
- *
- * ### Middleware configuration
- * In order to use `lp-redux-api` actions, you must apply the custom middleware to your store when the store is created:
+ * In order to use actions created by {@link createRequest}, you must apply the custom `lp-redux-api` middleware to your store when the store is created:
  * ```
  * import { middleware as apiMiddleware } from '@launchpadlab/lp-redux-api'
- * const apiConfig = { ... }
+ * 
+ * const defaultAdapterOptions = { ... }
+ * const adapter = axios
+ * 
  * const middleware = applyMiddleware(
- *    apiMiddleware(apiConfig),
+ *    apiMiddleware(adapter, defaultAdapterOptions),
  *    ...
  * )
  * const store = createStore(reducer, initialState, middleware)
  * ```
- * The following options can be used to configure the middleware:
+ * 
+ * The `adapter` argument is the function that will be invoked to make the API request. It will be passed an object of configuration arguments and it must return a promise indicating request status.
+ * 
+ * The following options may be used to configure the middleware:
  * - `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
- * - `successDataPath`: A path to response data that will be passed as the success action's payload
- * - `failureDataPath`: A path to response data that will be passed as the failure action's payload
- * - any options used by the lp-requests [http](https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http) module
+ * - `requestAction` (default=`null`): An action creator to be called and dispatched when the initial request is made.
+ * - `successAction` (default=`null`): An action creator to be called and dispatched if the request succeeds.
+ * - `failureAction` (default=`null`): An action creator to be called and dispatched if the request fails.
+ * - any options used by the adapter
  *
  * @name middleware
  * @type Function
  */
 
-const DEFAULT_CONFIG_OPTIONS = {
-  onUnauthorized: null,
-}
-
-const DEFAULT_REQUEST_OPTIONS = {
-  credentials: 'same-origin',
-  csrf: true,
-  mode: 'same-origin',
-}
-
 // custom HTTP method for stub requests- makes no call, but resolves with provided data.
-function createStubHttp (data) {
-  return function http () {
+function createStubRequest (data) {
+  return function request () {
     return Promise.resolve(data)
   }
 }
 
-function middleware (options={}) {
+function middleware (mainAdapter, options={}) {
+  // Require adapter
+  if (!isFunction(mainAdapter)) throw new Error('Middleware must be initialized with an adapter function.')
   // Build defaults
-  const { configOptions, requestOptions } = parseOptions(options)
-  const defaultConfigOptions = { ...DEFAULT_CONFIG_OPTIONS, ...configOptions }
-  const defaultRequestOptions = { ...DEFAULT_REQUEST_OPTIONS, ...requestOptions }
-  const baseHttp = configureHttp(defaultRequestOptions)
+  const { 
+    configOptions: defaultConfigOptions,
+    requestOptions: defaultRequestOptions
+  } = parseOptions(options)
   // Handle actions
   return () => next => action => {
     // ignore undefined or null actions
@@ -92,19 +56,20 @@ function middleware (options={}) {
     // Do not process actions without a [LP_API] property
     if (!options) return next(action)
     // Parse options and merge with defaults
-    const { configOptions, requestOptions, url } = parseOptions(options)
+    const { configOptions, requestOptions } = parseOptions(options)
     const mergedConfigOptions = { ...defaultConfigOptions, ...configOptions }
+    const mergedRequestOptions = { ...defaultRequestOptions, ...requestOptions }
     // Pull out config options
     const {
+      type,
       onUnauthorized,
-      requestKey,
       requestAction,
       successAction,
       failureAction,
       isStub,
       stubData,
+      adapter=mainAdapter,
     } = mergedConfigOptions
-    if (!isStub && !url) throw new Error(`Middleware: Must provide string 'url' argument`)
     // Send user-specified request action
     if (requestAction) {
       next(parseAction({
@@ -112,11 +77,11 @@ function middleware (options={}) {
         payload: options,
       }))
     }
-    // Send request action to API reducer
-    if (requestKey) next(actions.setStatusLoading(requestKey))
+    // Send built-in request action
+    next(actions.setStatusLoading(type))
     // Make the request
-    const http = isStub ? createStubHttp(stubData) : baseHttp
-    return http(url, requestOptions)
+    const request = isStub ? createStubRequest(stubData) : adapter
+    return request(mergedRequestOptions)
       .then(
         // Success handler
         response => {
@@ -127,8 +92,8 @@ function middleware (options={}) {
               payload: response,
             }))
           }
-          // Send success action to API reducer
-          if (requestKey) next(actions.setStatusSuccess(requestKey, response))
+          // Send built-in success action
+          next(actions.setStatusSuccess(type, response))
           return response
         },
         // Error handler
@@ -141,8 +106,8 @@ function middleware (options={}) {
               error: true,
             }))
           }
-          // Send failure action to API reducer
-          if (requestKey) next(actions.setStatusFailure(requestKey, error))
+          // Send built-in failure action
+          next(actions.setStatusFailure(type, error))
           // Dispatch unauthorized action if applicable
           if (error.status === 401 && onUnauthorized) next(onUnauthorized({ error, request: options }))
           throw error

@@ -26,21 +26,13 @@
     -   [Parameters][22]
     -   [Examples][23]
 -   [middleware][24]
-    -   [Actions][25]
-    -   [Middleware configuration][26]
--   [reducer][27]
+-   [reducer][25]
+    -   [Examples][26]
+-   [selectors][27]
     -   [Examples][28]
--   [requestWithKey][29]
+-   [createStubRequest][29]
     -   [Parameters][30]
     -   [Examples][31]
--   [selectors][32]
-    -   [Examples][33]
--   [setFromRequest][34]
-    -   [Parameters][35]
-    -   [Examples][36]
--   [stubRequest][37]
-    -   [Parameters][38]
-    -   [Examples][39]
 
 ## handleSuccess
 
@@ -48,7 +40,7 @@ A function that takes an API action handler and only applies that handler when t
 
 ### Parameters
 
--   `handler` **[Function][40]** An action handler that is passed `state`, `action` and `data` params
+-   `handler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 
@@ -63,7 +55,7 @@ handleActions({
 *
 ```
 
-Returns **[Function][40]** An action handler that runs when a request is successful
+Returns **[Function][32]** An action handler that runs when a request is successful
 
 ## handleFailure
 
@@ -71,7 +63,7 @@ A function that takes an API action handler and only applies that handler when t
 
 ### Parameters
 
--   `handler` **[Function][40]** An action handler that is passed `state`, `action` and `data` params
+-   `handler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 
@@ -86,7 +78,7 @@ handleActions({
 *
 ```
 
-Returns **[Function][40]** An action handler that runs when a request is unsuccessful
+Returns **[Function][32]** An action handler that runs when a request is unsuccessful
 
 ## handleResponse
 
@@ -95,8 +87,8 @@ and applies the handlers when the responses have the correct status.
 
 ### Parameters
 
--   `successHandler` **[Function][40]** An action handler that is passed `state`, `action` and `data` params
--   `failureHandler` **[Function][40]** An action handler that is passed `state`, `action` and `data` params
+-   `successHandler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
+-   `failureHandler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 
@@ -117,7 +109,7 @@ handleActions({
 *
 ```
 
-Returns **[Function][40]** An action handler runs the handler that corresponds to the request status
+Returns **[Function][32]** An action handler runs the handler that corresponds to the request status
 
 ## setOnSuccess
 
@@ -125,8 +117,8 @@ A function that creates an API action handler that sets a path in the state with
 
 ### Parameters
 
--   `path` **[String][41]** The path in the state to set with the returned data
--   `transform` **[Function][40]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
+-   `path` **[String][33]** The path in the state to set with the returned data
+-   `transform` **[Function][32]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
 
 ### Examples
 
@@ -139,7 +131,7 @@ handleActions({
 *
 ```
 
-Returns **[Function][40]** An action handler that runs when a request is unsuccessful
+Returns **[Function][32]** An action handler that runs when a request is unsuccessful
 
 ## setOnFailure
 
@@ -147,8 +139,8 @@ A function that creates an API action handler that sets a path in the state with
 
 ### Parameters
 
--   `path` **[String][41]** The path in the state to set with the returned error
--   `transform` **[Function][40]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
+-   `path` **[String][33]** The path in the state to set with the returned error
+-   `transform` **[Function][32]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
 
 ### Examples
 
@@ -161,7 +153,7 @@ handleActions({
 *
 ```
 
-Returns **[Function][40]** An action handler that runs when a request is successful
+Returns **[Function][32]** An action handler that runs when a request is successful
 
 ## setOnResponse
 
@@ -169,10 +161,10 @@ A function that creates an API action handler that sets one of two given paths i
 
 ### Parameters
 
--   `path` **[String][41]** The path in the state to set with the returned data on success
--   `path` **[String][41]** The path in the state to set with the returned error on failure
--   `transform` **[Function][40]?** A function that determines the success data that is set in the state. Passed `action` and `state` params.
--   `transform` **[Function][40]?** A function that determines the error data that is set in the state. Passed `action` and `state` params.
+-   `path` **[String][33]** The path in the state to set with the returned data on success
+-   `path` **[String][33]** The path in the state to set with the returned error on failure
+-   `transform` **[Function][32]?** A function that determines the success data that is set in the state. Passed `action` and `state` params.
+-   `transform` **[Function][32]?** A function that determines the error data that is set in the state. Passed `action` and `state` params.
 
 ### Examples
 
@@ -185,7 +177,7 @@ handleActions({
 *
 ```
 
-Returns **[Function][40]** An action handler
+Returns **[Function][32]** An action handler
 
 ## LP_API
 
@@ -196,7 +188,7 @@ to guarantee uniqueness.
 The params provided as the value include anything that is supported by
 [LP Redux Api Middleware][24]
 
-Type: [Symbol][42]
+Type: [Symbol][34]
 
 ### Examples
 
@@ -216,14 +208,14 @@ function fooAction () {
 
 ## createRequest
 
-A function that creates action creators for making API requests, much like [createAction][43] from `redux-actions`.
+A function that creates action creators for making API requests, much like [createAction][35] from `redux-actions`.
 
 Note: there are convenience functions for each request method: `createPostRequest()`, `createPutRequest()`, etc.
 
 ### Parameters
 
--   `type` **[String][41]** A unique key that will be used to identify the request internally in redux
--   `definition` **([Object][44] \| [Function][40])** An object of `lp-request` config options, or a function that returns config options.
+-   `type` **[String][33]** A unique key that will be used to identify the request internally in redux
+-   `definition` **([Object][36] \| [Function][32])** An object of config options for the adapter, or a function that returns config options.
 
 ### Examples
 
@@ -244,76 +236,43 @@ handleActions({
 *
 ```
 
-Returns **[Function][40]** An action creator that passes its arguments to `definition` and makes the resulting API request.
+Returns **[Function][32]** An action creator that passes its arguments to `definition` and makes the resulting API request.
 
 ## middleware
 
-### Actions
-
-At a high level, `lp-redux-api` actions contain the following information:
-
--   The URL of an API request to execute
--   Any extra request details
--   One or many actions to dispatch based on the status of the request
-
-These actions are keyed using the [LP_API][19] symbol so that the middleware knows to handle them. Here's an example of a simple action creator:
-
-    import { LP_API } from '@launchpadlab/lp-redux-api'
-
-    export function fetchUser (id) {
-      return {
-        [LP_API]: {
-          url: `users/${id}`,
-          requestAction: 'USER_REQUEST', 
-          successAction: 'USER_SUCCESS', 
-          failureAction: 'USER_FAILURE',
-          ... any more configuration options 
-        },
-      }
-    }
-
-When this action is dispatched to the store, the middleware will take over and:
-
--   Dispatch a `USER_REQUEST` action
--   Perform the api request to `/users`
--   Dispatch a `USER_SUCCESS` action with the response payload if the api request is successful
--   Dispatch a `USER_FAILURE` action with the error payload if the api request fails
-
-Actions can be defined in the following ways:
-
--   As an action type `string` (shown above)
--   As an action `object`
--   As an action creator `function` - will get passed the success/error response as modified by `successDataPath` and `failureDataPath` (see below)
-
-### Middleware configuration
-
-In order to use `lp-redux-api` actions, you must apply the custom middleware to your store when the store is created:
+In order to use actions created by [createRequest][21], you must apply the custom `lp-redux-api` middleware to your store when the store is created:
 
     import { middleware as apiMiddleware } from '@launchpadlab/lp-redux-api'
-    const apiConfig = { ... }
+
+    const defaultAdapterOptions = { ... }
+    const adapter = axios
+
     const middleware = applyMiddleware(
-       apiMiddleware(apiConfig),
+       apiMiddleware(adapter, defaultAdapterOptions),
        ...
     )
     const store = createStore(reducer, initialState, middleware)
 
-The following options can be used to configure the middleware:
+The `adapter` argument is the function that will be invoked to make the API request. It will be passed an object of configuration arguments and it must return a promise indicating request status.
+
+The following options may be used to configure the middleware:
 
 -   `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
--   `successDataPath`: A path to response data that will be passed as the success action's payload
--   `failureDataPath`: A path to response data that will be passed as the failure action's payload
--   any options used by the lp-requests [http][45] module
+-   `requestAction` (default=`null`): An action creator to be called and dispatched when the initial request is made.
+-   `successAction` (default=`null`): An action creator to be called and dispatched if the request succeeds.
+-   `failureAction` (default=`null`): An action creator to be called and dispatched if the request fails.
+-   any options used by the adapter
 
 ## reducer
 
 Stores the status of API requests in your state.
-Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey][29]),
-and can be retrieved by using [selectStatus][46].
+Statuses are stored for all requests with a `requestKey` (including those created by [requestWithKey][37]),
+and can be retrieved by using [selectStatus][38].
 
 To use this reducer, add it to `combineReducers()` under the `api` key. You can use a different key if you'd like,
-but you will need to reference it explicitly when using [selectStatus][46].
+but you will need to reference it explicitly when using [selectStatus][38].
 
-Type: [Function][40]
+Type: [Function][32]
 
 ### Examples
 
@@ -338,47 +297,6 @@ selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
 
 *
 ```
-
-## requestWithKey
-
-An action creator that automatically adds a requestKey and default actions to your request.
-These default actions can then be picked up by [setFromRequest][34].
-
-Default actions are dynamically named using the key provided, like so:
-
--   `<requestKey>_REQUEST`
--   `<requestKey>_SUCCESS`
--   `<requestKey>_FAILURE`
-
-### Parameters
-
--   `requestKey` **[String][41]** A unique key that you can use to reference your request in [setFromRequest][34] or [selectStatus][46]
--   `options` **[Object][44]** Config options that you would normally include in an [LP_API] action, such as `url` and `method`
-
-### Examples
-
-```javascript
-export const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
-
-export const fetchUsers = requestWithKey(REQ_FETCH_USERS, {
-  url: '/users'
-})
-
-fetchUsers()
-
-// {
-//   [LP_API]: {
-//     url: '/users',
-//     requestKey: 'REQ_FETCH_USERS',
-//     requestAction: 'REQ_FETCH_USERS_REQUEST', 
-//     successAction: 'REQ_FETCH_USERS_SUCCESS', 
-//     failureAction: 'REQ_FETCH_USERS_FAILURE',
-// }
-
-*
-```
-
-Returns **[Object][44]** An [LP_API] action that can be handled by the lp-redux-api middleware.
 
 ## selectors
 
@@ -425,59 +343,7 @@ apiSelectors.status(state, fetchUsers) // -> 'loading'
 *
 ```
 
-## setFromRequest
-
-A function that creates action handlers for actions generated by [requestWithKey][29].
-These handlers set data at a path in the state from the response(s) of a given request.
-
-If the request is successful, the data will be set at `<path>.success`.
-If the request is unsuccessful, the data will be set at `<path>.failure`.
-
-By default, setFromRequest creates handlers for `<requestKey>_SUCCESS` and `<requestKey>_FAILURE` action types.
-You can override either of these handlers in your reducer by creating handlers explicitly.
-
-### Parameters
-
--   `requestKey` **[String][41]** A unique key that references a request created by [requestWithKey][29]
--   `path` **[String][41]** A path (in dot notation) indicating where the data will be set in the state
-
-### Examples
-
-```javascript
-const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
-
- const initialState = {
-  user: {
-    data: null,
-    error: null
-  }
- }
-
-export const reducer = (state=initialState, action) => {
-  const handlers = {
-    ...setFromRequest(REQ_FETCH_USERS, 'user')
-  }
-  const handler = handlers[action.type]
-  if (!handler) return state
-  return handler(state, action)
-}
-
-// On success, this call returns userData
-const fetchUsers = requestWithKey(REQ_FETCH_USERS, { url: '/users' })
-
-dispatch(fetchUsers()) 
-
-// On success, new state will be:
-// {
-//    user: { success: userData }
-// }
-
-*
-```
-
-Returns **[Object][44]** A hash of action handlers that can be included in a reducer by using object spread syntax
-
-## stubRequest
+## createStubRequest
 
 A function that creates action creators for making stubbed API requests.
 
@@ -486,13 +352,13 @@ resolve immediately with the provided data.
 
 ### Parameters
 
--   `type` **[String][41]** A unique key that will be used to identify the request internally in redux
--   `dataDefinition` **([Object][44] \| [Function][40])** Data that the request will resolve with, or a function that returns data to resolve with.
+-   `type` **[String][33]** A unique key that will be used to identify the request internally in redux
+-   `dataDefinition` **([Object][36] \| [Function][32])** Data that the request will resolve with, or a function that returns data to resolve with.
 
 ### Examples
 
 ```javascript
-export const fetchUser = stubRequest('FETCH_USER', (id) => ({ id }))
+export const fetchUser = createStubRequest('FETCH_USER', (id) => ({ id }))
 
 fetchUsers(5)
 // -> won't make any api request, but will resolve with data { id: 5 }
@@ -506,7 +372,7 @@ handleActions({
 *
 ```
 
-Returns **[Function][40]** An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
+Returns **[Function][32]** An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
 
 [1]: #handlesuccess
 
@@ -556,46 +422,30 @@ Returns **[Function][40]** An action creator that passes its arguments to `dataD
 
 [24]: #middleware
 
-[25]: #actions
+[25]: #reducer
 
-[26]: #middleware-configuration
+[26]: #examples-8
 
-[27]: #reducer
+[27]: #selectors
 
-[28]: #examples-8
+[28]: #examples-9
 
-[29]: #requestwithkey
+[29]: #createstubrequest
 
 [30]: #parameters-7
 
-[31]: #examples-9
+[31]: #examples-10
 
-[32]: #selectors
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[33]: #examples-10
+[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[34]: #setfromrequest
+[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol
 
-[35]: #parameters-8
+[35]: https://redux-actions.js.org/api-reference/createaction-s
 
-[36]: #examples-11
+[36]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[37]: #stubrequest
+[37]: requestWithKey
 
-[38]: #parameters-9
-
-[39]: #examples-12
-
-[40]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
-
-[41]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[42]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol
-
-[43]: https://redux-actions.js.org/api-reference/createaction-s
-
-[44]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
-[45]: https://github.com/LaunchPadLab/lp-requests/blob/master/docs.md#http
-
-[46]: selectStatus
+[38]: selectStatus
