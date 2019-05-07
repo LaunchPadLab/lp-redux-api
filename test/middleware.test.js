@@ -80,6 +80,12 @@ test('middleware rejects unsupported action definition types', () => {
 
 // Middleware tests
 
+test('middleware requires function adapter argument', () => {
+  expect(() => middleware()).toThrow()
+  expect(() => middleware({})).toThrow()
+  expect(() => middleware(() => {})).not.toThrow()
+})
+
 test('middleware passes non-LP_API actions through', () => {
   const store = mockStore({})
   const otherAction = { type: 'OTHER' }

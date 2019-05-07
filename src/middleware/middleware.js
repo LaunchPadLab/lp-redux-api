@@ -2,6 +2,7 @@ import LP_API from '../LP_API'
 import * as actions from '../actions'
 import parseAction from './parse-action'
 import parseOptions from './parse-options'
+import { isFunction } from 'lodash'
 
 /**
  * In order to use actions created by {@link createRequest}, you must apply the custom `lp-redux-api` middleware to your store when the store is created:
@@ -39,6 +40,8 @@ function createStubRequest (data) {
 }
 
 function middleware (mainAdapter, options={}) {
+  // Require adapter
+  if (!isFunction(mainAdapter)) throw new Error('Middleware must be initialized with an adapter function.')
   // Build defaults
   const { 
     configOptions: defaultConfigOptions,
