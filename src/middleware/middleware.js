@@ -32,10 +32,12 @@ import { isFunction } from 'lodash'
  * @type Function
  */
 
-// custom HTTP method for stub requests- makes no call, but resolves with provided data.
+// custom HTTP method for stub requests- makes no call, but resolves/rejects with provided data
 function createStubRequest (data) {
   return function request () {
-    return Promise.resolve(data)
+    return new Promise((resolve, reject) => {
+      return data.error ? reject(data.error) : resolve(data)
+    })
   }
 }
 

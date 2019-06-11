@@ -7,6 +7,8 @@ import { isObject, isFunction, identity } from 'lodash'
  * 
  * Unlike {@link createRequest}, these action creators do not make real API calls but rather
  * resolve immediately with the provided data.
+ * 
+ * If an `error` key is provided in the stub data object, the "request" will reject with the value of that key instead of resolving.
  *
  * @name createStubRequest
  * @param {String} type - A unique key that will be used to identify the request internally in redux
@@ -14,7 +16,8 @@ import { isObject, isFunction, identity } from 'lodash'
  * @returns {Function} An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
  * @example
  *
- *
+ * // ** Stubbing a successful request: **
+ * 
  * export const fetchUser = createStubRequest('FETCH_USER', (id) => ({ id }))
  *
  * fetchUsers(5)
@@ -25,6 +28,13 @@ import { isObject, isFunction, identity } from 'lodash'
  * handleActions({
  *    [apiActions.fetchUser]: (state, action) => ...
  * })
+ * 
+ * // ** Stubbing a failed request: **
+ * 
+ * export const fetchUser = createStubRequest('FETCH_USER', (id) => ({ error: new Error('My mock error.') }))
+ *
+ * fetchUsers(5)
+ * // -> won't make any api request, but will reject with the given error.
  *
 **/
 
