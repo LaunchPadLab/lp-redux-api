@@ -7,6 +7,8 @@ import { isObject, isFunction, identity } from 'lodash'
  * 
  * Unlike {@link createRequest}, these action creators do not make real API calls but rather
  * resolve immediately with the provided data.
+ * 
+ * If an exception is thrown from the data creator function, the "request" will reject with that exception instead of resolving.
  *
  * @name createStubRequest
  * @param {String} type - A unique key that will be used to identify the request internally in redux
@@ -14,7 +16,8 @@ import { isObject, isFunction, identity } from 'lodash'
  * @returns {Function} An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
  * @example
  *
- *
+ * // ** Stubbing a successful request: **
+ * 
  * export const fetchUser = createStubRequest('FETCH_USER', (id) => ({ id }))
  *
  * fetchUsers(5)
@@ -25,23 +28,38 @@ import { isObject, isFunction, identity } from 'lodash'
  * handleActions({
  *    [apiActions.fetchUser]: (state, action) => ...
  * })
+ * 
+ * // ** Stubbing a failed request: **
+ * 
+ * export const fetchUser = createStubRequest('FETCH_USER', (id) => { 
+ *    throw new Error('My mock error.')
+ * })
+ *
+ * fetchUsers(5)
+ * // -> won't make any api request, but will reject with the given error.
  *
 **/
 
-function createActionOptions (definition, args) {
-  return isFunction(definition)
-    ? definition(...args) || {}
-    : definition
+function getStubData (definition, args) {
+  if (!isFunction(definition)) return { stubData: definition }
+  try {
+    const stubData = definition(...args) || {}
+    return { stubData }
+  } catch (e) {
+    return { stubData: e, isError: true }
+  }
 }
 
 function createStubRequest (type, definition=identity) {
   if (!type) throw new Error('Must include a type for your request.')
   if (!(isObject(definition) || isFunction(definition))) throw new Error('Request definition must be an object or a function.')
   function actionCreator (...args) {
+    const { stubData, isError } = getStubData(definition, args)
     return {
       [LP_API]: {
         isStub: true,
-        stubData: createActionOptions(definition, args),
+        isStubError: isError,
+        stubData,
         type,
       }
     }

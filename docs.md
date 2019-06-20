@@ -350,6 +350,8 @@ A function that creates action creators for making stubbed API requests.
 Unlike [createRequest][21], these action creators do not make real API calls but rather
 resolve immediately with the provided data.
 
+If an exception is thrown from the data creator function, the "request" will reject with that exception instead of resolving.
+
 ### Parameters
 
 -   `type` **[String][33]** A unique key that will be used to identify the request internally in redux
@@ -358,6 +360,8 @@ resolve immediately with the provided data.
 ### Examples
 
 ```javascript
+// ** Stubbing a successful request: **
+
 export const fetchUser = createStubRequest('FETCH_USER', (id) => ({ id }))
 
 fetchUsers(5)
@@ -368,6 +372,15 @@ fetchUsers(5)
 handleActions({
    [apiActions.fetchUser]: (state, action) => ...
 })
+
+// ** Stubbing a failed request: **
+
+export const fetchUser = createStubRequest('FETCH_USER', (id) => { 
+   throw new Error('My mock error.')
+})
+
+fetchUsers(5)
+// -> won't make any api request, but will reject with the given error.
 
 *
 ```

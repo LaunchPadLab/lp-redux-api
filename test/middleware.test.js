@@ -149,6 +149,22 @@ test('middleware resolves stubbed requests with provided data', () => {
   })
 })
 
+test('middleware rejects stubbed requests with error flag', () => {
+  expect.assertions(1)
+  const stubData = { foo: 'bar' }
+  const store = mockStore({})
+  const stubAction = {
+    [LP_API]: {
+      isStub: true,
+      isStubError: true,
+      stubData
+    }
+  }
+  return store.dispatch(stubAction).catch((res) => {
+    expect(res).toEqual(stubData)
+  })
+})
+
 test('middleware dispatches default success action with correct data argument', () => {
   const store = mockStore({})
   return store.dispatch(actionWithURL(successUrl)).then(() => {
