@@ -350,7 +350,7 @@ A function that creates action creators for making stubbed API requests.
 Unlike [createRequest][21], these action creators do not make real API calls but rather
 resolve immediately with the provided data.
 
-If an `error` key is provided in the stub data object, the "request" will reject with the value of that key instead of resolving.
+If an exception is thrown from the data creator function, the "request" will reject with that exception instead of resolving.
 
 ### Parameters
 
@@ -375,7 +375,9 @@ handleActions({
 
 // ** Stubbing a failed request: **
 
-export const fetchUser = createStubRequest('FETCH_USER', (id) => ({ error: new Error('My mock error.') }))
+export const fetchUser = createStubRequest('FETCH_USER', (id) => { 
+   throw new Error('My mock error.')
+})
 
 fetchUsers(5)
 // -> won't make any api request, but will reject with the given error.

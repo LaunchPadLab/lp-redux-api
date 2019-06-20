@@ -33,10 +33,10 @@ import { isFunction } from 'lodash'
  */
 
 // custom HTTP method for stub requests- makes no call, but resolves/rejects with provided data
-function createStubRequest (data) {
+function createStubRequest (data, isError) {
   return function request () {
     return new Promise((resolve, reject) => {
-      return data.error ? reject(data.error) : resolve(data)
+      return isError ? reject(data) : resolve(data)
     })
   }
 }
@@ -69,6 +69,7 @@ function middleware (mainAdapter, options={}) {
       successAction,
       failureAction,
       isStub,
+      isStubError,
       stubData,
       adapter=mainAdapter,
     } = mergedConfigOptions
@@ -82,7 +83,7 @@ function middleware (mainAdapter, options={}) {
     // Send built-in request action
     next(actions.setStatusLoading(type))
     // Make the request
-    const request = isStub ? createStubRequest(stubData) : adapter
+    const request = isStub ? createStubRequest(stubData, isStubError) : adapter
     return request(mergedRequestOptions)
       .then(
         // Success handler

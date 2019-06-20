@@ -149,18 +149,19 @@ test('middleware resolves stubbed requests with provided data', () => {
   })
 })
 
-test('middleware rejects stubbed requests with error key', () => {
+test('middleware rejects stubbed requests with error flag', () => {
   expect.assertions(1)
-  const ERROR = new Error('mock error')
+  const stubData = { foo: 'bar' }
   const store = mockStore({})
   const stubAction = {
     [LP_API]: {
       isStub: true,
-      stubData: { error: ERROR }
+      isStubError: true,
+      stubData
     }
   }
   return store.dispatch(stubAction).catch((res) => {
-    expect(res).toEqual(ERROR)
+    expect(res).toEqual(stubData)
   })
 })
 

@@ -11,6 +11,7 @@ function parseOptions ({
   successAction,
   failureAction,
   isStub,
+  isStubError,
   stubData,
   adapter,
   ...requestOptions
@@ -25,6 +26,7 @@ function parseOptions ({
       successAction,
       failureAction,
       isStub,
+      isStubError,
       stubData,
       adapter,
     }),
