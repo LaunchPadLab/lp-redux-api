@@ -13,6 +13,8 @@ import { isObject, isFunction, identity } from 'lodash'
  * @name createStubRequest
  * @param {String} type - A unique key that will be used to identify the request internally in redux
  * @param {Object|Function} dataDefinition - Data that the request will resolve with, or a function that returns data to resolve with.
+ * @param {Object} [options] - Options object
+ * @param {Number} [options.delay=0] - Time (in ms) to delay the API request. Particularly useful when attempting to simulate loading states.
  * @returns {Function} An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
  * @example
  *
@@ -38,7 +40,13 @@ import { isObject, isFunction, identity } from 'lodash'
  * fetchUsers(5)
  * // -> won't make any api request, but will reject with the given error.
  *
-**/
+ * // ** Simulating a response delay: **
+ * 
+ * export const fetchUser = createStubRequest('FETCH_USER', (id) => {
+ *  return {
+ *    id
+ *  }}, { delay: 500 })
+ */
 
 function getStubData (definition, args) {
   if (!isFunction(definition)) return { stubData: definition }
@@ -50,7 +58,7 @@ function getStubData (definition, args) {
   }
 }
 
-function createStubRequest (type, definition=identity) {
+function createStubRequest (type, definition=identity, { delay }={}) {
   if (!type) throw new Error('Must include a type for your request.')
   if (!(isObject(definition) || isFunction(definition))) throw new Error('Request definition must be an object or a function.')
   function actionCreator (...args) {
@@ -61,6 +69,7 @@ function createStubRequest (type, definition=identity) {
         isStubError: isError,
         stubData,
         type,
+        delay,
       }
     }
   }

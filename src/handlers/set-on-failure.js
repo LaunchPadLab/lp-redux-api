@@ -16,7 +16,7 @@ import { set } from '../utils'
  *    [apiActions.fetchUser]: setOnFailure('userFetchError')
  * })
  *
-**/
+ */
 
 function setOnFailure (path, transform=getDataFromAction) {
   return handleFailure((state, action) => set(path, transform(action, state), state))

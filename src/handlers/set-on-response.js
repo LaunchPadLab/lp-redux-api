@@ -18,7 +18,7 @@ import { set } from '../utils'
  *    [apiActions.fetchUser]: setOnResponse('currentUser', 'userFetchError')
  * })
  *
-**/
+ */
 
 function setOnResponse (
   successPath, 

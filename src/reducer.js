@@ -30,7 +30,7 @@ import { LP_API_ACTION_NAMESPACE } from './actions'
  * 
  * selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
  *
-**/
+ */
 
 export default function reducer (state={}, { type, payload }) {
   if (!type.startsWith(LP_API_ACTION_NAMESPACE)) return state

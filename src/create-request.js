@@ -27,7 +27,7 @@ import { isObject, isFunction } from 'lodash'
  *    [apiActions.fetchUser]: (state, action) => ...
  * })
  *
-**/
+ */
 
 function createActionOptions (definition, args) {
   return isFunction(definition)

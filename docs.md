@@ -51,8 +51,6 @@ handleActions({
      return set('currentUser', action.payload.data, state)
    })
 })
-
-*
 ```
 
 Returns **[Function][32]** An action handler that runs when a request is successful
@@ -74,8 +72,6 @@ handleActions({
      return set('userFetchError', action.payload.data, state)
    })
 })
-
-*
 ```
 
 Returns **[Function][32]** An action handler that runs when a request is unsuccessful
@@ -105,8 +101,6 @@ handleActions({
      },
    )
 })
-
-*
 ```
 
 Returns **[Function][32]** An action handler runs the handler that corresponds to the request status
@@ -127,8 +121,6 @@ handleActions({
    // This will do the same thing as the example for handleSuccess
    [apiActions.fetchUser]: setOnSuccess('currentSuccess')
 })
-
-*
 ```
 
 Returns **[Function][32]** An action handler that runs when a request is unsuccessful
@@ -149,8 +141,6 @@ handleActions({
    // This will do the same thing as the example for handleFailure
    [apiActions.fetchUser]: setOnFailure('userFetchError')
 })
-
-*
 ```
 
 Returns **[Function][32]** An action handler that runs when a request is successful
@@ -173,8 +163,6 @@ handleActions({
    // This will do the same thing as the example for handleResponse
    [apiActions.fetchUser]: setOnResponse('currentUser', 'userFetchError')
 })
-
-*
 ```
 
 Returns **[Function][32]** An action handler
@@ -232,8 +220,6 @@ fetchUsers(5)
 handleActions({
    [apiActions.fetchUser]: (state, action) => ...
 })
-
-*
 ```
 
 Returns **[Function][32]** An action creator that passes its arguments to `definition` and makes the resulting API request.
@@ -294,8 +280,6 @@ const REQ_FETCH_USERS = 'REQ_FETCH_USERS'
 dispatch(requestWithKey(REQ_FETCH_USERS, { url: '/users' }))
 
 selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
-
-*
 ```
 
 ## selectors
@@ -339,8 +323,6 @@ const fetchUsers = createRequest('FETCH_USERS', { url: '/users' })
 dispatch(fetchUsers())
 
 apiSelectors.status(state, fetchUsers) // -> 'loading'
-
-*
 ```
 
 ## createStubRequest
@@ -356,6 +338,8 @@ If an exception is thrown from the data creator function, the "request" will rej
 
 -   `type` **[String][33]** A unique key that will be used to identify the request internally in redux
 -   `dataDefinition` **([Object][36] \| [Function][32])** Data that the request will resolve with, or a function that returns data to resolve with.
+-   `options` **[Object][36]?** Options object
+    -   `options.delay` **[Number][39]** Time (in ms) to delay the API request. Particularly useful when attempting to simulate loading states. (optional, default `0`)
 
 ### Examples
 
@@ -382,7 +366,12 @@ export const fetchUser = createStubRequest('FETCH_USER', (id) => {
 fetchUsers(5)
 // -> won't make any api request, but will reject with the given error.
 
-*
+// ** Simulating a response delay: **
+
+export const fetchUser = createStubRequest('FETCH_USER', (id) => {
+ return {
+   id
+ }}, { delay: 500 })
 ```
 
 Returns **[Function][32]** An action creator that passes its arguments to `dataDefinition` and makes the resulting stubbed API request.
@@ -462,3 +451,5 @@ Returns **[Function][32]** An action creator that passes its arguments to `dataD
 [37]: requestWithKey
 
 [38]: selectStatus
+
+[39]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
