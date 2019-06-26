@@ -181,14 +181,14 @@ test('middleware responds after delay with provided data', () => {
     [LP_API]: {
       isStub: true,
       stubData,
-      delay: 500,
+      delay: 1000,
     }
   }
   
   const pendingPromise = store.dispatch(stubAction).then((res) => {
     expect(res).toEqual(stubData)
     expect(setTimeout).toHaveBeenCalledTimes(1)
-    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500)
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000)
   })
   
   // Activate the timer
