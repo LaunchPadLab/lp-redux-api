@@ -38,7 +38,7 @@ import { isObject, isFunction, identity } from 'lodash'
  * fetchUsers(5)
  * // -> won't make any api request, but will reject with the given error.
  *
-**/
+ */
 
 function getStubData (definition, args) {
   if (!isFunction(definition)) return { stubData: definition }

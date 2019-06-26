@@ -15,7 +15,7 @@ import { isFailureAction, getDataFromAction } from './helpers'
  *    })
  * })
  *
-**/
+ */
 
 function handleFailure (handler) {
   return (state, action) => isFailureAction(action) ? handler(state, action, getDataFromAction(action)) : state

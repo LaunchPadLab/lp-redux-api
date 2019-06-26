@@ -16,7 +16,7 @@ import { set } from '../utils'
  *    [apiActions.fetchUser]: setOnSuccess('currentSuccess')
  * })
  *
-**/
+ */
 
 function setOnSuccess (path, transform=getDataFromAction) {
   return handleSuccess((state, action) => set(path, transform(action, state), state))

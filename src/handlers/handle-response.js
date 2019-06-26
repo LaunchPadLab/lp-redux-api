@@ -23,7 +23,7 @@ import { isSuccessAction, isFailureAction, getDataFromAction } from './helpers'
  *    )
  * })
  *
-**/
+ */
 
 function handleResponse (successHandler, failureHandler) {
   if (!(successHandler && failureHandler)) throw new Error('handleResponse requires both a success handler and failure handler.')

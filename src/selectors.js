@@ -46,7 +46,7 @@ import {
  * 
  * apiSelectors.status(state, fetchUsers) // -> 'loading'
  *
-**/
+ */
 
 const selectors = {}
 

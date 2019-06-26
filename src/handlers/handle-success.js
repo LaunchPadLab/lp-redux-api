@@ -15,7 +15,7 @@ import { isSuccessAction, getDataFromAction } from './helpers'
  *    })
  * })
  *
-**/
+ */
 
 function handleSuccess (handler) {
   return (state, action) => isSuccessAction(action) ? handler(state, action, getDataFromAction(action)) : state
