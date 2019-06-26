@@ -136,6 +136,7 @@ test('middleware dispatches custom unauthorized action on auth error', () => {
 })
 
 test('middleware resolves stubbed requests with provided data', () => {
+  jest.useFakeTimers()
   const store = mockStore({})
   const stubData = { foo: 'bar' }
   const stubAction = {
@@ -144,12 +145,16 @@ test('middleware resolves stubbed requests with provided data', () => {
       stubData
     }
   }
-  return store.dispatch(stubAction).then((res) => {
+  const pendingPromise = store.dispatch(stubAction).then((res) => {
     expect(res).toEqual(stubData)
   })
+  
+  jest.runAllTimers()
+  return pendingPromise
 })
 
 test('middleware rejects stubbed requests with error flag', () => {
+  jest.useFakeTimers()
   expect.assertions(1)
   const stubData = { foo: 'bar' }
   const store = mockStore({})
@@ -160,9 +165,59 @@ test('middleware rejects stubbed requests with error flag', () => {
       stubData
     }
   }
-  return store.dispatch(stubAction).catch((res) => {
+  const pendingPromise = store.dispatch(stubAction).catch((res) => {
     expect(res).toEqual(stubData)
   })
+  
+  jest.runAllTimers()
+  return pendingPromise
+})
+
+test('middleware responds after delay with provided data', () => {
+  jest.useFakeTimers()
+  const store = mockStore({})
+  const stubData = { foo: 'bar' }
+  const stubAction = {
+    [LP_API]: {
+      isStub: true,
+      stubData,
+      delay: 500,
+    }
+  }
+  
+  const pendingPromise = store.dispatch(stubAction).then((res) => {
+    expect(res).toEqual(stubData)
+    expect(setTimeout).toHaveBeenCalledTimes(1)
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500)
+  })
+  
+  // Activate the timer
+  jest.runAllTimers()
+  return pendingPromise
+})
+
+test('middleware rejects stubbed request after delay with error flag', () => {
+  jest.useFakeTimers()
+  const store = mockStore({})
+  const stubData = { foo: 'bar' }
+  const stubAction = {
+    [LP_API]: {
+      isStub: true,
+      isStubError: true,
+      stubData,
+      delay: 500,
+    }
+  }
+  
+  const pendingPromise = store.dispatch(stubAction).catch((res) => {
+    expect(res).toEqual(stubData)
+    expect(setTimeout).toHaveBeenCalledTimes(1)
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500)
+  })
+  
+  // Activate the timer
+  jest.runAllTimers()
+  return pendingPromise
 })
 
 test('middleware dispatches default success action with correct data argument', () => {

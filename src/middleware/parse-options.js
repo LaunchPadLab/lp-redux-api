@@ -13,6 +13,7 @@ function parseOptions ({
   isStub,
   isStubError,
   stubData,
+  delay,
   adapter,
   ...requestOptions
 }) {
@@ -28,6 +29,7 @@ function parseOptions ({
       isStub,
       isStubError,
       stubData,
+      delay,
       adapter,
     }),
     requestOptions,
