@@ -36,7 +36,7 @@
     "lib/"
   ],
   "devDependencies": {
-    "@launchpadlab/babel-preset": "^1.0.0",
+    "@launchpadlab/babel-preset": "^2.0.0",
     "@launchpadlab/eslint-config": "^2.4.1",
     "axios": "^0.18.0",
     "babel-cli": "^6.22.2",
