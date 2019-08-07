@@ -77,7 +77,7 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@launchpadlab/babel-preset@^1.0.0":
+"@launchpadlab/babel-preset@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@launchpadlab/babel-preset/-/babel-preset-1.0.0.tgz#26ad90a35b3f595b7d707ff5086e70e30dd9dcb9"
   integrity sha512-vF9HVe2j/BdSpsHi99KHvBuB5OPZ1RnOhHcNiwvSB6FToSCHqHs/UCAHstxYm9vN2FOLT/JKrdEqNtcse23nYw==
@@ -87,7 +87,7 @@
     babel-preset-react "^6.24.1"
     babel-preset-stage-0 "^6.24.1"
 
-"@launchpadlab/eslint-config@^2.4.1":
+"@launchpadlab/eslint-config@2.4.1":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@launchpadlab/eslint-config/-/eslint-config-2.4.1.tgz#f260e9e09f9e57ab4a049b9696a7782f5061372d"
   integrity sha512-dUsUJLzdjr9JjWzjmdtazv2p4eJxaNBs+uGZDJ2/cKaS3rBw99ILYnddPLxwbu2tsQ+Sl8updf7DITnX8m9tIQ==
@@ -460,7 +460,7 @@ axios@^0.18.0:
     follow-redirects "^1.3.0"
     is-buffer "^1.1.5"
 
-babel-cli@^6.22.2:
+babel-cli@6.22.2:
   version "6.22.2"
   resolved "https://registry.yarnpkg.com/babel-cli/-/babel-cli-6.22.2.tgz#3f814c8acf52759082b8fedd9627f938936ab559"
   integrity sha1-P4FMis9SdZCCuP7dlif5OJNqtVk=
@@ -2133,7 +2133,7 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codeclimate-test-reporter@^0.5.0:
+codeclimate-test-reporter@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/codeclimate-test-reporter/-/codeclimate-test-reporter-0.5.0.tgz#93fa06b1c18e4117349128dc4e38aad08043828e"
   integrity sha1-k/oGscGOQRc0kSjcTjiq0IBDgo4=
@@ -2621,7 +2621,7 @@ doctrine@^2.1.0:
   dependencies:
     esutils "^2.0.2"
 
-documentation@^8.0.0:
+documentation@8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/documentation/-/documentation-8.0.0.tgz#075a05d30d47256c1defd710f3d5346220639822"
   integrity sha512-4mkIJQJF+Ks0ITRL1QoXAt4TbeEanOmZBuNanmoJ1YMJIud3+lshnhX6bQ97rH7SREgkn9w39HwO466fgWVqtw==
@@ -2926,7 +2926,7 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint@^5.0.0:
+eslint@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.0.0.tgz#3576704f7377aca072da69c00862277c5fe57153"
   integrity sha512-MA0YWJLeK7BPEBxJCINvKnQdKpeTwbac3Xonh0PPFjWYZkowZf+Xl30lJWJ/BWOqFQdAdPcyOh0aBqlbH6ojAg==
@@ -3911,7 +3911,7 @@ https-browserify@0.0.1:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
   integrity sha1-P5E2XKvmC3ftDruiS0VOPgnZWoI=
 
-husky@^0.14.3:
+husky@0.14.3:
   version "0.14.3"
   resolved "https://registry.yarnpkg.com/husky/-/husky-0.14.3.tgz#c69ed74e2d2779769a17ba8399b54ce0b63c12c3"
   integrity sha512-e21wivqHpstpoiWA/Yi8eFti8E+sQDSS53cpJsPptPs295QTOQR0ZwnHo2TXy1XOpZFD9rPOd3NpmqTK6uMLJA==
@@ -4834,7 +4834,7 @@ jest-worker@^22.2.2, jest-worker@^22.4.3:
   dependencies:
     merge-stream "^1.0.1"
 
-jest@^22.0.0:
+jest@22.4.4:
   version "22.4.4"
   resolved "https://registry.yarnpkg.com/jest/-/jest-22.4.4.tgz#ffb36c9654b339a13e10b3d4b338eb3e9d49f6eb"
   integrity sha512-eBhhW8OS/UuX3HxgzNBSVEVhSuRDh39Z1kdYkQVWna+scpgsrD7vSeBI7tmEvsguPDMnfJodW28YBnhv/BzSew==
@@ -6513,12 +6513,12 @@ realpath-native@^1.0.0:
   dependencies:
     util.promisify "^1.0.0"
 
-redux-mock-store@^1.2.3:
+redux-mock-store@1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.2.3.tgz#1b3ad299da91cb41ba30d68e3b6f024475fb9e1b"
   integrity sha1-GzrSmdqRy0G6MNaOO28CRHX7nhs=
 
-redux@^3.6.0:
+redux@3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.6.0.tgz#887c2b3d0b9bd86eca2be70571c27654c19e188d"
   integrity sha1-iHwrPQub2G7KK+cFccJ2VMGeGI0=
@@ -6935,7 +6935,7 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.2.8, rimraf@^2.5.4, rimraf@~2.5.1, rimraf@~2.5.4:
+rimraf@2, rimraf@2.5.4, rimraf@^2.2.8, rimraf@^2.5.4, rimraf@~2.5.1, rimraf@~2.5.4:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
   integrity sha1-loAAk8vxoMhr2VtGJUZ1NcKd+gQ=
