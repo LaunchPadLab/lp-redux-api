@@ -36,18 +36,18 @@
     "lib/"
   ],
   "devDependencies": {
-    "@launchpadlab/babel-preset": "^1.0.0",
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@launchpadlab/babel-preset": "^2.1.0",
     "@launchpadlab/eslint-config": "^2.4.1",
     "axios": "^0.18.0",
-    "babel-cli": "^6.22.2",
     "codeclimate-test-reporter": "^0.5.0",
-    "documentation": "^8.0.0",
-    "eslint": "^5.0.0",
-    "husky": "^0.14.3",
-    "jest": "^22.0.0",
-    "redux": "^3.6.0",
-    "redux-mock-store": "^1.2.3",
-    "rimraf": "^2.5.4"
+    "documentation": "^12.1.1",
+    "eslint": "^6.2.1",
+    "husky": "^3.0.4",
+    "jest": "^24.9.0",
+    "redux": "^4.0.4",
+    "redux-mock-store": "^1.2.3"
   },
   "dependencies": {
     "es6-symbol": "^3.1.1",
