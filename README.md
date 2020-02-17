@@ -16,10 +16,10 @@ const fetchUser = createRequest('FETCH_USER', (id) => ({
 // Dispatch the action from a component
 
 function Component({ fetchUser }) {
-  return <button onClick={() => fetchUser(5)}> Fetch user </button>
+  return <button onClick={() => fetchUser(5)}> Fetch user with id: 5 </button>
 }
 
-// Store the response via reducer
+// Store the response in a reducer
 
 import { handleActions } from 'redux-actions'
 import { setOnSuccess } from '@launchpadlab/lp-redux-api'
@@ -36,7 +36,7 @@ const reducer = handleActions(
 
 The key functions in this library are:
 
-- `createRequest(key, requestInfo)` - this function allows you to define a redux action that makes an API request asynchronously. By default, API requests are made using [lp-requests](https://github.com/LaunchPadLab/lp-requests).
+- `createRequest(key, requestInfo)` - this function allows you to define a redux action that makes an API request asynchronously. By default, API requests are made using [lp-requests](https://github.com/LaunchPadLab/lp-requests), although this is configurable.
 
 - `setOnSuccess(path) | setOnFailure(path)` - these functions allow you to easily store the responses of API actions in your redux store.
 
