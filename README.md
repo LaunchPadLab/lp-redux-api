@@ -13,7 +13,7 @@ const fetchUser = createRequest('FETCH_USER', (id) => ({
   url: '/users/' + id,
 }))
 
-// Dispatch the action from a component
+// Dispatch the action from a component (mapDispatchToProps not shown)
 
 function Component({ fetchUser }) {
   return <button onClick={() => fetchUser(5)}> Fetch user with id: 5 </button>
