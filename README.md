@@ -1,17 +1,56 @@
-[ ![Codeship Status for LaunchPadLab/lp-redux-api](https://app.codeship.com/projects/5b514ba0-ebe2-0134-f96d-2efd70753ac1/status?branch=master)](https://app.codeship.com/projects/208187) [![Code Climate](https://codeclimate.com/repos/58c99b00ba50b0028800074d/badges/cd7121b30bd1ff8d2efc/gpa.svg)](https://codeclimate.com/repos/58c99b00ba50b0028800074d/feed) [![Test Coverage](https://codeclimate.com/repos/58c99b00ba50b0028800074d/badges/cd7121b30bd1ff8d2efc/coverage.svg)](https://codeclimate.com/repos/58c99b00ba50b0028800074d/coverage)
 [![npm version](https://badge.fury.io/js/%40launchpadlab%2Flp-redux-api.svg)](https://badge.fury.io/js/%40launchpadlab%2Flp-redux-api)
-[![License](http://img.shields.io/badge/license-MIT-yellowgreen.svg)](#license) [![Greenkeeper badge](https://badges.greenkeeper.io/LaunchPadLab/lp-redux-api.svg)](https://greenkeeper.io/)
 
 # lp-redux-api
 
-Lightweight API library and middleware for redux applications.
+Action creators and reducers for making API requests with redux.
 
-## Documentation 
+```jsx
+// Define an API action
+
+import { createRequest } from '@launchpadlab/lp-redux-api'
+
+const fetchUser = createRequest('FETCH_USER', (id) => ({
+  url: '/users/' + id,
+}))
+
+// Dispatch the action from a component
+
+function Component({ fetchUser }) {
+  return <button onClick={() => fetchUser(5)}> Fetch user </button>
+}
+
+// Store the response via reducer
+
+import { handleActions } from 'redux-actions'
+import { setOnSuccess } from '@launchpadlab/lp-redux-api'
+
+const reducer = handleActions(
+  {
+    [fetchUser]: setOnSuccess('user'),
+  },
+  {}
+)
+
+// state.user will contain the response when the request completes.
+```
+
+The key functions in this library are:
+
+- `createRequest(key, requestInfo)` - this function allows you to define a redux action that makes an API request asynchronously. By default, API requests are made using [lp-requests](https://github.com/LaunchPadLab/lp-requests).
+
+- `setOnSuccess(path) | setOnFailure(path)` - these functions allow you to easily store the responses of API actions in your redux store.
+
+Additional usage information, as well as a list of other helpers this library provides, can be found in the [documentation](#documentation).
+
+## Documentation
+
 Documentation and usage info can be found in [docs.md](docs.md).
 
 ## Migration Guides
+
 - [v5.0.0](migration-guides/v5.0.0.md)
 - [v6.0.0](migration-guides/v6.0.0.md)
 
 ## Contribution
+
 This package follows the Opex [NPM package guidelines](https://github.com/LaunchPadLab/opex/blob/master/gists/npm-package-guidelines.md). Please refer to the linked document for information on contributing, testing and versioning.
