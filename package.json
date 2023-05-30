@@ -39,7 +39,7 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@launchpadlab/babel-preset": "^2.1.0",
-    "@launchpadlab/eslint-config": "^2.4.1",
+    "@launchpadlab/eslint-config": "^3.0.0",
     "axios": "^0.18.0",
     "codeclimate-test-reporter": "^0.5.0",
     "documentation": "^12.1.1",
