@@ -359,7 +359,7 @@ handleActions({
 
 // ** Stubbing a failed request: **
 
-export const fetchUser = createStubRequest('FETCH_USER', (id) => { 
+export const fetchUser = createStubRequest('FETCH_USER', (id) => {
    throw new Error('My mock error.')
 })
 

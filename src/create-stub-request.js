@@ -4,10 +4,10 @@ import { isObject, isFunction, identity } from 'lodash'
 
 /**
  * A function that creates action creators for making stubbed API requests.
- * 
+ *
  * Unlike {@link createRequest}, these action creators do not make real API calls but rather
  * resolve immediately with the provided data.
- * 
+ *
  * If an exception is thrown from the data creator function, the "request" will reject with that exception instead of resolving.
  *
  * @name createStubRequest
@@ -19,21 +19,21 @@ import { isObject, isFunction, identity } from 'lodash'
  * @example
  *
  * // ** Stubbing a successful request: **
- * 
+ *
  * export const fetchUser = createStubRequest('FETCH_USER', (id) => ({ id }))
  *
  * fetchUsers(5)
  * // -> won't make any api request, but will resolve with data { id: 5 }
  *
  * // Just like in redux-actions, this action can be referenced in a reducer by name:
- * 
+ *
  * handleActions({
  *    [apiActions.fetchUser]: (state, action) => ...
  * })
- * 
+ *
  * // ** Stubbing a failed request: **
- * 
- * export const fetchUser = createStubRequest('FETCH_USER', (id) => { 
+ *
+ * export const fetchUser = createStubRequest('FETCH_USER', (id) => {
  *    throw new Error('My mock error.')
  * })
  *
@@ -41,7 +41,7 @@ import { isObject, isFunction, identity } from 'lodash'
  * // -> won't make any api request, but will reject with the given error.
  *
  * // ** Simulating a response delay: **
- * 
+ *
  * export const fetchUser = createStubRequest('FETCH_USER', (id) => {
  *  return {
  *    id
@@ -74,6 +74,7 @@ function createStubRequest (type, definition=identity, { delay }={}) {
     }
   }
   actionCreator.toString = () => LP_API_ACTION_NAMESPACE + type
+  actionCreator.type = LP_API_ACTION_NAMESPACE + type
   return actionCreator
 }
 
