@@ -7,6 +7,7 @@ import {
   createPatchRequest,
   createDeleteRequest,
 } from '../src/'
+import { LP_API_ACTION_NAMESPACE } from '../src/actions'
 import { REQUEST_TYPE } from './fixtures'
 
 test('createRequest requires a type argument', () => {
@@ -34,6 +35,16 @@ test('createRequest accepts function request definitions', () => {
 
 test('createRequest rejects other types of request definitions', () => {
   expect(() => createRequest(REQUEST_TYPE, 'wtf')).toThrow()
+})
+
+test('createRequest has the namespaced action type as its string representation', () => {
+  const actionCreator = createRequest(REQUEST_TYPE, {})
+  expect(actionCreator.toString()).toEqual(LP_API_ACTION_NAMESPACE+REQUEST_TYPE)
+})
+
+test('createRequest has the namespaced action type set to the special `type` property', () => {
+  const actionCreator = createRequest(REQUEST_TYPE, {})
+  expect(actionCreator.type).toEqual(LP_API_ACTION_NAMESPACE+REQUEST_TYPE)
 })
 
 // Convenience functions

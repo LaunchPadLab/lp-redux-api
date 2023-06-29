@@ -22,7 +22,7 @@ import { isObject, isFunction } from 'lodash'
  * // -> will make request to /users/5
  *
  * // Just like in redux-actions, this action can be referenced in a reducer by name:
- * 
+ *
  * handleActions({
  *    [apiActions.fetchUser]: (state, action) => ...
  * })
@@ -49,6 +49,7 @@ function createRequestWithMethod (type, definition, method) {
     }
   }
   actionCreator.toString = () => LP_API_ACTION_NAMESPACE + type
+  actionCreator.type = LP_API_ACTION_NAMESPACE + type
   return actionCreator
 }
 
