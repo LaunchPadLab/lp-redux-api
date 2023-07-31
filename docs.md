@@ -2,37 +2,37 @@
 
 ### Table of Contents
 
--   [handleSuccess][1]
-    -   [Parameters][2]
-    -   [Examples][3]
--   [handleFailure][4]
-    -   [Parameters][5]
-    -   [Examples][6]
--   [handleResponse][7]
-    -   [Parameters][8]
-    -   [Examples][9]
--   [setOnSuccess][10]
-    -   [Parameters][11]
-    -   [Examples][12]
--   [setOnFailure][13]
-    -   [Parameters][14]
-    -   [Examples][15]
--   [setOnResponse][16]
-    -   [Parameters][17]
-    -   [Examples][18]
--   [LP_API][19]
-    -   [Examples][20]
--   [createRequest][21]
-    -   [Parameters][22]
-    -   [Examples][23]
--   [middleware][24]
--   [reducer][25]
-    -   [Examples][26]
--   [selectors][27]
-    -   [Examples][28]
--   [createStubRequest][29]
-    -   [Parameters][30]
-    -   [Examples][31]
+*   [handleSuccess][1]
+    *   [Parameters][2]
+    *   [Examples][3]
+*   [handleFailure][4]
+    *   [Parameters][5]
+    *   [Examples][6]
+*   [handleResponse][7]
+    *   [Parameters][8]
+    *   [Examples][9]
+*   [setOnSuccess][10]
+    *   [Parameters][11]
+    *   [Examples][12]
+*   [setOnFailure][13]
+    *   [Parameters][14]
+    *   [Examples][15]
+*   [setOnResponse][16]
+    *   [Parameters][17]
+    *   [Examples][18]
+*   [LP\_API][19]
+    *   [Examples][20]
+*   [createRequest][21]
+    *   [Parameters][22]
+    *   [Examples][23]
+*   [middleware][24]
+*   [reducer][25]
+    *   [Examples][26]
+*   [selectors][27]
+    *   [Examples][28]
+*   [createStubRequest][29]
+    *   [Parameters][30]
+    *   [Examples][31]
 
 ## handleSuccess
 
@@ -40,7 +40,7 @@ A function that takes an API action handler and only applies that handler when t
 
 ### Parameters
 
--   `handler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
+*   `handler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 
@@ -61,7 +61,7 @@ A function that takes an API action handler and only applies that handler when t
 
 ### Parameters
 
--   `handler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
+*   `handler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 
@@ -83,8 +83,8 @@ and applies the handlers when the responses have the correct status.
 
 ### Parameters
 
--   `successHandler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
--   `failureHandler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
+*   `successHandler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
+*   `failureHandler` **[Function][32]** An action handler that is passed `state`, `action` and `data` params
 
 ### Examples
 
@@ -111,8 +111,8 @@ A function that creates an API action handler that sets a path in the state with
 
 ### Parameters
 
--   `path` **[String][33]** The path in the state to set with the returned data
--   `transform` **[Function][32]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
+*   `path` **[String][33]** The path in the state to set with the returned data
+*   `transform` **[Function][32]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
 
 ### Examples
 
@@ -131,8 +131,8 @@ A function that creates an API action handler that sets a path in the state with
 
 ### Parameters
 
--   `path` **[String][33]** The path in the state to set with the returned error
--   `transform` **[Function][32]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
+*   `path` **[String][33]** The path in the state to set with the returned error
+*   `transform` **[Function][32]?** A function that determines the data that is set in the state. Passed `action` and `state` params.
 
 ### Examples
 
@@ -151,10 +151,10 @@ A function that creates an API action handler that sets one of two given paths i
 
 ### Parameters
 
--   `path` **[String][33]** The path in the state to set with the returned data on success
--   `path` **[String][33]** The path in the state to set with the returned error on failure
--   `transform` **[Function][32]?** A function that determines the success data that is set in the state. Passed `action` and `state` params.
--   `transform` **[Function][32]?** A function that determines the error data that is set in the state. Passed `action` and `state` params.
+*   `path` **[String][33]** The path in the state to set with the returned data on success
+*   `path` **[String][33]** The path in the state to set with the returned error on failure
+*   `transform` **[Function][32]?** A function that determines the success data that is set in the state. Passed `action` and `state` params.
+*   `transform` **[Function][32]?** A function that determines the error data that is set in the state. Passed `action` and `state` params.
 
 ### Examples
 
@@ -167,7 +167,7 @@ handleActions({
 
 Returns **[Function][32]** An action handler
 
-## LP_API
+## LP\_API
 
 A unique key that identifies dispatched actions to be handled by the LP
 Redux Api middleware. This is implemented as a Symbol, instead of a String
@@ -186,8 +186,8 @@ function fooAction () {
   return {
     [LP_API]: {
       url: 'http://foo.com/posts',
-      requestAction: 'REQUEST', 
-      successAction: 'SUCCESS', 
+      requestAction: 'REQUEST',
+      successAction: 'SUCCESS',
       failureAction: 'FAILURE',
     }
   }
@@ -202,8 +202,8 @@ Note: there are convenience functions for each request method: `createPostReques
 
 ### Parameters
 
--   `type` **[String][33]** A unique key that will be used to identify the request internally in redux
--   `definition` **([Object][36] \| [Function][32])** An object of config options for the adapter, or a function that returns config options.
+*   `type` **[String][33]** A unique key that will be used to identify the request internally in redux
+*   `definition` **([Object][36] | [Function][32])** An object of config options for the adapter, or a function that returns config options.
 
 ### Examples
 
@@ -243,11 +243,11 @@ The `adapter` argument is the function that will be invoked to make the API requ
 
 The following options may be used to configure the middleware:
 
--   `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
--   `requestAction` (default=`null`): An action creator to be called and dispatched when the initial request is made.
--   `successAction` (default=`null`): An action creator to be called and dispatched if the request succeeds.
--   `failureAction` (default=`null`): An action creator to be called and dispatched if the request fails.
--   any options used by the adapter
+*   `onUnauthorized` (default=`null`): An action creator to be called and dispatched when the server rejects a request with a status of `unauthorized`.
+*   `requestAction` (default=`null`): An action creator to be called and dispatched when the initial request is made.
+*   `successAction` (default=`null`): An action creator to be called and dispatched if the request succeeds.
+*   `failureAction` (default=`null`): An action creator to be called and dispatched if the request fails.
+*   any options used by the adapter
 
 ## reducer
 
@@ -286,12 +286,12 @@ selectStatus(REQ_FETCH_USERS, state) // -> 'loading'
 
 This library exports the following selectors for determining the status of requests:
 
--   `selectors.status(state, requestAction, [slice])`
--   `selectors.hasStatus(state, requestAction, [slice])`
--   `selectors.isLoading(state, requestAction, [slice])`
--   `selectors.isComplete(state, requestAction, [slice])`
--   `selectors.isSuccess(state, requestAction, [slice])`
--   `selectors.isFailure(state, requestAction, [slice])`
+*   `selectors.status(state, requestAction, [slice])`
+*   `selectors.hasStatus(state, requestAction, [slice])`
+*   `selectors.isLoading(state, requestAction, [slice])`
+*   `selectors.isComplete(state, requestAction, [slice])`
+*   `selectors.isSuccess(state, requestAction, [slice])`
+*   `selectors.isFailure(state, requestAction, [slice])`
 
 In order to work, the `lp-redux-api` reducer must be included in `combineReducers()`.
 Selectors expect the reducer to be keyed under `'api'`- if a different key is used,
@@ -299,9 +299,9 @@ it must be passed as the optional `slice` parameter.
 
 The status returned by `selectors.status()` can be one of the following exported constants:
 
--   `LP_API_STATUS_LOADING`: `'loading'`
--   `LP_API_STATUS_SUCCESS`: `'success'`
--   `LP_API_STATUS_FAILURE`: `'failure'`
+*   `LP_API_STATUS_LOADING`: `'loading'`
+*   `LP_API_STATUS_SUCCESS`: `'success'`
+*   `LP_API_STATUS_FAILURE`: `'failure'`
 
 ### Examples
 
@@ -336,10 +336,11 @@ If an exception is thrown from the data creator function, the "request" will rej
 
 ### Parameters
 
--   `type` **[String][33]** A unique key that will be used to identify the request internally in redux
--   `dataDefinition` **([Object][36] \| [Function][32])** Data that the request will resolve with, or a function that returns data to resolve with.
--   `options` **[Object][36]?** Options object
-    -   `options.delay` **[Number][39]** Time (in ms) to delay the API request. Particularly useful when attempting to simulate loading states. (optional, default `0`)
+*   `type` **[String][33]** A unique key that will be used to identify the request internally in redux
+*   `dataDefinition` **([Object][36] | [Function][32])** Data that the request will resolve with, or a function that returns data to resolve with.
+*   `options` **[Object][36]?** Options object
+
+    *   `options.delay` **[Number][39]** Time (in ms) to delay the API request. Particularly useful when attempting to simulate loading states. (optional, default `0`)
 
 ### Examples
 
