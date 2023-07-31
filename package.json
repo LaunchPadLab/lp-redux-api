@@ -40,7 +40,7 @@
     "@babel/core": "^7.22.9",
     "@launchpadlab/babel-preset": "^2.1.1",
     "@launchpadlab/eslint-config": "^3.0.1",
-    "axios": "^0.18.0",
+    "axios": "^1.4.0",
     "codeclimate-test-reporter": "^0.5.1",
     "documentation": "^14.0.2",
     "eslint": "^8.46.0",
