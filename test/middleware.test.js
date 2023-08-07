@@ -37,38 +37,38 @@ const actionObject = {
 const actionFunction = (payload) => ({ type: actionString, payload, error: false })
 
 test('middleware parses action STRING definitions correctly', () => {
-  expect(parseAction({ 
-    action: actionString, 
-    payload: testPayload 
+  expect(parseAction({
+    action: actionString,
+    payload: testPayload
   })).toEqual(actionObject)
-  expect(parseAction({ 
-    action: actionString, 
-    payload: testPayload, 
-    error: true 
+  expect(parseAction({
+    action: actionString,
+    payload: testPayload,
+    error: true
   })).toEqual({ ...actionObject, error: true })
 })
 
 test(`middleware parses action OBJECT definitions correctly (doesn't mutate)`, () => {
-  expect(parseAction({ 
-    action: actionObject, 
-    payload: testPayload 
+  expect(parseAction({
+    action: actionObject,
+    payload: testPayload
   })).toEqual(actionObject)
-  expect(parseAction({ 
-    action: actionObject, 
-    payload: { test: 'something else' }, 
-    error: true 
+  expect(parseAction({
+    action: actionObject,
+    payload: { test: 'something else' },
+    error: true
   })).toEqual(actionObject)
 })
 
 test('middleware parses action FUNCTION definitions correctly (passes payload)', () => {
-  expect(parseAction({ 
-    action: actionFunction, 
-    payload: testPayload 
+  expect(parseAction({
+    action: actionFunction,
+    payload: testPayload
   })).toEqual(actionObject)
-  expect(parseAction({ 
-    action: actionFunction, 
-    payload: testPayload, 
-    error: true 
+  expect(parseAction({
+    action: actionFunction,
+    payload: testPayload,
+    error: true
   })).toEqual(actionObject)
 })
 
@@ -148,7 +148,7 @@ test('middleware resolves stubbed requests with provided data', () => {
   const pendingPromise = store.dispatch(stubAction).then((res) => {
     expect(res).toEqual(stubData)
   })
-  
+
   jest.runAllTimers()
   return pendingPromise
 })
@@ -168,13 +168,14 @@ test('middleware rejects stubbed requests with error flag', () => {
   const pendingPromise = store.dispatch(stubAction).catch((res) => {
     expect(res).toEqual(stubData)
   })
-  
+
   jest.runAllTimers()
   return pendingPromise
 })
 
 test('middleware responds after delay with provided data', () => {
   jest.useFakeTimers()
+  jest.spyOn(global, 'setTimeout')
   const store = mockStore({})
   const stubData = { foo: 'bar' }
   const stubAction = {
@@ -184,13 +185,13 @@ test('middleware responds after delay with provided data', () => {
       delay: 1000,
     }
   }
-  
+
   const pendingPromise = store.dispatch(stubAction).then((res) => {
     expect(res).toEqual(stubData)
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000)
   })
-  
+
   // Activate the timer
   jest.runAllTimers()
   return pendingPromise
@@ -198,6 +199,7 @@ test('middleware responds after delay with provided data', () => {
 
 test('middleware rejects stubbed request after delay with error flag', () => {
   jest.useFakeTimers()
+  jest.spyOn(global, 'setTimeout')
   const store = mockStore({})
   const stubData = { foo: 'bar' }
   const stubAction = {
@@ -208,13 +210,13 @@ test('middleware rejects stubbed request after delay with error flag', () => {
       delay: 500,
     }
   }
-  
+
   const pendingPromise = store.dispatch(stubAction).catch((res) => {
     expect(res).toEqual(stubData)
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500)
   })
-  
+
   // Activate the timer
   jest.runAllTimers()
   return pendingPromise
